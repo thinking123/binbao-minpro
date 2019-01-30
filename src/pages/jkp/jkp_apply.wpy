@@ -1,0 +1,829 @@
+<style lang="less">
+  .header {
+    width: 100%;
+    height: 280rpx;
+    margin-bottom: 20rpx;
+    background: url(https://bimbochinaclub.ysmine.com/Public/2018/07/common/commonheader.png) no-repeat center center;
+    background-size: 100% 100%;
+  }
+  .main {
+    width: 100%;
+    min-height: 1055rpx;
+    background: url(https://bimbochinaclub.ysmine.com/Public/2018/07/common/mainbj.png) no-repeat center center;
+    background-size:100%;
+    .desc {
+      width: 80%;
+      margin: 50rpx auto;
+      padding-bottom: 60rpx;
+      background: rgba(48, 96, 149, 0.8);
+      border-radius: 150rpx 0 150rpx 0;
+      .title {
+        width:80%;
+        display:block;
+        margin: 0 auto;
+        line-height: 100rpx;
+        border-bottom: 1rpx solid #fff;
+        color: #fff;
+        text-align: center;
+      }
+      .scroll-desc {
+        height: 500rpx;
+        padding-top: 15rpx;
+        width: 85%;
+        margin: 0 auto;
+        color: #fff;
+        font-size: 24rpx;
+        line-height: 32rpx;
+      }
+      .trangle {
+        width: 20rpx;
+        height: 20rpx;
+        margin: 10rpx auto;
+        display: block;
+      }
+    }
+    .agree-btns {
+      text-align: center;
+      padding-bottom: 100rpx;
+      .btn {
+        display: inline-block;
+        width:200rpx;
+        text-align:center;
+        color:#fff;
+        margin: 0 50rpx;
+        background: url(https://bimbochinaclub.ysmine.com/Public/2018/07/common/btnbj.png) no-repeat center center;
+        background-size:100% 100%;
+      }
+    }
+    .form-part {
+      width: 100%;
+      min-height: 1055rpx;
+      padding: 50rpx 0;
+      background: rgba(48, 96, 149, 0.8);
+      color: #fff;
+      font-size: 26rpx;
+      .wrap {
+        width: 85%;
+        margin: 0 auto;
+        height: 100%;
+        .form-control {
+          width: 100%;
+          padding: 15rpx 0;
+          picker {
+            .form-item {
+              position: relative;
+              .pick_trangle {
+                position: absolute;
+                right: 10rpx;
+                top: 8rpx;
+                width: 20rpx;
+                height: 20rpx;
+              }
+            }
+          }
+          .form_wrap {
+            display: inline-block;
+            width: 72%;
+            padding: 0 15rpx;
+            vertical-align: middle;
+            height: 45rpx;
+            min-height: 45rpx;
+            border: 1px solid #fff;
+            border-radius: 20rpx 0 20rpx 0;
+            &.short {
+              width: 30.5%;
+            }
+            &.middle {
+              width: 60%;
+            }
+            &.long {
+              width: 80%;
+            }
+            &.long_1 {
+              width: 76%;
+            }
+            .form-item {
+              width: 100%;
+            }
+          }
+        }
+      }
+      .save {
+        margin: 50rpx auto;
+        width: 220rpx;
+        line-height: 60rpx;
+        color: #fff;
+        background: url(https://bimbochinaclub.ysmine.com/Public/2018/07/common/btnbj.png) no-repeat center center;
+        background-size: 100% 100%;
+      }
+    }
+  }
+  .info {
+    width: 100%;
+    font-size: 26rpx;
+    .apply_info {
+      padding: 10rpx 40rpx;
+      background: #306095;
+      line-height: 50rpx;
+      margin-bottom: 20rpx;
+      position: relative;
+      .personal_invite_code {
+        display: block;
+        width: 100%;
+        padding: 30rpx 0;
+        text-align: center;
+        font-size: 30rpx;
+        font-weight: bold;
+        color: #fff;
+      }
+      text {
+        display: block;
+        color: #fff;
+      }
+      .back_change {
+        position: absolute;
+        right: 20rpx;
+        bottom: 20rpx;
+        padding: 0rpx 30rpx;
+        border-radius: 20rpx 0 20rpx 0;
+        background: #00a1e1;
+        color: #fff;
+      }
+      .check_icon {
+        width: 40rpx;
+        height: 40rpx;
+        position: absolute;
+        right: 30rpx;
+        top: 30rpx;
+        background: #fff;
+        border: 5rpx solid #00a1df;
+        border-radius: 50%;
+        padding: 5rpx;
+        &.check {
+          .check_in {
+            width: 100%;
+            height: 100%;
+            background: #00a1df;
+            border-radius: 50%;
+          }
+        }
+      }
+    }
+    .add-btn {
+      background: #00A1E1;
+      padding-left: 40rpx;
+      line-height: 100rpx;
+      color: #fff;
+      image {
+        width: 30rpx;
+        height: 30rpx;
+        margin-right: 10rpx;
+        vertical-align: middle;
+      }
+    }
+    .tip {
+      margin: 50rpx 0; 
+      text-align: center;
+      color: #333;
+    }
+    .submit-btn {
+      margin: 0 auto 50rpx;
+      width: 220rpx;
+      line-height: 60rpx;
+      color: #fff;
+      text-align: center;
+      background: url(https://bimbochinaclub.ysmine.com/Public/2018/07/common/btnbj.png) no-repeat center center;
+      background-size:100% 100%;
+    }
+  }
+  .fix_toast {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 10;
+    image {
+      width: 60%;
+      height: 42%;
+      position: absolute;
+      margin: auto;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 20%;
+    }
+    .close_toast {
+      width: 105rpx;
+      height: 105rpx;
+      line-height: 85rpx;
+      border-radius: 50%;
+      border: 3rpx solid #fff;
+      color: #fff;
+      background: transparent;
+      font-size: 85rpx;
+      font-weight: bold;
+      position: absolute;
+      bottom: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+</style>
+<template>
+  <view class="container">
+    <view class="header"></view>
+    <!-- 申明和填写表单 -->
+    <view class="main" wx:if="{{ show_apply }}">
+      <view wx:if="{{ !show_form }}">
+        <view class="desc">
+          <text class="title">参赛选手申明</text>
+          <scroll-view class="scroll-desc" scroll-y="true">
+            <text>
+            1、	本人自愿报名参加本次比赛及2018年《宾堡环球健康跑》及一切相关活动(以下统称“赛事”)；
+            2、	本人全面理解并同意遵守组委会及承办单位所制订的各项规程、规则、规定、要求及采取的措施；
+            3、	本人身心健康，已为参赛做好充分准备，并愿意按照有关要求接受药物检查；
+            4、	本人全面理解参赛可能出现的风险，已准备必要的防范措施。本人承担所有参与本次比赛跑步项目及其他所有相关活动的风险，上述风险包括但不限于：跌倒、冲撞、踩踏或与其他参赛者、赛事工作人员、志愿者、观众、场地标记物或其他障碍物或危险物品的接触及碰撞；降雨、气温或湿度及雷击等天气影响；本人自备设备或比赛组织者提供的设备的缺陷；赛道及人行道在内的赛场状况；或现场观众、参与或协助本次比赛组织工作的人员造成的危险。本人已充分了解此类风险，且自愿承担相应后果；团体报名者同意主办方对于非主办方原因造成的伤害、死亡或其他任何形式的损失不承担任何形式的赔偿
+            5、	本人同意接受主办方在比赛期间提供的现场急救性质的医务治疗，但在医院救治等发生的相关费用由参赛者自理；
+            6、	本人授权主办方及指定媒体无偿使用参赛者的肖像、姓名、声音和其它个人资料用于比赛的组织和推广；
+            7、	本人愿意通过报名时所提供的通讯方式(手机、电子邮箱等)获得赛事相关信息；
+            8、	本人承诺以自己的名义报名并参赛，绝不将报名后获得的号码布以任何方式转让给他人；
+            9、	本人同意在比赛前和比赛期间不得损害、更改及遮盖赛事服装和号码布，并同意组委会发现该项违规后有权取消参赛者的参赛资格；
+            10、参赛者同意向组委会提供有效的身份证件和资料用于核实本人的身份，并同意承担因身份证件和资料不实所产生的全部责任；
+            11、参赛者同意组委会以本人为被保险人投保人身意外险，具体内容已从保险说明书中知晓，参赛者均予以认可；
+            12、参赛者或法定代理人已认真阅读并全面理解以上内容，且对上述所有内容予以确认并承担相应的法律责任。
+            </text>
+          </scroll-view>
+          <image class="trangle" src="../../images/apply/trangle.png"/>
+        </view>
+        <view class="agree-btns">
+          <view class="btn" @tap="notAgree">不同意</view>
+          <view class="btn" @tap="agree">同意 <text wx:if="{{agree_count > 0}}">({{agree_count}})</text></view>
+        </view>
+      </view>
+      <view class="form-part" wx:if="{{ show_form }}">
+        <view class="wrap">
+          <view class="form-control">
+            <picker bindchange="bindSubjectChange" value="{{ form.sub }}" range="{{ subject }}">
+              项目：
+              <view class="form_wrap long">
+                <view class="form-item">
+                  {{subject[form.sub]}}
+                  <image class="pick_trangle" src="../../images/apply/trangle.png"/>
+                </view>
+              </view>
+            </picker>
+          </view>
+          <view class="form-control">
+            姓名：
+            <view class="form_wrap long">
+              <input class="form-item" value="{{ form.name }}" bindinput="bindNameChange"/>
+            </view>
+          </view>
+          <view class="form-control">
+            <picker bindchange="bindSexChange" value="{{ form.sex }}" range="{{ sex_range }}">
+              性别：
+              <view class="form_wrap long">
+                <view class="form-item">
+                  {{sex_range[form.sex]}}
+                  <image class="pick_trangle" src="../../images/apply/trangle.png"/>
+                </view>
+              </view>
+            </picker>
+          </view>
+          <view class="form-control">
+            <picker mode="date" value="{{ form.birth }}" start="1948-09-24" bindchange="bindBirthChange">
+              出生日期：
+              <view class="form_wrap">
+                <view class="form-item">
+                {{form.birth}}
+                <image class="pick_trangle" src="../../images/apply/trangle.png"/>
+                </view>
+              </view>
+            </picker>
+          </view>
+          <view class="form-control">
+            <picker bindchange="bindIdPropChange" value="{{ form.id_code_prop }}" range="{{ id_code_prop_range }}">
+              证件号码：
+              <view class="form_wrap">
+                <view class="form-item">
+                  {{id_code_prop_range[form.id_code_prop]}}
+                  <image class="pick_trangle" src="../../images/apply/trangle.png"/>
+                </view>
+              </view>
+            </picker>
+            <view class="form_wrap" style="margin: 20rpx 0 0 130rpx;">
+              <input class="form-item" maxlength="18" value="{{ form.id_code }}" placeholder="{{id_code_placeholder}}" placeholder-style="color:#ddd" bindinput="bindIdChange"/>
+            </view>
+          </view>
+          <view class="form-control">
+            联系电话：
+            <view class="form_wrap">
+              <input class="form-item" type="number" maxlength="11" value="{{ form.phone }}"  bindinput="bindPhoneChange"/>
+            </view>
+          </view>
+          <view class="form-control">
+            通信地址：
+            <view class="form_wrap">
+              <input class="form-item" type="text" value="{{ form.addr }}" bindinput="bindAddrChange"/>
+            </view>
+          </view>
+          <view class="form-control">
+            <picker value="{{ form.size }}" range="{{ size }}" bindchange="bindSizeChange">
+              服装尺码：
+              <view class="form_wrap">
+                <view class="form-item">
+                  {{size[form.size]}}
+                  <image class="pick_trangle" src="../../images/apply/trangle.png"/>
+                </view>
+              </view>
+            </picker>
+          </view>
+          <text style="font-size:24rpx;">组委会会根据服装实际情况参考选手提供的尺码信息来分配</text>
+          <view class="form-control">
+            紧急联系人姓名：
+            <view class="form_wrap middle">
+              <input class="form-item" value="{{ form.emergence_name }}" bindinput="bindEmerNameChange"/>
+            </view>
+          </view>
+          <view class="form-control">
+            紧急联系人电话：
+            <view class="form_wrap middle">
+              <input class="form-item" maxlength="11" value="{{ form.emergence_phone }}" type="number" bindinput="bindEmerPhoneChange"/>
+            </view>
+          </view>
+        </view>
+        <button class="save" @tap="saveForm">保存</button>
+      </view>
+    </view>
+    <!-- 报名信息 -->
+    <view class="info" wx:if="{{ !show_apply }}">
+      <view class="apply_info" wx:for="{{ save_apply_arr }}" wx:for-index="idx" wx:for-item="apply_user" wx:key="idx">
+        <view class="personal_invite_code" wx:if="{{apply_user.invitaion_code_own}}">
+          专属邀请码：<text selectable="true">{{apply_user.invitaion_code_own}}</text>
+        </view>
+        <text>项目：{{ subject[apply_user.sub] }}</text>
+        <text>姓名：{{ apply_user.name }}</text>
+        <text>性别：{{ sex_range[apply_user.sex] }}</text>
+        <text>证件号码：{{ apply_user.id_code }}</text>
+        <text>联系电话：{{ apply_user.phone }}</text>
+        <text wx:if="{{apply_user.playercode}}">运动员号码：{{ apply_user.playercode }}</text>
+        <view class="back_change" wx:if="{{apply_user.haspay == '0'}}" data-applyindex="{{idx}}" @tap="backForm">修改信息</view>
+        <view class="back_change" wx:if="{{apply_user.haspay == '1'}}" data-info="{{apply_user}}" @tap="jumpPoster">查看专属海报</view>
+        <view class="check_icon {{pay_sign_arr[idx] ? 'check' : ''}}" data-payindex="{{idx}}" data-haspay="{{apply_user.haspay}}" @tap="checkIn" wx:if="{{apply_user.haspay != '1'}}">
+          <view class="check_in"></view>
+        </view>
+      </view>
+      <view class="add-btn" @tap="addMore">
+        <image src="../../images/apply/add_icon.png"/>添加其他人员
+      </view>
+      <view class="tip">* 请您仔细核实已保存的个人信息后再提交
+        <view>付款之后，无法再修改任何信息</view>
+      </view>
+      <view class="submit-btn" @tap="submitApply">去支付</view>
+    </view>
+    <view class="fix_toast" wx:if="{{ show_fix_toast }}">
+      <image src="../../images/apply/fix_toast.png"/>
+      <button class="close_toast" @tap="closeToast">×</button>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import {service} from '../config.js'
+  export default class JkpApply extends wepy.page {
+    components = {}
+
+    data = {
+      is_count_finish: false,
+      agree_count: 5,
+      open_id: '',
+      show_apply: false,
+      show_form: false,
+      show_fix_toast: false,
+      save_apply_arr: [],
+      pay_sign_arr: [],
+      checkin_index_arr: [],
+      not_child_index_arr: [],
+      subject: ['三公里健康跑', '十公里健康跑'],
+      sex_range: ['男', '女'],
+      id_code_prop_range: ['身份证', '护照'],
+      id_code_placeholder: '身份证号/护照号',
+      size: ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', '儿童90cm', '儿童100cm', '儿童110cm', '儿童120cm', '儿童130cm', '儿童140cm', '儿童150cm'],
+      change_index: '',
+      form_param: {},
+      apply_ids_str: '',
+      form: {
+        id_code_prop: '',
+        sub: '',
+        name: '',
+        sex: '',
+        birth: '',
+        id_code: '',
+        phone: '',
+        addr: '',
+        size: '',
+        emergence_name: '',
+        emergence_phone: '',
+        haspay: 0
+      }
+    }
+
+    methods = {
+      agree () {
+        if (!this.is_count_finish) {
+          return
+        }
+        this.show_form = true
+      },
+      notAgree () {
+        wepy.navigateBack({
+          delta: 1
+        })
+      },
+      saveForm () {
+        if (!this.form.sub || !this.form.name || !this.form.sex || !this.form.birth || !this.form.id_code || !this.form.phone || !this.form.addr || this.form.size === '' || !this.form.emergence_name || !this.form.emergence_phone) {
+          this.show_fix_toast = true
+          return
+        }
+        if (!this.form.id_code_prop) {
+          wepy.showModal({
+            content: '请选择证件类型',
+            showCancel: false
+          })
+          return
+        }
+        if (this.form.emergence_name === this.form.name) {
+          wepy.showModal({
+            content: '紧急联系人与报名人不能为同一个人',
+            showCancel: false
+          })
+          return
+        }
+        if (this.form.emergence_phone === this.form.phone) {
+          wepy.showModal({
+            content: '紧急联系人电话与报名人电话不能相同',
+            showCancel: false
+          })
+          return
+        }
+        if (this.form.id_code_prop === '0' && this.form.id_code.length !== 18) {
+          wepy.showModal({
+            content: '身份证位数不足',
+            showCancel: false
+          })
+          return
+        }
+        if (this.form.phone.length !== 11 || this.form.emergence_phone.length !== 11) {
+          wepy.showModal({
+            content: '联系方式位数不足',
+            showCancel: false
+          })
+          return
+        }
+        // 限制14年龄不能报10公里
+        if (this.form.sub === '1' && this.form.id_code_prop !== '1' && this.getAgeByidnum(this.form.id_code) <= 14) {
+          wepy.showModal({
+            content: '14岁以下（含14岁）不能报名10公里赛事，请选择3公里赛事进行报名',
+            showCancel: false
+          })
+          return
+        }
+        if (this.change_index !== '') {
+          this.save_apply_arr[this.change_index] = JSON.parse(JSON.stringify(this.form))
+        } else {
+          this.save_apply_arr.push(JSON.parse(JSON.stringify(this.form)))
+        }
+        this.formatFormParam()
+        console.log('addPlayer param data: ', this.form_param)
+        wepy.showLoading({
+          title: '正在保存...',
+          mask: true
+        })
+        wepy.request({
+          url: service.addPlayer,
+          method: 'POST',
+          data: this.form_param,
+          header: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }).then((res) => {
+          console.log('REQ_addPlayer res: ', res)
+          if (res.data.code === '200') {
+            for (var key in this.form) {
+              this.form[key] = ''
+            }
+            // 获取报名用户接口
+            this.getApplyUser()
+          } else {
+            wepy.hideLoading()
+            wepy.showModal({
+              content: res.data.message,
+              showCancel: false
+            })
+          }
+        }).catch((err) => {
+          console.log(err)
+        })
+        this.change_index = ''
+      },
+      closeToast () {
+        this.show_fix_toast = false
+      },
+      backForm (event) {
+        this.change_index = event.currentTarget.dataset.applyindex
+        for (var key in this.save_apply_arr[this.change_index]) {
+          this.form[key] = this.save_apply_arr[this.change_index][key]
+        }
+        this.pay_sign_arr = []
+        this.checkin_index_arr = []
+        this.show_form = true
+        this.show_apply = true
+      },
+      addMore () {
+        this.pay_sign_arr = []
+        this.checkin_index_arr = []
+        this.show_apply = true
+        this.show_form = true
+        this.$apply()
+      },
+      checkIn (event) {
+        const haspay = event.currentTarget.dataset.haspay
+        console.log(haspay)
+        if (haspay === '1') {
+          wepy.showModal({
+            content: '此人已报名成功',
+            showCancel: false
+          })
+          return
+        }
+        const chooseIndex = event.currentTarget.dataset.payindex
+        this.pay_sign_arr[chooseIndex] = !this.pay_sign_arr[chooseIndex]
+        this.checkin_index_arr = []
+        this.pay_sign_arr.forEach((val, index) => {
+          if (val) {
+            this.checkin_index_arr.push(index)
+          }
+        })
+      },
+      jumpPoster (event) {
+        const item = event.currentTarget.dataset.info
+        this.$root.$navigate({url: `poster?name=${item.name}&subject=${this.subject[item.sub]}`})
+      },
+      submitApply () {
+        const canSubmit = this.pay_sign_arr.some((val, index) => {
+          return !!val
+        })
+        // let isChild = 0 // 是否只是纯孩子们报名
+        // this.checkin_index_arr.forEach((val, index) => {
+        //   const curIdx = val
+        //   const nextIdx = this.checkin_index_arr[index + 1 >= this.checkin_index_arr.length ? this.checkin_index_arr.length - 1 : index + 1]
+        //   if (Number(this.save_apply_arr[curIdx].id_code_prop) !== 1) { // 用的是身份证的
+        //     console.log(index !== this.checkin_index_arr.length - 1)
+        //     if (this.getAgeByidnum(this.save_apply_arr[curIdx].id_code) <= 14) {
+        //       if (this.checkin_index_arr.length === 1) {
+        //         isChild = 1
+        //       } else if (nextIdx !== curIdx && this.getAgeByidnum(this.save_apply_arr[nextIdx].id_code) <= 14) {
+        //         isChild = 1
+        //       }
+        //     }
+        //   } else { // 护照的
+        //     isChild = 0
+        //   }
+        // })
+        // if (isChild) {
+        //   wepy.showModal({
+        //     content: '未成年人应当在家长陪同下报名',
+        //     showCancel: false
+        //   })
+        //   isChild = 0
+        //   return
+        // }
+        this.not_child_index_arr = this.checkin_index_arr.filter((val, index) => {
+          console.log(this.getAgeByBirth(this.save_apply_arr[val].birth) > 14)
+          return this.getAgeByBirth(this.save_apply_arr[val].birth) > 14
+        })
+        if (canSubmit) {
+          wepy.showLoading({
+            title: '正在获取支付信息...',
+            mask: true
+          })
+          this.beforePayformatIds()
+          console.log(this.apply_ids_str)
+          wepy.request({
+            url: service.getPayMoney,
+            method: 'POST',
+            data: {
+              id: this.apply_ids_str,
+              open_id: this.open_id
+            },
+            header: { 'Content-Type': 'application/x-www-form-urlencoded' }
+          }).then((res) => {
+            wepy.hideLoading()
+            console.log('REQ_getPayMoney res: ', res)
+            if (res.data.code === '200') {
+              this.$root.$navigate({url: `/pages/jkp/apply_pay?fee=${res.data.result}&paycount=${this.not_child_index_arr.length}&open_id=${this.open_id}&ids=${this.apply_ids_str}`})
+              this.pay_sign_arr = []
+              this.checkin_index_arr = []
+              this.not_child_index_arr = []
+              this.$apply()
+            } else {
+              wepy.showModal({
+                content: res.data.message,
+                showCancel: false
+              })
+            }
+          })
+        } else {
+          wepy.showModal({
+            content: '请至少选择一个未支付的报名者',
+            showCancel: false
+          })
+        }
+      }
+    }
+    getAgeByidnum (identityCard) {
+      var len = (identityCard + '').length
+      if (len === 0) {
+        return 0
+      } else {
+        if ((len !== 15) && (len !== 18)) { // 身份证号码只能为15位或18位其它不合法
+          return 0
+        }
+      }
+      var strBirthday = ''
+      if (len === 18) { // 处理18位的身份证号码从号码中得到生日和性别代码
+        strBirthday = identityCard.substr(6, 4) + '/' + identityCard.substr(10, 2) + '/' + identityCard.substr(12, 2)
+      }
+      if (len === 15) {
+        strBirthday = '19' + identityCard.substr(6, 2) + '/' + identityCard.substr(8, 2) + '/' + identityCard.substr(10, 2)
+      }
+      // 时间字符串里，必须是“/”
+      var birthDate = new Date(strBirthday)
+      var nowDateTime = new Date()
+      var age = nowDateTime.getFullYear() - birthDate.getFullYear()
+      // 再考虑月、天的因素;.getMonth()获取的是从0开始的，这里进行比较，不需要加1
+      if (nowDateTime.getMonth() < birthDate.getMonth() || (nowDateTime.getMonth() === birthDate.getMonth() && nowDateTime.getDate() < birthDate.getDate())) {
+        age--
+      }
+      return age || 0
+    }
+    getAgeByBirth (birth) {
+      const nowTimeStamp = Date.parse(new Date()) / 1000
+      const userBirthStamp = Date.parse(new Date(birth)) / 1000
+      return Math.floor((nowTimeStamp - userBirthStamp) / 60 / 60 / 24 / 30 / 12)
+    }
+    beforePayformatIds () {
+      this.apply_ids_str = ''
+      const dataArr = JSON.parse(JSON.stringify(this.save_apply_arr))
+      dataArr.forEach((val, index) => {
+        if (!val.haspay || val.haspay === '0' || val.haspay === 0) {
+          if (this.checkin_index_arr.indexOf(index) !== -1) {
+            this.apply_ids_str += (val.id + ',')
+          }
+        }
+      })
+      this.apply_ids_str = this.apply_ids_str.slice(0, this.apply_ids_str.length - 1)
+      console.log('beforePayformatIds: ', this.apply_ids_str)
+    }
+    formatFormParam () {
+      this.form_param = {}
+      const dataObj = JSON.parse(JSON.stringify(this.save_apply_arr[this.change_index !== '' ? this.change_index : this.save_apply_arr.length - 1]))
+
+      this.form_param.open_id = this.open_id
+      this.form_param.optionss = dataObj.sub === '0' ? '2' : '1' // 1十公里  2三公里
+      this.form_param.name = dataObj.name
+      this.form_param.birthday = dataObj.birth
+      this.form_param.sex = dataObj.sex === '1' ? '2' : '1' // 1男  2女
+      this.form_param.passPortFlag = dataObj.id_code_prop
+      this.form_param.provincial_certificate = dataObj.id_code
+      this.form_param.phone = dataObj.phone
+      this.form_param.address = dataObj.addr
+      this.form_param.gaarment_size = this.size[dataObj.size]
+      this.form_param.emergency_name = dataObj.emergence_name
+      this.form_param.emergency_phone = dataObj.emergence_phone
+      this.form_param.id = dataObj.id || 0
+      console.log('formatFormParam: ', this.form_param)
+    }
+    bindSubjectChange (e) {
+      this.form.sub = e.detail.value
+    }
+    bindNameChange (e) {
+      this.form.name = e.detail.value
+    }
+    bindSexChange (e) {
+      this.form.sex = e.detail.value
+    }
+    bindBirthChange (e) {
+      this.form.birth = e.detail.value
+    }
+    bindIdPropChange (e) {
+      this.form.id_code_prop = e.detail.value
+      this.id_code_placeholder = e.detail.value === '0' ? '身份证号' : '护照号'
+    }
+    bindIdChange (e) {
+      this.form.id_code = e.detail.value
+    }
+    bindPhoneChange (e) {
+      this.form.phone = e.detail.value
+    }
+    bindAddrChange (e) {
+      this.form.addr = e.detail.value
+    }
+    bindSizeChange (e) {
+      this.form.size = e.detail.value
+    }
+    bindEmerNameChange (e) {
+      this.form.emergence_name = e.detail.value
+    }
+    bindEmerPhoneChange (e) {
+      this.form.emergence_phone = e.detail.value
+    }
+    getApplyUser () {
+      // 获取报名人的信息（付和未付都有）
+      wepy.request({
+        url: service.getPlayerList,
+        method: 'POST',
+        data: {
+          open_id: this.open_id
+        },
+        header: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      }).then((res) => {
+        console.log('REQ_getPlayerList res: ', res)
+        wepy.hideLoading()
+        if (res.data.code === '200') {
+          if (res.data.result && res.data.result.length) {
+            this.save_apply_arr = []
+            res.data.result.forEach((val, index) => {
+              let obj = {}
+              obj.id = val.id
+              obj.name = val.name
+              obj.sub = val.optionss === '2' ? '0' : '1' // 1十公里  2三公里
+              obj.sex = val.sex === '1' || val.sex === 1 ? '0' : '1' // 服务器 1男  2女
+              obj.id_code = val.provincial_certificate
+              obj.phone = val.phone
+              obj.id_code_prop = val.passportflag
+              obj.birth = val.birthday
+              obj.addr = val.address
+              obj.size = this.size.indexOf(val.gaarment_size)
+              obj.emergence_name = val.emergency_name
+              obj.emergence_phone = val.emergency_phone
+              obj.haspay = val.haspay
+              obj.invitaion_code_own = val.invitaioncodeown
+              obj.playercode = val.playercode
+              this.save_apply_arr.push(obj)
+            })
+            this.show_apply = false
+            this.$apply()
+          }
+        } else if (res.data.code === '201') {
+          this.show_apply = true
+          this.$apply()
+          wepy.showModal({
+            content: '您还没有报名，抓紧去报名吧',
+            showCancel: false
+          }).then((res) => {
+            if (res.confirm) {
+              // 启动同意定时器
+              this.startAgreeTimer()
+            }
+          })
+        } else {
+          wepy.showModal({
+            content: '请求失败',
+            showCancel: false
+          })
+        }
+      })
+    }
+    startAgreeTimer () {
+      let timer = setInterval(() => {
+        if (this.agree_count > 0) {
+          this.agree_count--
+          this.$apply()
+        } else {
+          this.is_count_finish = true
+          clearInterval(timer)
+        }
+      }, 999)
+    }
+    onShareAppMessage (res) {
+      return {
+        title: '宾堡环球健康跑',
+        path: '/pages/index',
+        imageUrl: 'https://bimbochinaclub.ysmine.com/Public/2018/07/common/shareimg.jpg'
+      }
+    }
+    onLoad (options) {
+      console.log('jkp_apply onLoad options: ', options)
+      this.open_id = options.open_id
+      if (options.show_apply_info === '1') {
+        this.getApplyUser()
+      } else {
+        this.show_apply = true
+        // 启动同意定时器
+        this.startAgreeTimer()
+      }
+    }
+  }
+</script>

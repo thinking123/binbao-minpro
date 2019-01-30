@@ -1,0 +1,87 @@
+<style lang="less">
+  .header {
+    width: 100%;
+    height: 280rpx;
+    background: url(https://bimbochinaclub.ysmine.com/Public/2018/07/common/commonheader.png) no-repeat center center;
+    background-size: 100% 100%;
+  }
+  .media {
+    width: 100%;
+    background: #fff;
+    margin: 20rpx 0;
+    #myvideo {
+      width: 100%;
+    }
+  }
+  .desc {
+    background: #fff;
+    padding: 20rpx 40rpx;
+    font-size: 24rpx;
+    color: #595757;
+    .desc_scroll {
+      height: 300rpx;;
+    }
+    .back_btn {
+      width: 30%;
+      margin: 30rpx auto 0;
+      padding: 15rpx 30rpx;
+      border-radius: 20rpx 0 20rpx 0;
+      background: #00a1e1;
+      font-size: 30rpx;
+      color: #fff;
+    }
+  }
+  .tc {
+    text-align: center;
+  }
+</style>
+<template>
+  <view class="container">
+    <view class="header"></view>
+    <view class="media">
+      <video id="myvideo" src="https://bimbochinaclub.ysmine.com/Public/2018/07/movie/learn_more_movie.mp4" controls poster="https://bimbochinaclub.ysmine.com/Public/2018/07/movie/learn_more_poster.png"></video>
+    </view>
+    <view class="desc">
+      <scroll-view class="desc_scroll" scroll-y="true">
+        <text>比赛日期：2018年9月23日（星期日）
+  比赛地点：北京市朝阳区奥林匹克森林公园
+  项目及费用：男/女 10公里个人健康跑：68元/人
+                      男/女  3公里家庭欢乐跑 ： 68元/人
+                      14岁以下儿童免费（含14岁）
+  赛事奖励：10公里名次奖励
+                    男女冠军：2019宾堡环球健康跑马德里站参赛资格及马德里三日风情游（包含机票、酒店及餐饮）
+  2018宾堡环球赛事亮点：
+  1.规模更盛大：23国35城同日开跑，120000人共聚
+  2.吉尼斯纪录：最多城市同日举办的10KM赛事
+  3.公益暖人心：参赛者每跑1公里，宾堡捐赠2片面包
+  4.全球首跑：作为全球首跑城市，全球首个冠军将在北京诞生
+  5.奖牌&比赛服：西班牙马德里元素，与120000人共享荣耀时刻
+  6.冠军大奖：2019宾堡环球健康跑西班牙马德里站门票及双飞三日游
+        </text>
+      </scroll-view>
+      <view class="back_btn tc" @tap="back">返回上一级</view>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+
+export default class LearnMore extends wepy.page {
+  methods = {
+    back () {
+      wepy.navigateBack({
+        delta: 1
+      })
+    }
+  }
+  onShareAppMessage (res) {
+    return {
+      title: '宾堡环球健康跑',
+      path: '/pages/index',
+      imageUrl: 'https://bimbochinaclub.ysmine.com/Public/2018/07/common/shareimg.jpg'
+    }
+  }
+  onLoad(options) {}
+}
+</script>

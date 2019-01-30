@@ -1,0 +1,119 @@
+<style lang="less">
+.container {
+  font-size: 26rpx;
+  color: #333;
+  height: 100%;
+  background: url(https://bimbochinaclub.ysmine.com/Public/2018/07/common/posterbj.png)
+    no-repeat;
+  background-size: 100% 100%;
+  color: #fff;
+  .wrap {
+    width: 100%;
+    height: 100%;
+    background: url(https://bimbochinaclub.ysmine.com/Public/2018/07/common/mask.png)
+        no-repeat;
+    background-size: 100% 100%;
+    .logo {
+      padding: 40rpx 0;
+      image {
+        width: 240rpx;
+        height: 300rpx;
+      }
+    }
+    .big_txt {
+      display: block;
+      width: 100%;
+      font-size: 70rpx;
+      font-style: italic;
+      font-weight: bold;
+    }
+    .bread_word {
+      width: 70%;
+      padding-top: 20rpx;
+      margin: 30rpx auto;
+      line-height: 40rpx;
+      border-radius: 20rpx 0 20rpx 0;
+      background: rgba(13, 143, 211, 0.8);
+      image {
+        width: 70rpx;
+        height: 70rpx;
+        margin: 10rpx 0;
+      }
+    }
+    .er_code {
+      image {
+        width: 200rpx;
+        height: 200rpx;
+      }
+    }
+  }
+  .foot {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 35rpx;
+    overflow: hidden;
+    image {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+.tc {
+  text-align: center;
+}
+</style>
+<template>
+  <view class="container">
+    <view class="wrap">
+      <view class="logo tc"><image src="../../images/jkp/logo.png"/></view>
+      <text class="big_txt tc">我是{{name}}\n\t和我一起与世界嗨跑</text>
+      <view class="bread_word tc">
+        <text>我已报名2018宾堡环球健康跑{{subject}}
+          我每跑1公里
+          宾堡集团将为公益捐2片面包
+          快来和我一起嗨跑
+        </text>
+        <image src="../../images/jkp/icon_bread.png"/>
+      </view>
+      <view class="er_code tc">
+        <image src="../../images/jkp/er_code.png" @tap="previewErcode"/>
+        <view>关注宾堡中国二维码获取更多信息</view>
+      </view>
+      <view class="foot">
+        <image src="https://bimbochinaclub.ysmine.com/Public/2018/07/common/posterfooter.png"/>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+
+export default class Poster extends wepy.page {
+  components = {}
+
+  data = {
+    name: '',
+    subject: ''
+  }
+  methods = {}
+  previewErcode (e) {
+    wepy.previewImage({
+      urls: [this.$parent.globalData.ercode_img]
+    })
+  }
+  onShareAppMessage (res) {
+    return {
+      title: '宾堡环球健康跑',
+      path: '/pages/index',
+      imageUrl: 'https://bimbochinaclub.ysmine.com/Public/2018/07/common/shareimg.jpg'
+    }
+  }
+  onLoad(options) {
+    console.log('poster onLoad options: ', options)
+    this.name = options.name
+    this.subject = options.subject
+  }
+}
+</script>

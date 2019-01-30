@@ -1,0 +1,159 @@
+<style lang="less">
+  .medal_container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    .close_medal_icon {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 100rpx;
+    }
+    .medal_content {
+      width: 100%;
+      height: 100%;
+      .img_wrap {
+        width: 493rpx;
+        height: 921rpx;
+        position: absolute;
+        left: 50%;
+        top: 45%;
+        transform: translate(-50%, -50%);
+        .share {
+          position: absolute;
+          top: 330rpx;
+          right: 20rpx;
+          color: #fff;
+          font-size: 24rpx;
+          text-decoration: underline;
+          background: none;
+          border: 1px solid rgba(0, 0, 0, 0);
+          image {
+            width: 25rpx;
+            height: 25rpx;
+            margin-right: 10rpx;
+            vertical-align: middle;
+          }
+        }
+        .medimg {
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          &.bj {
+            width: 100%;
+            height: 100%;
+          }
+          &.star {
+            width: 336rpx;
+            height: 303rpx;
+            top: 365rpx;
+          }
+          &.medal_bj {
+            width: 270rpx;
+            height: 266rpx;
+            top: 400rpx;
+          }
+          &.kmimg {
+            width: 426rpx;
+            height: 96rpx;
+            bottom: 100rpx;
+          }
+        }
+        .txt {
+          position: absolute;
+          left: 49%;
+          transform: translateX(-50%);
+          top: 475rpx;
+          color: #fff;
+          text-align: center;
+          font-size: 24rpx;
+          .kmtxt {
+            display: block;
+            font-size: 56rpx;
+            font-style: italic;
+            font-weight: bold;
+            &.midsize {
+              font-size: 48rpx;
+            }
+            &.smsize {
+              font-size: 40rpx;
+            }
+          }
+        }
+      }
+    }
+  }
+</style>
+<template>
+  <view class="medal_container">
+    <view class="medal_content">
+      <view class="img_wrap">
+        <image class="medimg bj" src="https://bimbochinaclub.ysmine.com/Public/2018/07/medal/medal_shadow_bj.png"/>
+        <image class="medimg star" src="https://bimbochinaclub.ysmine.com/Public/2018/07/medal/medal_star.png"/>
+        <image class="medimg medal_bj" src="{{bj_url}}"/>
+        <view class="txt"><view class="kmtxt {{medalInfo.km.length == 4 ? 'midsize' : ''}} {{medalInfo.km.length == 5 ? 'smsize' : ''}}">{{medalInfo.km}}</view>步</view>
+        <image class="medimg kmimg" src="{{kmimg}}"/>
+        <button class="share" open-type="share" @tap="shareToFriend"><image src="../images/index/share_icon.png"/>分享给好友</button>
+      </view>
+    </view>
+    <icon type="cancel" color="#ffffff" size="50" class="close_medal_icon" @tap="closeMedal"></icon>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class Medal extends wepy.component {
+    props = {
+      medalInfo: {}
+    }
+    data = {
+      medal_bj_urls: [
+        'https://bimbochinaclub.ysmine.com/Public/2018/07/medal/medal_bj1.png',
+        'https://bimbochinaclub.ysmine.com/Public/2018/07/medal/medal_bj2.png',
+        'https://bimbochinaclub.ysmine.com/Public/2018/07/medal/medal_bj3.png'
+      ],
+      bj3_arr: [
+        '2000k', '2400k', '3000k'
+      ],
+      bj1_arr: [
+        '5k', '8k', '10k', '30k', '50k', '70k', '90k', '110k', '130k', '150k'
+      ]
+    }
+    computed = {
+      bj_url () {
+        if (this.bj1_arr.indexOf(this.medalInfo.km) !== -1) {
+          return this.medal_bj_urls[0]
+        } else if (this.bj3_arr.indexOf(this.medalInfo.km) !== -1) {
+          return this.medal_bj_urls[2]
+        } else {
+          return this.medal_bj_urls[1]
+        }
+      },
+      kmimg () {
+        return `https://bimbochinaclub.ysmine.com/Public/2018/07/medal/${this.medalInfo.km}.png`
+      }
+    }
+    methods = {
+      shareToFriend () {
+        console.log('share')
+      },
+      closeMedal () {
+        this.$emit('medal-emit')
+      }
+    }
+    onShareAppMessage (res) {
+      // if (res.from === 'button') {
+      //   // 来自页面内转发按钮
+      //   console.log(res.target)
+      // }
+      return {
+        title: '宾堡环球健康跑',
+        path: '/pages/index',
+        imageUrl: 'https://bimbochinaclub.ysmine.com/Public/2018/07/common/shareimg.jpg'
+      }
+    }
+    onShow () {
+      console.log(this.medalInfo)
+    }
+  }
+</script>

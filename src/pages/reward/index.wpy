@@ -1,0 +1,367 @@
+<style lang="less">
+  .shadow_view {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 10;
+  }
+  .header {
+    width: 100%;
+    height: 280rpx;
+    background: url(https://bimbochinaclub.ysmine.com/Public/2018/07/common/commonheader.png) no-repeat center center;
+    background-size: 100% 100%;
+  }
+  .main {
+    width: 100%;
+    padding-top: 15rpx;
+    .part {
+      height: 230rpx;
+      margin-bottom: 8rpx;
+      background: url(https://bimbochinaclub.ysmine.com/Public/2018/07/reward/reward_total.png) no-repeat;
+      background-size: 100% 100%;
+      position: relative;
+      &.part2 {
+        background: url(https://bimbochinaclub.ysmine.com/Public/2018/07/reward/reward_lastweek.png) no-repeat;
+        background-size: 100% 100%;
+      }
+      &.part3 {
+        background: url(https://bimbochinaclub.ysmine.com/Public/2018/07/reward/reward_lastday.png) no-repeat;
+        background-size: 100% 100%;
+      }
+      &.part2, &.part3 {
+        .rank_ul {
+          .rank_li {
+            .prize_wrap {
+              text {
+                color: #ffd15c;
+              }
+            }
+          }
+        }
+      }
+      .rank_ul {
+        height: 100%;
+        padding: 10rpx 40rpx 0 110rpx;
+        text-align: center;
+        white-space: nowrap;
+        .rank_li {
+          display: inline-block;
+          width: 33%;
+          font-size: 20rpx;
+          color: #fff;
+          .prize_wrap {
+            width: 100rpx;
+            height: 100rpx;
+            margin: 0 auto;
+            line-height: 100rpx;
+            background: #fff;
+            border-radius: 50%;
+            border: 4rpx solid #184299;
+            position: relative;
+            z-index: 2;
+            overflow: hidden;
+            image {
+              position: absolute;
+              left: 50%;
+              top: 50%;
+              transform: translate(-50%, -50%);
+              width: 60%;
+              height: 60%;
+              &.is_avatar {
+                width: 100%;
+                height: 100%;
+              }
+            }
+            text {
+              position: absolute;
+              left: 50%;
+              top: 58%;
+              transform: translate(-50%, -50%);
+              &.total_prize {
+                top: 28%;
+                left: 50%;
+                transform: translate(-50%, 0);
+              }
+            }
+          }
+          &:first-child {
+            color: #ffd15c;
+            .prize_wrap {
+              color: #ffd15c;
+              border: 4rpx solid #ffd15c;
+            }
+          }
+          &:nth-of-type(2) {
+            color: #e6e6e6;
+            .prize_wrap {
+              color: #999;
+              border: 4rpx solid #e6e6e6;
+            }
+          }
+          &:nth-of-type(3) {
+            color: #a77937;
+            .prize_wrap {
+              color: #a77937;
+              border: 4rpx solid #a77937;
+            }
+          }
+          .rankicon {
+            width: 60rpx;
+            height: 75rpx;
+            margin: 0 auto;
+            position: relative;
+            top: -5rpx;
+            z-index: 1;
+            image {
+              width: 100%;
+              height: 100%;
+            }
+          }
+        }
+      }
+      .arrow_icon {
+        position: absolute;
+        right: 10rpx;
+        top: 45%;
+        width: 30rpx;
+        height: 30rpx;
+      }
+      .rank_scroll_ul {
+        width: 600rpx;
+        .rank_li {
+          display: inline-block;
+          width: 200rpx;
+        }
+      }
+    }
+    &.iphonex {
+      .part {
+        height: 300rpx;
+        .rank_ul {
+          padding: 47rpx 40rpx 0 110rpx;
+        }
+      }
+    }
+    &.vivo {
+      .part {
+        height: 255rpx;
+        .rank_ul {
+          padding: 30rpx 40rpx 0 110rpx;
+        }
+      }
+    }
+  }
+  .sub_main {
+    width: 100%;
+    text-align: center;
+    font-size: 24rpx;
+    .btn {
+      width: 30%;
+      display: inline-block;
+      text-decoration: underline;
+      vertical-align: middle;
+      color: #595757;
+      image {
+        width: 140rpx;
+        height: 90rpx;
+      }
+    }
+  }
+</style>
+<template>
+  <view class="container">
+    <view class="header"></view>
+    <view class="main {{iphonex_class}}">
+      <view class="part part1">
+        <view class="rank_ul">
+          <view class="rank_li">
+            <view class="prize_wrap">
+              <image wx:if="{{!all_prize_user[0].imgurl}}" src="../../images/reward/watch.png"/>
+              <image wx:else class="is_avatar" src="{{all_prize_user[0].imgurl}}"/>
+            </view>
+            <view class="rankicon">
+              <image src="../../images/reward/rank1.png"/>
+            </view>
+            <view class="prizename">{{all_prize_user[0] ? all_prize_user[0].nickname + ':' + all_prize_user[0].steps : '' || '价值999元佳明手表'}}</view>
+          </view>
+          <view class="rank_li">
+            <view class="prize_wrap">
+              <image wx:if="{{!all_prize_user[1].imgurl}}" src="../../images/reward/moneycard.png"/>
+              <text wx:if="{{!all_prize_user[1].imgurl}}" class="total_prize">800¥</text>
+              <image wx:else class="is_avatar" src="{{all_prize_user[1].imgurl}}"/>
+            </view>
+            <view class="rankicon">
+              <image src="../../images/reward/rank2.png"/>
+            </view>
+            <view class="prizename">{{all_prize_user[1] ? all_prize_user[1].nickname + ':' + all_prize_user[1].steps : '' || '800元凤祥食品卡'}}</view>
+          </view>
+          <view class="rank_li">
+            <view class="prize_wrap">
+              <image wx:if="{{!all_prize_user[2].imgurl}}" src="../../images/reward/moneycard.png"/>
+              <text wx:if="{{!all_prize_user[2].imgurl}}" class="total_prize">600¥</text>
+              <image wx:else class="is_avatar" src="{{all_prize_user[2].imgurl}}"/>
+            </view>
+            <view class="rankicon">
+              <image src="../../images/reward/rank3.png"/>
+            </view>
+            <view class="prizename">{{all_prize_user[2] ? all_prize_user[2].nickname + ':' + all_prize_user[2].steps : '' || '600元凤祥食品卡'}}</view>
+          </view>
+        </view>
+      </view>
+      <view class="part part2">
+        <image class="arrow_icon" src="../../images/reward/rightarrow.png"/>
+        <scroll-view class="rank_scroll_ul rank_ul" scroll-x="true">
+          <view class="rank_li" wx:for="{{lastweek_data}}" wx:key="index">
+            <view class="prize_wrap">
+              <image wx:if="{{!lw_prize_user[index].imgurl}}" src="../../images/reward/redpack.png"/>
+              <text wx:if="{{!lw_prize_user[index].imgurl}}">{{lw_prize_money[index]}}¥</text>
+              <image wx:else class="is_avatar" src="{{lw_prize_user[index].imgurl}}"/>
+            </view>
+            <view class="rankicon">
+              <image data-rankindex="{{index}}" src="{{rankicon_imgs[index]}}"/>
+            </view>
+            <view class="prizename">{{lw_prize_user[index] ? lw_prize_user[index].nickname + ':' + lw_prize_user[index].steps : '' || lw_prize_money[index] + '元现金红包'}}</view>
+          </view>
+        </scroll-view>
+      </view>
+      <view class="part part3">
+        <image class="arrow_icon" src="../../images/reward/rightarrow.png"/>
+        <scroll-view class="rank_scroll_ul rank_ul" scroll-x="true">
+          <view class="rank_li" wx:for="{{lastday_data}}" wx:key="index">
+            <view class="prize_wrap">
+              <image wx:if="{{!ld_prize_user[index].imgurl}}" src="../../images/reward/redpack.png"/>
+              <text wx:if="{{!ld_prize_user[index].imgurl}}">{{ld_prize_money[index]}}¥</text>
+              <image wx:else class="is_avatar" src="{{ld_prize_user[index].imgurl}}"/>
+            </view>
+            <view class="rankicon">
+              <image data-rankindex="{{index}}" src="{{rankicon_imgs[index]}}"/>
+            </view>
+            <view class="prizename">{{ld_prize_user[index] ? ld_prize_user[index].nickname + ':' + ld_prize_user[index].steps : '' || ld_prize_money[index] + '元现金红包'}}</view>
+          </view>
+        </scroll-view>
+      </view>
+    </view>
+    <view class="sub_main">
+      <view class="btn" @tap="jumpRtRank">实时排行</view>
+      <view class="btn" @tap="jumpMyReward">
+        <image src="../../images/reward/myreward_btn.png"/>
+      </view>
+      <view class="btn" @tap="showPlaydesc">奖励及玩法</view>
+    </view>
+    <view class="shadow_view" wx:if="{{show_playdesc}}">
+      <playdesc @playdesc-emit.user="playdescEmit"></playdesc>
+    </view>
+    <footnav navindex="2" :openId.sync="open_id" :score.sync="score"></footnav>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import Footnav from '../../components/footnav'
+import Playdesc from '../../components/playdesc'
+import {service} from '../../pages/config.js'
+// import {sjs} from './mock.js'
+import {rankiconImgs, lastWeekRewardMoney, lastDayRewardMoney} from './config.js'
+
+export default class RewardIndex extends wepy.page {
+  components = {
+    footnav: Footnav,
+    playdesc: Playdesc
+  }
+  data = {
+    iphonex_class: '',
+    score: 0,
+    open_id: '',
+    show_playdesc: false,
+    lastweek_data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    lastday_data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    rankicon_imgs: rankiconImgs,
+    lw_prize_money: lastWeekRewardMoney,
+    ld_prize_money: lastDayRewardMoney,
+    lw_prize_user: [],
+    ld_prize_user: [],
+    all_prize_user: []
+  }
+  methods = {
+    jumpMyReward () {
+      this.$root.$navigate({url: `/pages/reward/myreward?open_id=${this.open_id}&score=${this.score}`})
+    },
+    jumpRtRank () {
+      this.$root.$navigate({url: `/pages/reward/rtrank?open_id=${this.open_id}&score=${this.score}`})
+    },
+    showPlaydesc () {
+      this.show_playdesc = true
+    },
+    playdescEmit (...args) {
+      this.show_playdesc = false
+    }
+  }
+  onShareAppMessage (res) {
+    return {
+      title: '宾堡环球健康跑',
+      path: '/pages/index',
+      imageUrl: 'https://bimbochinaclub.ysmine.com/Public/2018/07/common/shareimg.jpg'
+    }
+  }
+  getSjsRank () {
+    wepy.showLoading({
+      title: '正在加载，请稍候...',
+      mask: true
+    })
+    wepy.request({
+      url: service.getSjsRank,
+      method: 'POST',
+      data: {
+        open_id: this.open_id
+      },
+      header: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    }).then((res) => {
+      console.log('REQ_getSjsRank res: ', res)
+      wepy.hideLoading()
+      if (res.data.code === '200') {
+        this.handleList(res.data.result)
+        this.$apply()
+      } else {
+        wepy.showModal({
+          content: res.data.message,
+          showCancel: false
+        })
+      }
+    }).catch(err => {
+      wepy.hideLoading()
+      console.log(err)
+      wepy.showModal({
+        content: '服务器出现错误',
+        showCancel: false
+      })
+    })
+  }
+  handleList (result) {
+    console.log(result)
+    this.all_prize_user = result.all
+    this.lw_prize_user = result.week
+    this.ld_prize_user = result.yesterday
+    this.all_prize_user.map(val => {
+      val.nickname = val.nickname.slice(0, 5)
+    })
+    this.lw_prize_user.map(val => {
+      val.nickname = val.nickname.slice(0, 5)
+    })
+    this.ld_prize_user.map(val => {
+      val.nickname = val.nickname.slice(0, 5)
+    })
+    this.$apply()
+  }
+  onShow () {
+    this.iphonex_class = this.$parent.globalData.iphonex_class
+  }
+  onLoad(options) {
+    console.log('reward index onLoad options: ', options)
+    this.open_id = options.open_id
+    this.score = options.score
+    this.getSjsRank()
+    // this.handleList(sjs.result)
+  }
+}
+</script>

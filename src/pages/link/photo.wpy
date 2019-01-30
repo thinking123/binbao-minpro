@@ -1,0 +1,17 @@
+<style lang="less">
+  
+</style>
+<template>
+  <web-view src="http://www.jfoto.cn/zpzb/info/v/BBBJX20170922?from=message&isappinstalled=0"></web-view>
+</template>
+
+<script>
+import wepy from 'wepy'
+
+export default class Jd extends wepy.page {
+  methods = {}
+  onLoad(options) {
+    console.log('jd onLoad options: ', options)
+  }
+}
+</script>

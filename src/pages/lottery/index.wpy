@@ -1,0 +1,532 @@
+<style lang="less">
+  page {
+    background:#30659b;
+  }
+  .container {
+    // height: 100%;
+    background: #346195;
+  }
+  // .header {
+  //   width: 100%;
+  //   height: 280rpx;
+  //   // height: 23.5%;
+  //   background: url(https://bimbochinaclub.ysmine.com/Public/2018/07/common/commonheader.png) no-repeat center center;
+  //   background-size: 100% 100%;
+  // }
+  .header {
+    width: 100%;
+    height: 280rpx;
+    position: relative;
+    background: #00A1E1 url(https://bimbochinaclub.ysmine.com/Public/2018/07/common/indexheader.png);
+    background-size: 100% 100%;
+    .userinfo {
+      position: absolute;
+      left: 10rpx;
+      bottom: 10rpx;
+      .userinfo-avatar {
+        width: 80rpx;
+        height: 80rpx;
+        margin-right: 10rpx;
+        border-radius: 50%;
+        overflow: hidden;  
+      }
+      .userinfo-avatar, .userinfo-nickname {
+        display: inline-block;
+        vertical-align: middle;
+      }
+      .userinfo-nickname, .userinfo-score {
+        font-size: 24rpx;
+        color: #fff;
+      }
+      .userinfo-score {
+        display: block;
+        width: 120rpx;
+        padding: 4rpx 8rpx;
+        background: #00A1E1;
+        border-radius: 14rpx 0 14rpx 0;
+      }
+    }
+  }
+  .main {
+    width: 100%;
+    height: 920rpx;
+    background: #346195 url(https://bimbochinaclub.ysmine.com/Public/2018/07/lottery/lottery_bj.jpg) no-repeat center -30rpx;
+    background-size: 100% 1000rpx;
+    position: relative;
+    &.over {
+      background: #346195 url(https://bimbochinaclub.ysmine.com/Public/2018/07/lottery/lottery_bj_1.jpg) no-repeat center -30rpx;
+      background-size: 100% 1000rpx;
+    }
+    .catch_box {
+      width: 170rpx;
+      height: 390rpx;
+      overflow: hidden;
+      position: absolute;
+      left: 54%;
+      transform: translateX(-50%);
+      top: 110rpx;
+      image {
+        width: 100%;
+        height: 100%;
+        transform: translateY(-50%);
+        &.startmove {
+          animation: startcatch 1s linear;
+          animation-fill-mode: forwards;
+        }
+        @keyframes startcatch {
+          0% {
+            transform: translateY(-50%);
+          }
+          100% {
+            transform: translateY(0);
+          }
+        }
+      }
+    }
+    .lottery_btn {
+      width: 300rpx;
+      height: 150rpx;
+      position: absolute;
+      top: 650rpx;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .nav {
+      position: absolute;
+      bottom: 10rpx;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+  .prize_shadow {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    z-index: 10;
+    image {
+      width: 490rpx;
+      height: 920rpx;
+      position: absolute;
+      position: absolute;
+      top: 80rpx;
+      left: 50%;
+      transform: translateX(-50%);
+      &.tip {
+        width: 510rpx;
+        height: 570rpx;
+      }
+    }
+    .close_toast {
+      width: 105rpx;
+      height: 105rpx;
+      line-height: 85rpx;
+      border-radius: 50%;
+      border: 3rpx solid #fff;
+      color: #fff;
+      background: transparent;
+      font-size: 85rpx;
+      font-weight: bold;
+      position: absolute;
+      bottom: 100rpx;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .get_prize_btn {
+      width: 240rpx;
+      height: 60rpx;
+      line-height: 60rpx;
+      position: absolute;
+      top: 910rpx;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #346195;
+      border-radius: 40rpx 0 40rpx 0;
+      color: #fff;
+      text-align: center;
+    }
+  }
+  .form_main {
+    width: 100%;
+    height: 920rpx;
+    background: #fff;
+    position: relative;
+    .form_content {
+      box-sizing: border-box;
+      color: #333;
+      font-size: 24rpx;
+      position: absolute;
+      top: 150rpx;
+      left: 50%;
+      transform: translateX(-50%);
+      .form-control {
+        width: 665rpx;
+        padding: 15rpx 0 15rpx 30rpx;
+        .form_wrap {
+          display: inline-block;
+          width: 72%;
+          padding: 0 15rpx;
+          vertical-align: middle;
+          height: 45rpx;
+          min-height: 45rpx;
+          border: 1px solid #333;
+          border-radius: 20rpx 0 20rpx 0;
+        }
+      }
+      .submit_btn {
+        background: #346195;
+        border-radius: 40rpx 0 40rpx 0;
+        width: 300rpx;
+        text-align: center;
+        margin: 0 auto;
+        font-size: 30rpx;
+        line-height: 60rpx;
+        color: #fff;
+        margin-top: 50rpx;
+      }
+    }
+    .nav {
+      position: absolute;
+      bottom: 10rpx;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+  .form_main {
+    &.iphonex {
+      height: 1150rpx;
+    }
+    &.vivo {
+      height: 1000rpx;
+    }
+  }
+  .main {
+    &.iphonex {
+      height: 1150rpx;
+      // background: #346195 url(https://bimbochinaclub.ysmine.com/Public/2018/07/lottery/lottery_bj.jpg) no-repeat center 30rpx;
+      // background-size: 100% 1000rpx;
+      // position: relative;
+      // &.over {
+      //   background: #346195 url(https://bimbochinaclub.ysmine.com/Public/2018/07/lottery/lottery_bj_1.jpg) no-repeat center 30rpx;
+      //   background-size: 100% 1000rpx;
+      // }
+      // .catch_box {
+      //   top: 170rpx;
+      // }
+    }
+    &.vivo {
+      height: 1000rpx;
+    }
+  }
+</style>
+<template>
+  <view class="container">
+    <view class="header">
+      <view class="userinfo">
+        <image class="userinfo-avatar" src="{{ user_info.avatarUrl }}"/>
+        <view class="userinfo-nickname">{{ user_info.nickName }}
+          <text class="userinfo-score">积分{{ score }}</text>
+        </view>  
+      </view>
+    </view>
+    <view class="prize_shadow" wx:if="{{show_toast}}">
+      <image class="prize" wx:if="{{toast_obj.prize}}" src="{{prize_img_obj[prize_obj.id].toastsrc}}"/>
+      <view class="get_prize_btn" data-prizeid="{{prize_obj.id}}" wx:if="{{show_form_btn}}" @tap="handlePrize">填写地址</view>
+      <view class="get_prize_btn" data-prizeid="{{prize_obj.id}}" wx:if="{{show_jump_link}}" @tap="handlePrize">确认兑换</view>
+      <view class="get_prize_btn" data-prizeid="{{prize_obj.id}}" wx:if="{{!show_jump_link && !show_form_btn && prize_obj.id}}" @tap="handlePrize">继续抽奖</view>
+      <image class="tip" wx:if="{{toast_obj.noscore}}" src="../../images/lottery/no_score.png"/>
+      <image class="tip" wx:if="{{toast_obj.success}}" src="../../images/lottery/form_success.png"/>
+      <image class="tip" wx:if="{{toast_obj.empty}}" src="../../images/lottery/form_empty.png"/>
+      <button class="close_toast" @tap="closeToast">×</button>
+    </view>
+    <view class="main {{catch_over_css}} {{iphonex_class}}" wx:if="{{!show_form}}">
+      <view class="catch_box">
+        <image class="{{start_catch ? 'startmove' : ''}}" src="{{zhuazi_img}}"/>
+      </view>
+      <view class="lottery_btn" @tap="startCatch"></view>
+      <footnav class="nav" navindex="3" :openId.sync="open_id" :score.sync="score"></footnav>
+    </view>
+    <view class="form_main {{iphonex_class}}" wx:if="{{show_form}}">
+      <view class="form_content">
+        <view class="form-control">
+          姓名：
+          <view class="form_wrap">
+            <input class="form-item" value="{{ form.name }}" bindinput="bindNameChange"/>
+          </view>
+        </view>
+        <view class="form-control">
+          电话：
+          <view class="form_wrap">
+            <input class="form-item" maxlength="11" value="{{ form.phone }}" bindinput="bindPhoneChange"/>
+          </view>
+        </view>
+        <view class="form-control">
+          地址：
+          <view class="form_wrap">
+            <input class="form-item" value="{{ form.addr }}" bindinput="bindAddrChange"/>
+          </view>
+        </view>
+        <view class="submit_btn" @tap="submitForm">确认信息</view>
+      </view>
+      <footnav class="nav" navindex="3" :openId.sync="open_id" :score.sync="score"></footnav>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import Footnav from '../../components/footnav'
+import {service} from '../../pages/config.js'
+
+const prizeIdObj = {
+  '1': {
+    toastsrc: 'https://bimbochinaclub.ysmine.com/Public/2018/07/lottery/prize_fengxiang.png'
+  },
+  '2': {
+    toastsrc: 'https://bimbochinaclub.ysmine.com/Public/2018/07/lottery/prize_qiubi.png'
+  },
+  '3': {
+    toastsrc: 'https://bimbochinaclub.ysmine.com/Public/2018/07/lottery/prize_fengmi.png'
+  },
+  '4': {
+    toastsrc: 'https://bimbochinaclub.ysmine.com/Public/2018/07/lottery/prize_coffee.png'
+  },
+  '5': {
+    toastsrc: 'https://bimbochinaclub.ysmine.com/Public/2018/07/lottery/prize_bbpack.png'
+  },
+  '6': {
+    toastsrc: 'https://bimbochinaclub.ysmine.com/Public/2018/07/lottery/prize_discount.png'
+  },
+  '7': {
+    toastsrc: 'https://bimbochinaclub.ysmine.com/Public/2018/07/lottery/prize_score.png'
+  },
+  '8': {
+    toastsrc: 'https://bimbochinaclub.ysmine.com/Public/2018/07/lottery/prize_fengxiang_discount.png'
+  },
+  '9': {
+    toastsrc: 'https://bimbochinaclub.ysmine.com/Public/2018/07/lottery/prize_watch.png'
+  }
+}
+export default class LotteryIndex extends wepy.page {
+  components = {
+    footnav: Footnav
+  }
+  data = {
+    iphonex_class: '',
+    open_id: '',
+    user_info: {},
+    score: 0,
+    zhuazi_img: '../../images/lottery/catch0.png',
+    start_catch: false,
+    show_toast: false,
+    show_form: false,
+    prize_img_obj: prizeIdObj,
+    toast_obj: {
+      prize: false,
+      noscore: false,
+      success: false,
+      empty: false
+    },
+    prize_obj: {},
+    form: {},
+    catch_over_css: ''
+  }
+  computed = {
+    show_form_btn () {
+      if (['1', '2', '3', '4', '5', '9'].indexOf(this.prize_obj.id) !== -1) {
+        return true
+      } else {
+        return false
+      }
+    },
+    show_jump_link () {
+      if (this.prize_obj.id === '6' || this.prize_obj.id === '8') {
+        return true
+      } else {
+        return false
+      }
+    }
+  }
+  methods = {
+    back () {
+      wepy.navigateBack({
+        delta: 1
+      })
+    },
+    startCatch () {
+      this.reqPrize()
+    },
+    closeToast () {
+      if (this.toast_obj.success) {
+        this.show_form = false
+      }
+      this.show_toast = false
+      for (let key in this.toast_obj) {
+        this.toast_obj[key] = false
+      }
+      this.prize_obj = {}
+      this.start_catch = false
+      this.zhuazi_img = '../../images/lottery/catch0.png'
+      this.catch_over_css = ''
+      this.$apply()
+    },
+    handlePrize (event) {
+      const type = event.currentTarget.dataset.prizeid
+      this.show_toast = false
+      for (let key in this.toast_obj) {
+        this.toast_obj[key] = false
+      }
+      this.start_catch = false
+      this.zhuazi_img = '../../images/lottery/catch0.png'
+      this.catch_over_css = ''
+      switch (type) {
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '9':
+          this.show_form = true
+          this.$apply()
+          break
+        case '6':
+          this.$root.$navigate({url: `/pages/link/jd`})
+          this.prize_obj = {}
+          break
+        case '8':
+          this.$root.$navigate({url: `/pages/link/fengxiang`})
+          this.prize_obj = {}
+          break
+      }
+    },
+    submitForm () {
+      if (!this.form.addr || !this.form.name || !this.form.phone) {
+        wepy.showModal({
+          content: '请填写收件人信息',
+          showCancel: false
+        })
+        return
+      }
+      wepy.showLoading({
+        title: '提交中...',
+        mask: true
+      })
+      console.log(this.prize_obj)
+      wepy.request({
+        url: service.prizeForm,
+        method: 'POST',
+        data: {
+          log_id: this.prize_obj.log_id,
+          name: this.form.name,
+          phone: this.form.phone,
+          address: this.form.addr
+        },
+        header: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      }).then((res) => {
+        console.log('REQ_prizeForm res: ', res)
+        wepy.hideLoading()
+        if (res.data.code === '200') {
+          this.show_toast = true
+          this.toast_obj.success = true
+          this.prize_obj = {}
+          this.form = {}
+          this.$apply()
+        } else {
+          wepy.showModal({
+            content: res.data.message,
+            showCancel: false
+          })
+        }
+      }).catch(err => {
+        wepy.hideLoading()
+        console.log(err)
+        wepy.showModal({
+          content: '服务器出现错误',
+          showCancel: false
+        })
+      })
+    }
+  }
+  reqPrize () {
+    wepy.showLoading({
+      title: '加载中...',
+      mask: true
+    })
+    wepy.request({
+      url: service.getPrize,
+      method: 'POST',
+      data: {
+        open_id: this.open_id
+      },
+      header: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    }).then((res) => {
+      console.log('REQ_getPrize res: ', res)
+      wepy.hideLoading()
+      if (res.data.code === '200') {
+        this.prize_obj = res.data.result
+        this.start_catch = true
+        this.$apply()
+        setTimeout(() => {
+          this.catch_over_css = 'over'
+          this.zhuazi_img = '../../images/lottery/catch1.png'
+          this.$apply()
+          setTimeout(() => {
+            this.show_toast = true
+            this.toast_obj.prize = true
+            // user_integral 用户剩余积分
+            this.score = res.data.result.user_integral
+            this.$apply()
+          }, 100)
+        }, 999)
+      } else if (res.data.code === '201') {
+        this.show_toast = true
+        this.toast_obj.noscore = true
+        this.$apply()
+      } else {
+        wepy.showModal({
+          content: res.data.message,
+          showCancel: false
+        })
+      }
+    }).catch(err => {
+      wepy.hideLoading()
+      console.log(err)
+      wepy.showModal({
+        content: '服务器出现错误',
+        showCancel: false
+      })
+    })
+  }
+  bindNameChange (e) {
+    this.form.name = e.detail.value
+  }
+  bindPhoneChange (e) {
+    this.form.phone = e.detail.value
+  }
+  bindAddrChange (e) {
+    this.form.addr = e.detail.value
+  }
+  onShareAppMessage (res) {
+    return {
+      title: '宾堡环球健康跑',
+      path: '/pages/index',
+      imageUrl: 'https://bimbochinaclub.ysmine.com/Public/2018/07/common/shareimg.jpg'
+    }
+  }
+  onShow () {
+    this.iphonex_class = this.$parent.globalData.iphonex_class
+  }
+  onLoad(options) {
+    console.log('lottery index onLoad options: ', options)
+    this.open_id = options.open_id
+    wepy.getUserInfo().then((res) => {
+      console.log(res)
+      this.user_info = res.userInfo
+      this.score = options.score
+      this.$apply()
+    })
+  }
+}
+</script>

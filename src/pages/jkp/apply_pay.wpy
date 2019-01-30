@@ -1,0 +1,515 @@
+<style lang="less">
+  .container {
+    font-size: 26rpx;
+    color: #333;
+  }
+  .tc {
+    text-align: center;
+  }
+  .header {
+    width: 100%;
+    height: 280rpx;
+    margin-bottom: 20rpx;
+    background: url(https://bimbochinaclub.ysmine.com/Public/2018/07/common/commonheader.png) no-repeat center center;
+    background-size: 100% 100%;
+  }
+  .main {
+    width: 100%;
+    background: #fff;
+    .fee-title {
+      font-size: 40rpx;
+      margin: 60rpx 0 10rpx;
+    }
+    .gift-pack {
+      width: 90%;
+      margin: 0 auto;
+      .gift-title-list {
+        text-align: center;
+        padding: 20rpx 0;
+        .item {
+          display: inline-block;
+          margin: 0 10rpx;
+          &.check {
+            image.check0 {
+              width: 30rpx;
+              height: 30rpx;
+            }
+            image.check1 {
+              width: 40rpx;
+              height: 30rpx;
+            }
+          }
+          &.detail {
+            color: #306095;
+            text-decoration: underline;
+          }
+          &.count {
+            .count-item {
+              display: inline-block;
+              width: 24px;
+              height: 24px;
+              padding: 0;
+              border: 1px solid #306095;
+              vertical-align: middle;
+              border-radius: 0;
+              box-sizing: border-box;
+              font-size: 25rpx;
+              color: #306095;
+              &:first-child {
+                border-radius: 20rpx 0 0 0;
+              }
+              &:last-child {
+                border-radius: 0 0 20rpx 0;
+              }
+            }
+            text.count-item {
+              border-left: none;
+              border-right: none;
+              width: 50rpx;
+            }
+          }
+        }
+      }
+      .gift-list {
+        display: flex;
+        .item {
+          flex: 1;
+          text-align: center;
+          image {
+            width: 70rpx;
+            height: 90rpx;
+          }
+        }
+      }
+    }
+    .desc {
+      width: 90%;
+      margin: 20rpx auto;
+      font-size: 20rpx;
+    }
+    .form-control {
+      width: 100%;
+      font-size: 30rpx;
+      text-align: center;
+      position: relative;
+      .tit {
+        position: absolute;
+        left: 150rpx;
+        top: 0;
+      }
+      .form_wrap {
+        display: block;
+        border: 1px solid #333;
+        text-align: left;
+        border-radius: 5rpx;
+        padding: 0 10rpx;
+        width: 30%;
+        margin: 5rpx 0 5rpx 330rpx;
+        &:first-child {
+          display: inline-block;
+        }
+      }
+    }
+    .total-fee {
+      font-size: 40rpx;
+      margin: 30rpx auto;
+    }
+    .pay {
+      width: 300rpx;
+      height: 75rpx;
+      line-height: 75rpx;
+      margin: 30rpx auto;
+      color: #fff;
+      font-size: 36rpx;
+      background: url(https://bimbochinaclub.ysmine.com/Public/2018/07/common/btnbj.png) no-repeat center center;
+      background-size:100% 100%;
+    }
+  }
+  .pay-success {
+    width: 100%;
+    background: #fff;
+    .congratulate {
+      color: #306095;
+      margin: 50rpx 0 30rpx;
+      font-size: 40rpx;
+      image {
+        width: 60rpx;
+        height: 60rpx;
+        vertical-align: middle;
+        margin-right: 20rpx;
+      }
+    }
+    .ercode {
+      width: 75%;
+      margin: 0 auto;
+      padding-bottom: 30rpx;
+      border-bottom: 1rpx solid #306095;
+      image {
+        width: 300rpx;
+        height: 300rpx;
+      }
+    }
+    .tip {
+      display:block;
+      width:100%;
+      padding: 30rpx 0 50rpx;
+      color: #bbb;
+    }
+    .see-apply-btn {
+      width: 300rpx;
+      height: 75rpx;
+      line-height: 75rpx;
+      margin: 0 auto 100rpx;
+      color: #fff;
+      font-size: 36rpx;
+      background: url(https://bimbochinaclub.ysmine.com/Public/2018/07/common/btnbj.png) no-repeat center center;
+      background-size: 100% 100%;
+    }
+  }
+  .info_part {
+    width: 100%;
+    .info_para {
+      color: #ccc;
+      padding: 20rpx 40rpx;
+      margin-bottom: 20rpx;
+      background: #fff;
+      font-size: 20rpx;
+    }
+    .info_list {
+      background: #346195;
+      color: #fff;
+      margin-bottom: 20rpx;
+      padding: 30rpx;
+      font-size: 20rpx;
+      position: relative;
+      &:nth-of-type(2n+1) {
+        background: #4c8fc3;
+      }
+      .title, .invite_code {
+        text-align: center;
+        font-size: 30rpx;
+        padding: 20rpx 0;
+      }
+      .see_poster {
+        position: absolute;
+        right: 20rpx;
+        bottom: 20rpx;
+        padding: 15rpx 30rpx;
+        border-radius: 20rpx 0 20rpx 0;
+        background: #00a1e1;
+      }
+    }
+  }
+</style>
+<template>
+  <view class="container">
+    <view class="header"></view>
+    <!-- 购买礼包 -->
+    <view class="main" wx:if="{{ show_buy_pack }}">
+      <view class="fee-title tc">报名费用：¥ {{ apply_fee }}</view>
+      <view class="tc">报名成功的小伙伴可以获得由赛事组委会<view>提供的一套比赛装备</view></view>
+      <view class="tc">（包括赛事T恤、装备包、计时器、号码贴）</view>
+      <view class="gift-pack">
+        <view class="gift-title-list">
+          <view class="item check" @tap="checkPack(1)">
+            <image class="check0" wx:if="{{ !ispack1 }}" src="../../images/apply/checkbox.png"/>
+            <image class="check1" wx:if="{{ ispack1 }}"  src="../../images/apply/checkbox_1.png"/>
+          </view>
+          <view class="item">优惠礼包一</view>
+          <view class="item">¥{{pack_1_price}}</view>
+          <!-- <view class="item detail">详情</view> -->
+          <view class="item count">
+            <view class="count-item" @tap="minusPackCount(1)">-</view>
+            <text class="count-item">{{ pack_1_count }}</text>
+            <view class="count-item" @tap="addPackCount(1)">+</view>
+          </view>
+        </view>
+        <view class="gift-list">
+          <view class="item">
+            <image src="../../images/apply/binbao_doll.png"/>
+            <view>（宾堡小熊公仔）</view>
+          </view>
+          <view class="item">
+            <image src="../../images/apply/binbao_towl.png"/>
+            <view>（冷感运动毛巾）</view>
+          </view>
+        </view>
+
+        <view class="gift-title-list">
+          <view class="item check" @tap="checkPack(2)">
+            <image class="check0" wx:if="{{ !ispack2 }}" src="../../images/apply/checkbox.png"/>
+            <image class="check1" wx:if="{{ ispack2 }}" src="../../images/apply/checkbox_1.png"/>
+          </view>
+          <view class="item">优惠礼包二</view>
+          <view class="item">¥{{pack_2_price}}</view>
+          <!-- <view class="item detail">详情</view> -->
+          <view class="item count">
+            <view class="count-item" @tap="minusPackCount(2)">-</view>
+            <text class="count-item">{{ pack_2_count }}</text>
+            <view class="count-item" @tap="addPackCount(2)">+</view>
+          </view>
+        </view>
+        <view class="gift-list">
+          <view class="item">
+            <image src="../../images/apply/binbao_doll.png"/>
+            <view>（宾堡小熊公仔）</view>
+          </view>
+          <view class="item">
+            <image src="../../images/apply/binbao_towl.png"/>
+            <view>（冷感运动毛巾）</view>
+          </view>
+          <view class="item">
+            <image src="../../images/apply/binbao_bottle.png" style="width: 55rpx;"/>
+            <view>（宾堡运动水壶）</view>
+          </view>
+        </view>
+      </view>
+      <view class="desc">说明：
+        <view>1. 加购的礼包和比赛装备包一起自行领取哦，主办方不提供快递服务。</view>
+        <view>2. 每个参赛选手限购1份优惠礼包哦。</view>
+      </view>
+      <view class="form-control" wx:if="{{apply_count_arr.length > 0}}">
+        <view class="tit">我的邀请码：</view>
+        <view class="form_wrap long_1" wx:for="{{ apply_count_arr }}" wx:key="{{index}}">
+          <input class="form-item" placeholder="使用邀请码减5元" placeholder-style="color:#ddd" data-invcodeindex="{{index}}" bindinput="bindInviteChange"/>
+        </view>
+      </view>
+      <view class="total-fee tc">
+        费用总计：¥ {{total_fee}}
+      </view>
+      <view class="pay tc" @tap="wxpay">微信支付</view>
+    </view>
+    <!-- 支付成功 -->
+    <view class="pay-success" wx:if="{{ show_success }}">
+      <view class="congratulate tc">
+        <image src="../../images/apply/congratulate.png"/>恭喜您，报名成功！</view>
+      <view class="ercode tc">
+        <image src="https://bimbochinaclub.ysmine.com/Public/2018/07/common/bb_ercode.png" @tap="previewErcode"/>
+      </view>
+      <text class="tip tc">截屏保存图片\n扫码关注宾堡微信公众后\n获取更多赛事咨询</text>
+      <view class="see-apply-btn tc" @tap="seeApplyInfo">查看报名信息</view>
+    </view>
+    <!-- 报名信息 -->
+    <view class="info_part" wx:if="{{ show_apply_info }}">
+      <view class="info_para">成功付款即可生成专属邀请码，他人通过邀请码报名即可优惠5元。</view>
+      <view class="info_list" wx:for="{{apply_info_arr}}" wx:key="{{index}}">
+        <view wx:if="{{index == 0}}" class="title">参赛选手信息</view>
+        <view wx:if="{{item.invitaioncodeown != ''}}" class="invite_code">
+          专属邀请码：<text selectable="true">{{ item.invitaioncodeown }}</text>
+        </view>
+        <view>
+          <view>成员：{{item.name}}</view>
+          <view>项目：{{item.subject}}</view>
+          <view>运动员号码：{{item.playercode}}</view>
+          <view>证件号码：{{item.id}}</view>
+          <view>联系电话：{{item.phone}}</view>
+        </view>
+        <view class="see_poster" data-info="{{item}}" @tap="jumpPoster">查看专属海报</view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import {service} from '../config.js'
+  export default class ApplyPay extends wepy.page {
+    components = {}
+
+    data = {
+      show_buy_pack: true,
+      show_success: false,
+      show_apply_info: false,
+      // 微信支付页面
+      apply_fee: 0,
+      pack_1_price: 38,
+      pack_2_price: 58,
+      pack_1_count: 1,
+      pack_2_count: 1,
+      ispack1: false,
+      ispack2: false,
+      apply_count: 0,
+      apply_max_count: 6,
+      apply_count_arr: [],
+      form_invite_code_arr: [],
+      // 参赛信息页
+      invite_code: '',
+      apply_invite_codes_str: '',
+      apply_ids_str: '',
+      apply_info_arr: [{
+        name: '',
+        subject: '',
+        playercode: '',
+        id: '',
+        phone: ''
+      }]
+    }
+    computed = {
+      total_fee () {
+        if (this.ispack1) {
+          if (this.ispack2) {
+            return Number(this.apply_fee) + this.pack_1_count * this.pack_1_price + this.pack_2_count * this.pack_2_price
+          } else {
+            return Number(this.apply_fee) + this.pack_1_count * this.pack_1_price
+          }
+        }
+        if (this.ispack2) {
+          return Number(this.apply_fee) + this.pack_2_count * this.pack_2_price
+        }
+        return this.apply_fee
+      }
+    }
+    methods = {
+      checkPack (pack) {
+        if (pack === '1') {
+          this.ispack1 = !this.ispack1
+        }
+        if (pack === '2') {
+          this.ispack2 = !this.ispack2
+        }
+      },
+      addPackCount (pack) {
+        if (pack === '1') {
+          this.pack_1_count++
+        }
+        if (pack === '2') {
+          this.pack_2_count++
+        }
+      },
+      minusPackCount (pack) {
+        if (pack === '1' && this.pack_1_count > 1) {
+          this.pack_1_count--
+        }
+        if (pack === '2' && this.pack_2_count > 1) {
+          this.pack_2_count--
+        }
+      },
+      wxpay () {
+        if (this.form_invite_code_arr.length > 0) {
+          this.apply_invite_codes_str = ''
+          this.form_invite_code_arr.forEach((val) => {
+            this.apply_invite_codes_str += (val + ',')
+          })
+          this.apply_invite_codes_str = this.apply_invite_codes_str.slice(0, this.apply_invite_codes_str.length - 1)
+        }
+        this.payReq()
+      },
+      seeApplyInfo () {
+        this.show_apply_info = true
+        this.show_buy_pack = false
+        this.show_success = false
+      },
+      jumpPoster (event) {
+        const item = event.currentTarget.dataset.info
+        this.$root.$navigate({url: `poster?name=${item.name}&subject=${item.subject}`})
+      }
+    }
+    payReq () {
+      // 支付
+      wepy.showLoading({
+        title: '加载中...',
+        mask: true
+      })
+      console.log(this.apply_invite_codes_str)
+      console.log(this.apply_ids_str)
+      wepy.request({
+        url: service.playerPayOrders,
+        method: 'POST',
+        data: {
+          open_id: this.open_id,
+          total_fee: this.total_fee,
+          // total_fee: 6,
+          code: this.apply_invite_codes_str,  // 邀请码
+          id: this.apply_ids_str,
+          gift1_num: this.ispack1 ? this.pack_1_count : 0,
+          gift2_num: this.ispack2 ? this.pack_2_count : 0
+        },
+        header: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      }).then((res) => {
+        wepy.hideLoading()
+        console.log('REQ_wxPay/orders res: ', res)
+        if (res.data.code === '200') {
+          wepy.requestPayment({
+            timeStamp: res.data.result.timeStamp,
+            nonceStr: res.data.result.nonceStr,
+            package: res.data.result.package,
+            signType: res.data.result.signType,
+            paySign: res.data.result.paySign
+          }).then((res) => {
+            console.log('wx.requestPayment res: ', res)
+            this.show_success = true
+            this.show_apply_info = false
+            this.show_buy_pack = false
+            this.getHasPayUser()
+            this.$apply()
+          })
+        } else {
+          wepy.showModal({
+            content: res.data.message || res.data || '请求失败',
+            showCancel: false
+          })
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
+    }
+    getHasPayUser () {
+      // 获取已报名的人
+      wepy.request({
+        url: service.getPlayerList,
+        method: 'POST',
+        data: {
+          open_id: this.open_id,
+          hasPay: 1
+        },
+        header: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      }).then((res) => {
+        console.log('REQ_getPlayerList（hasPay=1) res: ', res)
+        wepy.hideLoading()
+        if (res.data.code === '200') {
+          if (res.data.result.length) {
+            this.apply_info_arr = []
+            res.data.result.forEach((val, index) => {
+              let obj = {}
+              obj.name = val.name
+              obj.subject = val.optionss === '1' || val.optionss === 1 ? '十公里健康跑' : '三公里健康跑'
+              obj.playercode = val.playercode
+              obj.id = val.provincial_certificate
+              obj.phone = val.phone
+              obj.invitaioncodeown = val.invitaioncodeown
+              this.apply_info_arr.push(obj)
+            })
+            this.$apply()
+          }
+        } else {
+          wepy.showModal({
+            content: res.data.message,
+            showCancel: false
+          })
+        }
+      })
+    }
+    bindInviteChange (e) {
+      // console.log(e)
+      const invindex = e.currentTarget.dataset.invcodeindex
+      // console.log(invindex)
+      this.form_invite_code_arr[invindex] = e.detail.value
+      // console.log(this.form_invite_code_arr)
+    }
+    previewErcode (e) {
+      wepy.previewImage({
+        urls: [this.$parent.globalData.ercode_img]
+      })
+    }
+    onLoad (options) {
+      console.log('apply_pay onLoad options: ', options)
+      this.apply_fee = options.fee || 0
+      this.apply_count = options.paycount || 0
+      this.open_id = options.open_id || 0
+      this.apply_ids_str = options.ids || 0
+      for (let i = 0; i < this.apply_count; i++) {
+        this.apply_count_arr.push(i)
+      }
+    }
+  }
+</script>

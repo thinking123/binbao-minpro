@@ -1,0 +1,154 @@
+<style lang="less">
+  .container {
+    background: url(https://bimbochinaclub.ysmine.com/Public/2018/07/common/jkpbj.png) no-repeat center center;
+    background-size:100%;
+    height: 100%;
+    .auth_btn {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 10;
+      .tier {
+        width: 70%;
+        height: 200rpx;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 10rpx;
+        text-align: center;
+        background: #fff;
+        text {
+          display: block;
+          color: #333;
+          padding-top: 40rpx;
+          font-size: 30rpx;
+        }
+        button {
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          color: #40c463;
+        }
+      }
+    }
+    .bakc_self_btn {
+      position: fixed;
+      right: 20rpx;
+      top: 20rpx;
+      text-decoration: underline;
+      color: #306095;
+    }
+    .logo {
+      position: fixed;
+      left: 20rpx;
+      top: 20rpx;
+      width: 185rpx;
+      height: 220rpx;
+    }
+    .addr {
+      width: 460rpx;
+      height: 117rpx;
+      position: fixed;
+      bottom: 200rpx;
+    }
+    .btns {
+      background: url(https://bimbochinaclub.ysmine.com/Public/2018/07/common/bigbtnbj.png) no-repeat center center;
+      background-size:100%;
+      position: fixed;
+      bottom: 50rpx;
+      width: 95%;
+      height: 100rpx;
+      line-height: 100rpx;
+      display: flex;
+      color: #fff;
+      text-align: center;
+      font-size: 30rpx;
+      .btn {
+        flex: 1;
+        text-decoration: underline;
+        &.apply {
+          text-decoration: none;
+          background: url(https://bimbochinaclub.ysmine.com/Public/2018/07/common/darkbtnbj.png) no-repeat center center;
+          background-size: 100%;
+        }
+      }
+    }
+  }
+</style>
+<template>
+  <view class="container">
+    <!-- <view wx:if="{{show_auth_userinfo}}" class="auth_btn">
+      <view class="tier">
+        <text>宾堡需要获取您的用户信息</text>
+        <button open-type="getUserInfo" bindgetuserinfo="getUserInfoCb">同意</button>
+      </view>
+    </view> -->
+    <view class="bakc_self_btn" @tap="backSelfCenter">个人中心</view>
+    <image class="logo" src="../../images/jkp/logo.png"/>
+    <image class="addr" src="../../images/jkp/addr.png"/>
+    <view class="btns">
+      <view class="btn" @tap="jumpLearnMore">了解更多</view>
+      <view class="btn apply" wx:if="{{!gameover}}" @tap="jumpApplyDeclare">点我报名</view>
+      <view class="btn apply" wx:else @tap="jumpPhoto">查看现场照片</view>
+      <view class="btn" wx:if="{{!gameover}}" @tap="jumpApplyInfo">查看报名</view>
+      <view class="btn" wx:else @tap="jumpInquire">查询成绩</view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Jkp extends wepy.page {
+    components = {}
+
+    data = {
+      show_auth_userinfo: false,
+      open_id: '',
+      code: '',
+      gameover: false
+    }
+
+    methods = {
+      jumpLearnMore () {
+        this.$root.$navigate({url: '/pages/jkp/learn_more'})
+      },
+      jumpApplyDeclare () {
+        this.$root.$navigate({url: `/pages/jkp/jkp_apply?open_id=${this.open_id}`})
+      },
+      jumpApplyInfo () {
+        this.$root.$navigate({url: `/pages/jkp/jkp_apply?show_apply_info=1&open_id=${this.open_id}`})
+      },
+      jumpPhoto () {
+        this.$root.$navigate({url: `/pages/link/photo`})
+      },
+      jumpInquire () {
+        this.$root.$navigate({url: `/pages/jkp/inquire?open_id=${this.open_id}`})
+      },
+      backSelfCenter () {
+        wepy.navigateBack({
+          delta: 1
+        })
+      }
+    }
+    onShareAppMessage (res) {
+      return {
+        title: '宾堡环球健康跑',
+        path: '/pages/index',
+        imageUrl: 'https://bimbochinaclub.ysmine.com/Public/2018/07/common/shareimg.jpg'
+      }
+    }
+    onLoad(options) {
+      console.log('jkp onLoad options: ', options)
+      this.open_id = options.open_id
+      wepy.login().then((res) => {
+        this.code = res.code
+      })
+      // if (Math.floor(Date.now() / 1000) > 1537632000) { // 0923
+      //   this.gameover = true
+      // }
+    }
+  }
+</script>

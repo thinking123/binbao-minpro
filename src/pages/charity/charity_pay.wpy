@@ -1,0 +1,356 @@
+<style lang="less">
+  .shadow_view {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 10;
+    .close_shadow_icon {
+      position: absolute;
+      bottom: 100rpx;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .medal_content {
+      width: 100%;
+      height: 100%;
+      .img_wrap {
+        width: 493rpx;
+        height: 921rpx;
+        position: absolute;
+        left: 50%;
+        top: 45%;
+        transform: translate(-50%, -50%);
+        image {
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          &.bj {
+            width: 100%;
+            height: 100%;
+          }
+          &.txtimg {
+            width: 400rpx;
+            height: 150rpx;
+            top: 400rpx;
+          }
+          &.ercode {
+            bottom: 50rpx;
+            width: 270rpx;
+            height: 270rpx;
+          }
+        }
+      }
+    }
+  }
+  .certi {
+    margin-top: 50rpx;
+    .save_tip {
+      display: block;
+      text-decoration: underline;
+      margin: 20rpx 0;
+      text-align: center;
+      font-size: 24rpx;
+      color: #898989;
+    }
+  }
+  .pay {
+    width: 100%;
+    height: 100%;
+    .pay_form {
+      width: 665rpx;
+      height: 880rpx;
+      padding-top: 300rpx;
+      box-sizing: border-box;
+      margin: 50rpx auto 0;
+      background: #4b6b84 url(https://bimbochinaclub.ysmine.com/Public/2018/07/charity/pay_form_bj.png) no-repeat;
+      background-size: 100% 100%;
+      color: #fff;
+      font-size: 24rpx;
+      .form-control {
+        width: 100%;
+        padding: 15rpx 0 15rpx 30rpx;
+        .form_wrap {
+          display: inline-block;
+          width: 72%;
+          padding: 0 15rpx;
+          vertical-align: middle;
+          height: 45rpx;
+          min-height: 45rpx;
+          border: 1px solid #fff;
+          border-radius: 20rpx 0 20rpx 0;
+        }
+      }
+    }
+    .money {
+      color: #00a1e1;
+      display: block;
+      margin-top: 10rpx;
+      text-align: center;
+    }
+    .txt {
+      display: block;
+      font-size: 24rpx;
+      text-align: center;
+      line-height: 60rpx;
+    }
+    .txt_btn {
+      text-decoration: underline;
+      font-size: 30rpx;
+      text-align: center;
+    }
+  }
+  .btn_view {
+    width: 100%;
+    text-align: center;
+    .btn {
+      width: 30%;
+      display: inline-block;
+      margin: 20rpx 30rpx 0;
+      padding: 15rpx 30rpx;
+      border-radius: 20rpx 0 20rpx 0;
+      background: #00a1e1;
+      font-size: 30rpx;
+      color: #fff;
+    }
+  }
+  .tc {
+    text-align: center;
+  }
+</style>
+<template>
+  <view class="container">
+    <view class="shadow_view" wx:if="{{show_success}}">
+      <view class="medal_content">
+        <view class="img_wrap">
+          <image class="bj" src="https://bimbochinaclub.ysmine.com/Public/2018/07/medal/medal_shadow_bj.png"/>
+          <image class="txtimg" src="https://bimbochinaclub.ysmine.com/Public/2018/07/charity/pay_success_txt.png"/>
+          <image class="ercode" src="https://bimbochinaclub.ysmine.com/Public/2018/07/common/bb_ercode.png" @tap="previewErcode"/>
+        </view>
+      </view>
+      <icon type="cancel" color="#ffffff" size="50" class="close_shadow_icon" @tap="closeSuccess"></icon>
+    </view>
+    <view class="certi" wx:if="{{!show_pay}}">
+      <canvas style="width: {{canvas_width + 'px'}};height: {{canvas_height + 'px'}};}}" canvas-id="myCanvas" @tap="previewImage"></canvas>
+      <text class="save_tip">单击预览图片长按保存</text>
+      <view class="btn_view">
+        <view class="btn tc" @tap="getRealCertificate">领取实物证书</view>
+        <view class="btn tc" @tap="back">返回</view>
+      </view>
+    </view>
+    <view class="pay" wx:if="{{show_pay}}">
+      <view class="pay_form">
+        <view class="form-control">
+          姓名：
+          <view class="form_wrap">
+            <input class="form-item" value="{{ form.name }}" bindinput="bindNameChange"/>
+          </view>
+        </view>
+        <view class="form-control">
+          电话：
+          <view class="form_wrap">
+            <input class="form-item" value="{{ form.phone }}" bindinput="bindPhoneChange"/>
+          </view>
+        </view>
+        <view class="form-control">
+          地址：
+          <view class="form_wrap">
+            <input class="form-item" value="{{ form.addr }}" bindinput="bindAddrChange"/>
+          </view>
+        </view>
+      </view>
+      <text class="money">10元</text>
+      <view class="btn_view">
+        <view class="btn tc" @tap="submitForm">微信支付</view>
+      </view>
+      <text class="txt">＊支付费用为证书邮寄费用</text>
+      <view class="txt_btn" @tap="backSelfCenter">返回个人中心</view>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import {service} from '../config.js'
+
+export default class CharityPay extends wepy.page {
+  data = {
+    show_pay: false,
+    show_success: false,
+    ctx: wepy.createCanvasContext('myCanvas'),
+    temp_path: '',
+    canvas_width: 0,
+    canvas_height: 0,
+    // bread_dai_count: 1,
+    bread_count: 0,
+    form: {
+      name: '',
+      phone: '',
+      addr: ''
+    }
+  }
+  methods = {
+    back () {
+      wepy.navigateBack({
+        delta: 1
+      })
+    },
+    getRealCertificate () {
+      this.show_pay = true
+    },
+    backSelfCenter () {
+      this.$root.$navigate({url: '/pages/index'})
+    },
+    closeSuccess () {
+      this.show_success = false
+      this.show_pay = false
+    }
+  }
+  bindNameChange (e) {
+    this.form.name = e.detail.value
+  }
+  bindPhoneChange (e) {
+    this.form.phone = e.detail.value
+  }
+  bindAddrChange (e) {
+    this.form.addr = e.detail.value
+  }
+  // 核心贴图方法！！
+  drawBjAndBody (type) {
+    type = type || '0'
+    const ctx = this.ctx
+    const pwidth = this.canvas_width
+    const pheight = this.canvas_height
+    ctx.clearRect(0, 0, pwidth, pheight)
+    // 背景
+    ctx.drawImage(this.bj, 0, 0, pwidth, pheight)
+    ctx.setFillStyle('#00a1e1')
+    ctx.fillRect(pwidth * 0.3, pheight * 0.1, pwidth * 0.4, pwidth * 0.4)
+    ctx.drawImage(this.user_info.avatarUrl, pwidth * 0.31, pheight * 0.107, pwidth * 0.38, pwidth * 0.38)
+    ctx.setFillStyle('#fff')
+    ctx.setFontSize(25)
+    ctx.textAlign = 'center'
+    ctx.fillText(this.user_info.nickName, pwidth * 0.5, pheight * 0.5)
+    ctx.setFontSize(19)
+    ctx.fillText('在宾堡环球健康跑中为公益捐赠了', pwidth * 0.5, pheight * 0.58)
+    ctx.textAlign = 'center'
+    ctx.drawImage('../../images/charity/dash_border.png', pwidth * 0.3, pheight * 0.65, pwidth * 0.4, pwidth * 0.08)
+    ctx.setFillStyle('#00a1e1')
+    ctx.setFontSize(16)
+    ctx.fillText(`${this.bread_count}片宾堡面包`, pwidth * 0.5, pheight * 0.69)
+    ctx.draw(true, setTimeout(() => {
+      wepy.canvasToTempFilePath({
+        canvasId: 'myCanvas'
+      }, this).then((res) => {
+        console.log('canvasToTempFilePath res: ', res.tempFilePath)
+        this.temp_path = res.tempFilePath
+      })
+    }, 100))
+  }
+  previewImage (e) {
+    wepy.previewImage({
+      urls: [this.temp_path]
+    })
+  }
+  previewErcode (e) {
+    wepy.previewImage({
+      current: this.$parent.globalData.ercode_img,
+      urls: [this.$parent.globalData.ercode_img]
+    })
+  }
+  downloadPic () {
+    wepy.downloadFile({
+      url: this.user_info.avatarUrl
+    }).then((res) => {
+      this.user_info.avatarUrl = res.tempFilePath
+      wepy.downloadFile({
+        url: 'https://bimbochinaclub.ysmine.com/Public/2018/07/charity/certificate_bj.png'
+      }).then((res1) => {
+        wepy.hideLoading()
+        this.bj = res1.tempFilePath
+        this.drawBjAndBody()
+      })
+    })
+  }
+  submitForm () {
+    if (!this.form.addr || !this.form.name || !this.form.phone) {
+      wepy.showModal({
+        content: '请填写收件人信息',
+        showCancel: false
+      })
+      return
+    }
+    this.payReq()
+  }
+  payReq () {
+    // 支付
+    wepy.showLoading({
+      title: '加载中',
+      mask: true
+    })
+    wepy.request({
+      url: service.charityPay,
+      method: 'POST',
+      data: {
+        open_id: this.open_id,
+        total_fee: 10,
+        username: this.form.name,
+        address: this.form.addr,
+        tel: this.form.phone,
+        num: this.bread_count
+      },
+      header: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    }).then((res) => {
+      console.log('REQ_charityWxPay/orders res: ', res)
+      wepy.hideLoading()
+      if (res.data.code === '200') {
+        wepy.requestPayment({
+          timeStamp: res.data.result.timeStamp,
+          nonceStr: res.data.result.nonceStr,
+          package: res.data.result.package,
+          signType: res.data.result.signType || 'MD5',
+          paySign: res.data.result.paySign
+        }).then((res) => {
+          console.log('wx.requestPayment res: ', res)
+          this.show_success = true
+          this.$apply()
+        }).catch((err) => {
+          console.log('wx.requestPayment err: ', err)
+        })
+      }
+    }).catch((err) => {
+      console.log(err)
+    })
+  }
+  onShareAppMessage (res) {
+    return {
+      title: '宾堡环球健康跑',
+      path: '/pages/index',
+      imageUrl: 'https://bimbochinaclub.ysmine.com/Public/2018/07/common/shareimg.jpg'
+    }
+  }
+  onLoad(options) {
+    console.log(this.$parent.globalData)
+    console.log('charity_pay onLoad options: ', options)
+    this.open_id = options.open_id
+    // 获取设备宽度，设置画布宽高
+    this.bread_count = options.bread_count
+    // this.bread_dai_count = Math.ceil((options.bread_count || 0) / 8) === 0 ? 1 : Math.ceil(options.bread_count / 8)
+    wepy.showLoading({
+      title: '正在加载',
+      mask: true
+    })
+    wepy.getUserInfo().then((res) => {
+      this.user_info = JSON.parse(res.rawData)
+      wepy.getSystemInfo().then((data) => {
+        let posterWidth = data.screenWidth * 0.86
+        let posterHeight = posterWidth / 0.73
+        this.canvas_width = posterWidth
+        this.canvas_height = posterHeight
+        this.downloadPic()
+        this.$apply()
+      })
+    })
+  }
+}
+</script>

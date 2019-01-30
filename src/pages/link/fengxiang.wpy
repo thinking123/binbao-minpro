@@ -1,0 +1,17 @@
+<style lang="less">
+  
+</style>
+<template>
+  <web-view src="https://h5.youzan.com/v2/ump/promocard/fetch?alias=1d3vislhf"></web-view>
+</template>
+
+<script>
+import wepy from 'wepy'
+
+export default class Jd extends wepy.page {
+  methods = {}
+  onLoad(options) {
+    console.log('jd onLoad options: ', options)
+  }
+}
+</script>

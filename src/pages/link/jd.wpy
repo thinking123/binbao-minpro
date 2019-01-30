@@ -1,0 +1,17 @@
+<style lang="less">
+  
+</style>
+<template>
+  <web-view src="https://coupon.m.jd.com/coupons/show.action?key=c8f585114d1746a8970530edc7327eb6&roleId=13186952&to=bimbo.jd.com"></web-view>
+</template>
+
+<script>
+import wepy from 'wepy'
+
+export default class Jd extends wepy.page {
+  methods = {}
+  onLoad(options) {
+    console.log('jd onLoad options: ', options)
+  }
+}
+</script>

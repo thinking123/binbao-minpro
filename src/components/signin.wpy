@@ -1,0 +1,177 @@
+<style lang="less">
+  .signcontainer {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    .close_signin_icon {
+      position: absolute;
+      right: 10rpx;
+      top: 50rpx;
+    }
+    .content {
+      width: 530rpx;
+      padding: 10rpx;
+      min-height: 700rpx;
+      background: #fff;
+      border: 1px solid #fff;
+      border-radius: 150rpx 0 150rpx 0;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      .img_wrap {
+        width: 100%;
+        height: 565rpx;
+        position: relative;
+        .main_img {
+          width: 100%;
+          height: 525rpx;
+        }
+        .logo {
+          width: 130rpx;
+          height: 60rpx;
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+        .salad {
+          position: absolute;
+          width: 68rpx;
+          height: 130rpx;
+          right: 10rpx;
+          bottom: 50rpx;
+          &.bread {
+            height: 155rpx;
+          }
+          .big {
+            height: 160rpx;
+          }
+        }
+      }
+      .arrow_wrap {
+        width: 100%;
+        padding: 20rpx 0;
+        text-align: center;
+        .arrow {
+          width: 33rpx;
+          height: 18rpx;
+          transition: all 0.5s;
+          &.rott {
+            transform: rotate(180deg);
+          }
+        }
+      }
+      .congratulate {
+        display: block;
+        width: 348rpx;
+        height: 36rpx;
+        margin: 0 auto;
+      }
+      .detail {
+        color: #898989;
+        height: 400rpx;
+        padding: 0 40rpx 20rpx;
+        overflow: hidden;
+        transition: all 0.5s;
+        &.hideup {
+          height: 0;
+        }
+        .title {
+          display: block;
+          font-size: 30rpx;
+          padding: 30rpx 0 10rpx;
+          text-align: center;
+        }
+        .desc_scroll {
+          height: 300rpx;
+          .desc {
+            font-size: 20rpx;
+            line-height: 25rpx;
+          }
+        }
+      }
+    }
+  }
+</style>
+<template>
+  <view class="signcontainer">
+    <view class="content">
+      <view class="img_wrap">
+        <image class="main_img" src="{{sanimg}}"/>
+        <image class="logo" src="../images/index/signin_logo.png"/>
+        <image class="salad {{salad_class}}" src="{{saladImg}}"/>
+      </view>
+      <view class="arrow_wrap" @tap="toggleMore">
+        <image class="arrow {{show_detail ? 'rott' : ''}}" src="../images/index/signin_arrow.png"/>
+      </view>
+      <image wx:if="{{isSignin == 0}}" class="congratulate" src="../images/index/signin_txt.png"/>
+      <view class="detail {{show_detail ? '' : 'hideup'}}">
+        <text class="title">{{signin_info.wich_name}}</text>
+        <scroll-view class="desc_scroll" scroll-y="true">
+          <text class="desc">{{signin_info.desc}}</text>
+        </scroll-view>
+      </view>
+    </view>
+    <icon type="cancel" color="#ffffff" size="50" class="close_signin_icon" @tap="closeSignin"></icon>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+  import {sandwichImgs} from '../pages/sandwich.js'
+
+  export default class Signin extends wepy.component {
+    props = {
+      isSignin: {
+        type: String,
+        default: 'null'
+      }
+    }
+    data = {
+      show_detail: false,
+      signin_info: {},
+      salad_class: '',
+      rand: 0,
+      sanimg: ''
+    }
+    computed = {
+      saladImg () {
+        let saladimg
+        switch (this.signin_info.salad) {
+          case 1:
+            saladimg = '../images/index/salad_icon1.png'
+            break
+          case 2:
+            this.salad_class = 'bread'
+            saladimg = '../images/index/salad_icon2.png'
+            break
+          case 3:
+            saladimg = '../images/index/salad_icon3.png'
+            break
+          default:
+            this.salad_class = 'big'
+            saladimg = '../images/index/salad_icon2.png'
+            break
+        }
+        return saladimg
+      },
+      sandwichImg () {
+        return `https://bimbochinaclub.ysmine.com/Public/2018/07/sandwich/sandwich${this.rand + 1}.png`
+      }
+    }
+    methods = {
+      toggleMore () {
+        this.show_detail = !this.show_detail
+      },
+      closeSignin () {
+        this.$emit('signin-emit')
+      }
+    }
+    onLoad () {
+      this.rand = Math.floor(Math.random() * sandwichImgs.length)
+      this.signin_info = sandwichImgs[this.rand]
+      this.sanimg = `https://bimbochinaclub.ysmine.com/Public/2018/07/sandwich/sandwich${this.rand + 1}.png`
+      this.$apply()
+    }
+  }
+</script>

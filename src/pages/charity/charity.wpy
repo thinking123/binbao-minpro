@@ -1,0 +1,152 @@
+<style lang="less">
+  .header {
+    width: 100%;
+    height: 280rpx;
+    background: url(https://bimbochinaclub.ysmine.com/Public/2018/07/common/commonheader.png) no-repeat center center;
+    background-size: 100% 100%;
+  }
+  .photo {
+    width: 100%;
+    height: 750rpx;
+    display: block;
+    background: #fff;
+    margin: 20rpx 0;
+    position: relative;
+    .sw {
+      height: 100%;
+      image {
+        width: 100%;
+        height: 480rpx;
+      }
+      text {
+        display: block;
+        padding: 20rpx 40rpx;
+        font-size: 20rpx;
+        color: #595757;
+      }
+    }
+    .photo_txt {
+      position: absolute;
+      box-sizing: border-box;
+      bottom: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.7);
+      font-size: 20rpx;
+      padding: 20rpx;
+    }
+    .arrow {
+      position: absolute;
+      top: 250rpx;
+      width: 50rpx;
+      height: 50rpx;
+      z-index: 1;
+      &.left {
+        left: 20rpx;
+      }
+      &.right {
+        right: 20rpx;
+      }
+    }
+  }
+  .desc {
+    background: #fff;
+    width: 100%;
+    padding: 20rpx 40rpx;
+    .btn_view {
+      width: 100%;
+      text-align: center;
+      .back_btn {
+        width: 30%;
+        display: inline-block;
+        margin: 20rpx 30rpx 0;
+        padding: 15rpx 30rpx;
+        border-radius: 20rpx 0 20rpx 0;
+        background: #00a1e1;
+        font-size: 30rpx;
+        color: #fff;
+      }
+    }
+  }
+  .tc {
+    text-align: center;
+  }
+</style>
+<template>
+  <view class="container">
+    <view class="header"></view>
+    <view class="photo">
+      <image class="arrow left" @tap="prev" src="../../images/index/prev.png"/>
+      <image class="arrow right" @tap="next" src="../../images/index/next.png"/>
+      <swiper class="sw" circular="true" current="{{current_index}}" bindchange="bindSwiper">
+        <swiper-item>
+          <image src="https://bimbochinaclub.ysmine.com/Public/2018/07/charity/charity_photo1.jpg"/>
+          <text>2016年9月15日，由国际烘焙品牌——宾堡主办的“宾堡环球健康跑”在全球21个国家、36座城市同日鸣枪开跑，创下了“最多同日举办10公里赛跑的城市”这一全新的吉尼斯世界纪录TM称号。在赛事公益爱心大使、伦敦奥运冠军李娜的见证下，北京站近3000名参赛者用跑步里程为公益事业累积了33592片面包。</text>
+        </swiper-item>
+        <swiper-item>
+          <image src="https://bimbochinaclub.ysmine.com/Public/2018/07/charity/charity_photo2.jpg"/>
+          <text>2017宾堡环球健康跑每人每跑1公里，宾堡将为公益事业捐献两片面包！每一个参赛的小伙伴与宾堡一起，为公益事业献出了一份爱心。猜猜最后一共捐献了多少呢？足足有63158片哦！全球性的公益服务组织国际狮子会大家庭中的中国狮子联会北京代表处作为本次赛事“全程公益合作伙伴”，近4000名跑友共同努力所积累的63158片面包将通过该组织定向捐赠给学校，残联等社会团体。</text>
+        </swiper-item>
+        <swiper-item>
+          <image src="https://bimbochinaclub.ysmine.com/Public/2018/07/charity/charity_photo3.jpg"/>
+          <text>2018年，全球性的公益服务组织国际狮子会大家庭中的中国狮子联会北京代表处会作为“全程公益合作伙伴”为公益献出一份爱心，充满爱心的你不仅可以参与现场跑步捐面包的公益活动，还可以参与宾堡环球健康跑小程序活动，线上积步献爱心。让我们一起让爱的接力棒，永远传递，让爱的圣火，永不熄灭！</text>
+        </swiper-item>
+      </swiper>
+    </view>
+    <view class="desc">
+      <view class="btn_view">
+        <view class="back_btn tc" @tap="jumpMyCertificate">我的公益证书</view>
+        <view class="back_btn tc" @tap="back">返回</view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+
+export default class Charity extends wepy.page {
+  data = {
+    current_index: 0
+  }
+  methods = {
+    back () {
+      wepy.navigateBack({
+        delta: 1
+      })
+    },
+    jumpMyCertificate () {
+      if (Number(this.bread_count) < 1) {
+        wepy.showModal({
+          content: '当前您还没有达成任何成就，还没有向公益组织捐献面包',
+          showCancel: false
+        })
+        return
+      }
+      this.$root.$navigate({url: `/pages/charity/charity_pay?open_id=${this.open_id}&bread_count=${this.bread_count}`})
+    },
+    prev () {
+      this.current_index = this.current_index > 0 ? this.current_index - 1 : 2
+      this.$apply()
+    },
+    next () {
+      this.current_index = this.current_index < 2 ? this.current_index + 1 : 0
+      this.$apply()
+    }
+  }
+  bindSwiper (e) {
+    this.current_index = e.detail.current
+  }
+  onShareAppMessage (res) {
+    return {
+      title: '宾堡环球健康跑',
+      path: '/pages/index',
+      imageUrl: 'https://bimbochinaclub.ysmine.com/Public/2018/07/common/shareimg.jpg'
+    }
+  }
+  onLoad(options) {
+    console.log('charity onLoad options: ', options)
+    this.open_id = options.open_id
+    this.bread_count = options.bread_count
+  }
+}
+</script>

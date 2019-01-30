@@ -1,0 +1,303 @@
+<style lang="less">
+  page {
+    background:#fff;
+  }
+  .container {
+    // height: 100%;
+    background: #fff;
+  }
+  .shadow_view {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 10;
+  }
+  .header {
+    width: 100%;
+    height: 280rpx;
+    background: url(https://bimbochinaclub.ysmine.com/Public/2018/07/common/commonheader.png) no-repeat center center;
+    background-size: 100% 100%;
+  }
+  .main {
+    width: 100%;
+    height: 920rpx;
+    position: relative;
+    .title {
+      display: block;
+      width: 100%;
+      text-align: center;
+      line-height: 70rpx;
+      color: #595757;
+    }
+    .rank_tabs {
+      background: #e5ebf1;
+      text-align: center;
+      width: 100%;
+      padding-top: 20rpx;
+      .tab {
+        display: inline-block;
+        width: 28%;
+        margin: 0 10rpx;
+        border-radius: 40rpx 0 40rpx 0;
+        background: #b5b5b6;
+        color: #fff;
+        font-size: 28rpx;
+        line-height: 50rpx;
+        &.active {
+          background: #346195;
+        }
+      }
+    }
+    .step_list {
+      width: 100%;
+      height: 500rpx;
+      padding: 20rpx 0;
+      font-size: 24rpx;
+      text-align: center;
+      background: #e5ebf1;
+      .step_title {
+        font-weight: bold;
+        font-size: 28rpx;
+        margin-bottom: 15rpx;
+      }
+      .step_title, .step_item {
+        .item {
+          display: inline-block;
+          width: 30%;
+        }
+      }
+      .step_item {
+        margin-bottom: 10rpx;
+        &:nth-of-type(2) {
+          color: #ffd15c;
+        }
+        &:nth-of-type(3) {
+          color: #999999;
+        }
+        &:nth-of-type(4) {
+          color: #e0a444;
+        }
+      }
+    }
+    .myinfo {
+      background: #346195;
+      color: #fff;
+      text-align: center;
+      font-size: 22rpx;
+      line-height: 60rpx;
+      image {
+        width: 25rpx;
+        height: 26rpx;
+        margin-right: 10rpx;
+      }
+      text {
+        margin-right: 20rpx;
+      }
+    }
+    .btns {
+      width: 100%;
+      font-size: 24rpx;
+      line-height: 60rpx;
+      color: #595757;
+      .lastrank {
+        text-decoration: underline;
+        float: left;
+        margin-left: 40rpx;
+      }
+      .desc {
+        text-decoration: underline;
+        float: right;
+        margin-right: 40rpx;
+      }
+    }
+    .nav {
+      position: absolute;
+      bottom: 10rpx;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    &.iphonex {
+      height: 1150rpx;
+      .step_list {
+        height: 700rpx;
+      }
+    }
+    &.vivo {
+      height: 1000rpx;
+      .step_list {
+        height: 570rpx;
+      }
+    }
+  }
+</style>
+<template>
+  <view class="container">
+    <view class="header"></view>
+    <view class="main {{iphonex_class}}">
+      <text class="title">＃实时排行榜＃</text>
+      <view class="rank_tabs">
+        <view class="tab {{tabactive[0]}}" data-ranktype="1" @tap="changeTab">日排名</view>
+        <view class="tab {{tabactive[1]}}" data-ranktype="2" @tap="changeTab">周排名</view>
+        <view class="tab {{tabactive[2]}}" data-ranktype="3" @tap="changeTab">总排名</view>
+      </view>
+      <scroll-view class="step_list" scroll-y="true">
+        <view class="step_title">
+          <text class="item">排行名次</text>
+          <text class="item">用户昵称</text>
+          <text class="item">累计步数</text>
+        </view>
+        <view class="step_item" wx:for="{{current_step_user}}" wx:key="{{index}}">
+          <text class="item">{{index + 1 + '.'}}</text>
+          <text class="item">{{item.nickname}}</text>
+          <text class="item">{{item.steps}}</text>
+        </view>
+      </scroll-view>
+      <view class="myinfo">
+        <image src="../../images/reward/dengpao.png"/>
+        <text>我的排名：{{my_step_info.orders}}</text>
+        <text>我的昵称：{{my_step_info.name}}</text>
+        <text>我的步数：{{my_step_info.step}}</text>
+      </view>
+      <view class="btns">
+        <view class="lastrank" @tap="back">上期获奖名单</view>
+        <view class="desc" @tap="showPlaydesc">奖励及玩法</view>
+      </view>
+      <footnav class="nav" navindex="2" :openId.sync="open_id"  :score.sync="score"></footnav>
+    </view>
+    <view class="shadow_view" wx:if="{{show_playdesc}}">
+      <playdesc @playdesc-emit.user="playdescEmit"></playdesc>
+    </view>
+  </view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import Footnav from '../../components/footnav'
+import Playdesc from '../../components/playdesc'
+import {service} from '../../pages/config.js'
+// import {rt} from './mock.js'
+
+export default class Rtrank extends wepy.page {
+  components = {
+    footnav: Footnav,
+    playdesc: Playdesc
+  }
+  data = {
+    score: 0,
+    iphonex_class: '',
+    open_id: '',
+    tabactive: ['active', '', ''],
+    current_step_user: [],
+    day_step_user: [],
+    week_step_user: [],
+    all_step_user: [],
+    my_day: {},
+    my_week: {},
+    my_all: {},
+    my_step_info: {},
+    show_playdesc: false
+  }
+  methods = {
+    showPlaydesc () {
+      this.show_playdesc = true
+    },
+    playdescEmit (...args) {
+      this.show_playdesc = false
+    },
+    back () {
+      wepy.navigateBack({
+        delta: 1
+      })
+    },
+    changeTab (event) {
+      const ranktype = event.currentTarget.dataset.ranktype
+      if (this.ranktype === ranktype) return
+      this.ranktype = ranktype
+      this.tabactive = ['', '', '']
+      this.tabactive[ranktype - 1] = 'active'
+      switch (ranktype) {
+        case '1':
+          this.current_step_user = this.day_step_user
+          this.my_step_info = this.my_day
+          break
+        case '2':
+          this.current_step_user = this.week_step_user
+          this.my_step_info = this.my_week
+          break
+        case '3':
+          this.current_step_user = this.all_step_user
+          this.my_step_info = this.my_all
+          break
+      }
+      this.$apply()
+    }
+  }
+  onShareAppMessage (res) {
+    return {
+      title: '宾堡环球健康跑',
+      path: '/pages/index',
+      imageUrl: 'https://bimbochinaclub.ysmine.com/Public/2018/07/common/shareimg.jpg'
+    }
+  }
+  reqList () {
+    wepy.showLoading({
+      title: '正在加载，请稍候...',
+      mask: true
+    })
+    wepy.request({
+      url: service.getSjsRealTimeRank,
+      method: 'POST',
+      data: {
+        open_id: this.open_id
+      },
+      header: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    }).then((res) => {
+      console.log('REQ_getSjsRealTimeRank res: ', res)
+      wepy.hideLoading()
+      if (res.data.code === '200') {
+        this.handleList(res.data.result)
+        this.$apply()
+      } else {
+        wepy.showModal({
+          content: res.data.message,
+          showCancel: false
+        })
+      }
+    }).catch(err => {
+      wepy.hideLoading()
+      console.log(err)
+      wepy.showModal({
+        content: '服务器出现错误',
+        showCancel: false
+      })
+    })
+  }
+  handleList (result) {
+    this.all_step_user = result.all
+    this.week_step_user = result.week
+    this.day_step_user = result.day
+    result.day_order.name = result.day_order.name ? result.day_order.name.slice(0, 5) : ''
+    result.week_order.name = result.week_order.name ? result.week_order.name.slice(0, 5) : ''
+    result.all_order.name = result.all_order.name ? result.all_order.name.slice(0, 5) : ''
+    this.my_day = result.day_order
+    this.my_week = result.week_order
+    this.my_all = result.all_order
+    // 初始化
+    this.current_step_user = this.day_step_user
+    this.my_step_info = this.my_day
+    this.$apply()
+    console.log(result)
+  }
+  onShow () {
+    this.iphonex_class = this.$parent.globalData.iphonex_class
+  }
+  onLoad(options) {
+    console.log('lottery index onLoad options: ', options)
+    this.open_id = options.open_id
+    this.score = options.score
+    this.reqList()
+    // this.handleList(rt.result)
+  }
+}
+</script>

@@ -1,0 +1,865 @@
+<style lang="less">
+  .shadow_view {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 10;
+    .auth_tier {
+      width: 70%;
+      height: 200rpx;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 10rpx;
+      text-align: center;
+      background: #fff;
+      text {
+        display: block;
+        color: #333;
+        padding-top: 40rpx;
+        font-size: 30rpx;
+      }
+      button {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        color: #40c463;
+      }
+    }
+    .play_desc_img {
+      position: absolute;
+      left: 50%;
+      top: 40%;
+      transform: translate(-50%, -50%);
+      width: 490rpx;
+      height: 900rpx;
+      image {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .close_shadow_icon {
+      position: absolute;
+      bottom: 150rpx;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .redpack_tier {
+      position: absolute;
+      left: 50%;
+      top: 40%;
+      transform: translate(-50%, -50%);
+      width: 600rpx;
+      height: 800rpx;
+      image {
+        width: 100%;
+        height: 100%;
+      }
+      .money_txt {
+        position: absolute;
+        left: 50%;
+        bottom: 310rpx;
+        transform: translateX(-50%);
+        color: #fff;
+      }
+    }
+    .focus_tier {
+      position: absolute;
+      left: 50%;
+      top: 40%;
+      transform: translate(-50%, -50%);
+      width: 490rpx;
+      height: 900rpx;
+      .focus_bj {
+        width: 100%;
+        height: 100%;
+      }
+      .focus_txt {
+        position: absolute;
+        left: 50%;
+        bottom: 400rpx;
+        transform: translateX(-50%);
+        width: 400rpx;
+        height: 100rpx;
+      }
+      .focus_ercode {
+        position: absolute;
+        left: 50%;
+        bottom: 50rpx;
+        transform: translateX(-50%);
+        width: 300rpx;
+        height: 300rpx;
+      }
+    }
+  }
+  .header {
+    width: 100%;
+    height: 280rpx;
+    position: relative;
+    background: #00A1E1 url(https://bimbochinaclub.ysmine.com/Public/2018/07/common/indexheader.png);
+    background-size: 100% 100%;
+    .userinfo {
+      position: absolute;
+      left: 10rpx;
+      bottom: 10rpx;
+      .userinfo-avatar {
+        width: 80rpx;
+        height: 80rpx;
+        margin-right: 10rpx;
+        border-radius: 50%;
+        overflow: hidden;
+      }
+      .userinfo-avatar, .userinfo-nickname {
+        display: inline-block;
+        vertical-align: middle;
+      }
+      .userinfo-nickname, .userinfo-score {
+        font-size: 24rpx;
+        color: #fff;
+      }
+      .userinfo-score {
+        display: block;
+        width: 120rpx;
+        padding: 4rpx 8rpx;
+        background: #00A1E1;
+        border-radius: 14rpx 0 14rpx 0;
+      }
+    }
+  }
+  .nav-btns {
+    display:flex;
+    width: 100%;
+    padding: 10rpx 0;
+    background: #fff;
+    .btn {
+      flex: 1;
+      text-align: center;
+      font-size: 24rpx;
+      image {
+        width: 80rpx;
+        height: 80rpx;
+        margin: 0 auto;
+        display: block;
+      }
+    }
+  }
+  .nations {
+    width: 100%;
+    height: 635rpx;
+    position: relative;
+    &.iphonex {
+      height: 740rpx;
+      margin: 50rpx 0;
+    }
+    &.vivo {
+      height: 740rpx;
+    }
+    .arrow {
+      position: absolute;
+      top: 50%;
+      width: 50rpx;
+      height: 50rpx;
+      &.prev {
+        left: 20rpx;
+      }
+      &.next {
+        right: 20rpx;
+      }
+    }
+    .nation_sw {
+      height: 100%;
+      position: relative;
+      .img_item {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
+        image {
+          width: 100%;
+          height: 100%;
+        }
+        &.big {
+          width: 97%;
+          height: 97%;
+        }
+        &.mid {
+          width: 85%;
+          height: 85%;
+        }
+        &.small {
+          width: 85%;
+          height: 75%;
+        }
+        .nation_info {
+          position: absolute;
+          top: 20rpx;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 120rpx;
+          height: 120rpx;
+        }
+        .running_icon {
+          position: absolute;
+          left: 50%;
+          top: 150rpx;
+          transform: translateX(-50%);
+          width: 45rpx;
+          height: 45rpx;
+        }
+        .lock_shadow {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          background: rgba(0, 0, 0, 0.6);
+          .lock_icon {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 100%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #fff;
+            image {
+              width: 40rpx;
+              height: 40rpx;
+              &.lock {
+                width: 30rpx;
+                height: 36rpx;
+              }
+            }
+            text {
+              display: block;
+            }
+          }
+          .redpack_icon {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 100rpx;
+            height: 100rpx;
+          }
+        }
+      }
+    }
+  }
+  .footer {
+    width: 100%;
+    height: 160rpx;
+    overflow: hidden;
+    text-align: center;
+    .foot_item {
+      display: inline-block;
+      font-size: 24rpx;
+      height: 100%;
+      vertical-align: top;
+      &.medal, &.bread {
+        width: 25%;
+        >image {
+          width: 80rpx;
+          height: 80rpx;
+          display: block;
+          margin: 0 auto;
+        }
+        .count_img_wrap {
+          width: 100%;
+          height: 30rpx;
+          margin-top: 10rpx;
+          position: relative;
+          image {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            transform: translateX(-50%);
+          }
+          .bj {
+            width: 95%;
+            height: 30rpx;
+          }
+          .count {
+            width: 34rpx;
+            height: 26rpx;
+            left: 73%;
+            &.one {
+              width: 20rpx;
+              height: 30rpx;
+              left: 73%;
+            }
+          }
+        }
+        .bread_tip {
+          display: block;
+          font-size: 17rpx;
+        }
+      }
+      &.path {
+        width: 50%;
+        .path_item {
+          width: 100%;
+          margin-bottom: 5rpx;
+          background: #31b2e5;
+          border: 1px solid #31b2e5;
+          border-radius: 14rpx 0 14rpx 0;
+          color: #fff;
+          &.bgwhite {
+            background: #fff;
+            color: #267898;
+          }
+        }
+        .play_desc {
+          text-decoration: underline;
+          color: #595757;
+        }
+      }
+    }
+  }
+</style>
+<template>
+  <view class="container">
+    <view wx:if="{{show_auth_userinfo}}" class="shadow_view">
+      <view class="auth_tier">
+        <text>点击同意刷新步数</text>
+        <button open-type="getUserInfo" bindgetuserinfo="getUserInfoCb">同意</button>
+      </view>
+    </view>
+
+    <view wx:if="{{show_play_desc}}" class="shadow_view">
+      <view class="play_desc_img">
+        <image src="../images/index/play_desc_img.png"/>
+      </view>
+      <icon type="cancel" color="#ffffff" size="50" class="close_shadow_icon" @tap="togglePlayDesc"></icon>
+    </view>
+
+    <view wx:if="{{show_signin}}" class="shadow_view">
+      <signin @signin-emit.user="signinEmit" :isSignin.sync="is_signin"></signin>
+    </view>
+
+    <view wx:if="{{show_medal}}" class="shadow_view">
+      <medal @medal-emit.user="medalEmit" :medalInfo.sync="medal_info"></medal>
+    </view>
+
+    <view wx:if="{{show_redpack_open}}" class="shadow_view">
+      <view class="redpack_tier">
+        <image src="../images/index/redpack_open.png" @tap="oepnRedpack"/>
+      </view>
+    </view>
+
+    <view wx:if="{{show_redpack_success}}" class="shadow_view">
+      <view class="redpack_tier">
+        <text class="money_txt">{{red_num / 100}}元</text>
+        <image src="../images/index/redpack_money.png"/>
+      </view>
+      <icon type="success" color="green" size="50" class="close_shadow_icon" @tap="openRedpackFocus"></icon>
+    </view>
+
+    <view wx:if="{{show_redpack_success_ercode}}" class="shadow_view">
+      <view class="focus_tier">
+        <image class="focus_bj" src="../images/index/medal_shadow_bj.png"/>
+        <image class="focus_txt" src="../images/index/redpack_focus_txt.png"/>
+        <image class="focus_ercode" src="https://bimbochinaclub.ysmine.com/Public/2018/07/common/bb_ercode.png" @tap="previewErcode"/>
+      </view>
+      <icon type="cancel" color="#ffffff" size="50" class="close_shadow_icon" @tap="closeRedPackFocus"></icon>
+    </view>
+
+    <view class="header">
+      <view class="userinfo">
+        <image class="userinfo-avatar" src="{{ user_info.avatarUrl }}"/>
+        <view class="userinfo-nickname">{{ user_info.nickName }}
+          <text class="userinfo-score">积分{{ user_info.score }}</text>
+        </view>
+      </view>
+    </view>
+    <view class="nav-btns">
+      <view class="btn jkp" @tap="jump_jkp">
+        <image src="../images/index/jkp.png"/>健康跑报名
+      </view>
+      <view class="btn jkp" @tap="jump_reward_game">
+        <image src="../images/index/sjs.png"/>赏金赛
+      </view>
+      <view class="btn jkp" @tap="jump_lottery">
+        <image src="../images/index/jfcj.png"/>积分抽奖
+      </view>
+      <view class="btn djqd">
+        <image src="../images/index/djqd.png" @tap="reqSignin"/>点击签到
+      </view>
+    </view>
+    <view class="nations {{iphonex_class}}">
+      <swiper class="nation_sw" circular="true" previous-margin="30rpx" next-margin="30rpx"  display-multiple-items="3" current="{{swiper_info.current_index}}" bindchange="bindSwiperNation">
+        <block wx:for="{{swiper_info.img_urls}}" wx:key="{{index}}">
+          <swiper-item>
+            <view class="img_item {{swiper_info.current_index != swiper_info.img_urls.length - 1 ? (index == swiper_info.current_index + 1 ? 'big' : 'mid') : (index == swiper_info.current_index + 1 - swiper_info.img_urls.length ? 'big' : 'mid')}}">
+              <image src="{{item.url}}"/>
+              <image class="nation_info" src="{{item.info_url}}"/>
+              <image class="running_icon" src="../images/index/run_icon.png" wx:if="{{swiper_info.current_index != swiper_info.img_urls.length - 1 ? (index == swiper_info.current_index + 1) : (index == swiper_info.current_index + 1 - swiper_info.img_urls.length)}}"/>
+              <!-- 蒙板锁图 -->
+              <view class="lock_shadow" wx:if="{{item.km != finish_step[item.km].km}}">
+                <view class="lock_icon">
+                  <image src="../images/index/coin_icon.png" wx:if="{{finish_step[item.km].red}}"/>
+                  <text>{{item.km}}</text>
+                  <image class="lock" src="../images/index/lock.png"/>
+                </view>
+              </view>
+              <!-- 蒙板红包图 -->
+              <view class="lock_shadow" wx:if="{{finish_step[item.km].have_redpack_open}}">
+                <view class="redpack_icon" data-curredpackindex="{{index}}" @tap="reqRedpack">
+                  <image src="../images/index/redpack.png"/>
+                </view>
+              </view>
+            </view>
+          </swiper-item>
+        </block>
+      </swiper>
+      <image class="arrow prev" @tap="prevNation" src="../images/index/prev.png"/>
+      <image class="arrow next" @tap="nextNation" src="../images/index/next.png"/>
+    </view>
+    <view class="footer">
+      <view class="foot_item medal">
+        <image src="../images/index/foot_medal.png"/>
+        <view class="count_img_wrap">
+          <image class="bj" src="../images/index/medal_count_img_bj.png"/>
+          <image class="count {{medal_count < 10 ? 'one': ''}}" src="{{medal_count_img}}"/>
+        </view>
+      </view>
+      <view class="foot_item path">
+        <view class="path_item">公益勋章:累积步数点亮勋章</view>
+        <view class="path_item bgwhite">今日步数：{{today_step}}步／总步数：{{total_step}}步</view>
+        <view class="play_desc" @tap="togglePlayDesc">玩法说明</view>
+      </view>
+      <view class="foot_item bread">
+        <image src="../images/index/foot_bread.png" @tap="jumpCharity"/>
+        <view class="count_img_wrap">
+          <image class="bj" src="../images/index/bread_count_img_bj.png"/>
+          <image class="count {{medal_count < 10 ? 'one': ''}}" src="{{bread_count_img}}"/>
+        </view>
+        <text class="bread_tip">点击面包片了解公益详情</text>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import {nationImgs} from './nation.js'
+  import Signin from '../components/signin'
+  import Medal from '../components/medal'
+  import {service} from './config.js'
+  const stepStandard = [5, 8, 10, 30, 50, 70, 90, 110, 130, 150, 200, 300, 400, 600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2400, 3000]
+  const redStandard = [5, 30, 90, 150, 400, 1000, 1600, 2000, 3000]
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTitleText: '个人中心'
+    }
+    components = {
+      signin: Signin,
+      medal: Medal
+    }
+    data = {
+      iphonex_class: '',
+      session_key: '',
+      open_id: '',
+      open_id_param: {},
+      run_data_param: {},
+
+      show_auth_userinfo: false,
+      show_play_desc: false,
+      show_signin: false,
+      is_signin: 0,
+      show_medal: false,
+      show_redpack_open: false,
+      show_redpack_success: false,
+      show_redpack_success_ercode: false,
+      medal_info: {
+        km: ''
+      },
+
+      user_info: {
+        score: 0
+      },
+      big_index: 0,
+      mid_index: [],
+      small_index: [],
+      swiper_info: {
+        img_urls: nationImgs,
+        current_index: 0
+      },
+      medal_count: 0,
+      bread_count: 0,
+      today_step: 0,
+      total_step: 0,
+      finish_step: {},
+      finish_red_pack: {},
+      current_redpack_nation_index: '', // 当前打开的红包属于那个国家的索引
+      can_open_redpack: true,
+      red_num: 0
+    }
+    computed = {
+      medal_count_img () {
+        if (!this.medal_count) {
+          return '../images/index/medal_count0.png'
+        } else {
+          return `https://bimbochinaclub.ysmine.com/Public/2018/07/medal_count/${this.medal_count}.png`
+        }
+      },
+      bread_count_img () {
+        if (!this.bread_count) {
+          return '../images/index/bread_count0.png'
+        } else {
+          return `https://bimbochinaclub.ysmine.com/Public/2018/07/bread_count/${this.bread_count}.png`
+        }
+      }
+    }
+    methods = {
+      jump_jkp () {
+        if (this.open_id) {
+          this.$root.$navigate({url: `/pages/jkp/jkp?open_id=${this.open_id}`})
+        } else {
+          wepy.showModal({
+            content: '您点击了拒绝授权，无法使用此功能。请删除小程序重新进入。',
+            showCancel: false
+          })
+        }
+      },
+      jump_reward_game () {
+        console.log('reward_game')
+        this.$root.$navigate({url: `/pages/reward/index?open_id=${this.open_id}&score=${this.user_info.score}`})
+      },
+      jump_lottery () {
+        console.log('lottery')
+        this.$root.$navigate({url: `/pages/lottery/index?open_id=${this.open_id}&score=${this.user_info.score}`})
+      },
+      prevNation () {
+        this.swiper_info.current_index = this.swiper_info.current_index > 0 ? this.swiper_info.current_index - 1 : this.swiper_info.img_urls.length - 1
+        this.$apply()
+      },
+      nextNation () {
+        this.swiper_info.current_index = this.swiper_info.current_index < (this.swiper_info.img_urls.length - 1) ? this.swiper_info.current_index + 1 : 0
+        this.$apply()
+      },
+      togglePlayDesc () {
+        this.show_play_desc = !this.show_play_desc
+      },
+      openRedpackFocus () {
+        this.show_redpack_success = false
+        this.show_redpack_success_ercode = true
+        this.red_num = 0
+      },
+      closeRedPackFocus () {
+        this.show_redpack_success_ercode = false
+      },
+      reqSignin () {
+        wepy.showLoading({
+          title: '加载中',
+          mask: true
+        })
+        wepy.request({
+          url: service.signIn,
+          method: 'POST',
+          data: {
+            open_id: this.open_id
+          },
+          header: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }).then((res) => {
+          console.log('REQ_signIn res: ', res)
+          wepy.hideLoading()
+          if (res.data.code === '200') {
+            this.is_signin = 0
+            this.show_signin = true
+            this.user_info.score = res.data.result.integral
+            this.$apply()
+          } else {
+            this.is_signin = 1
+            this.show_signin = true
+            this.$apply()
+            // wepy.showModal({
+            //   content: res.data.message,
+            //   showCancel: false
+            // })
+          }
+        })
+      },
+      signinEmit (...args) {
+        this.show_signin = false
+      },
+      medalEmit (...args) {
+        this.show_medal = false
+      },
+      jumpCharity () {
+        this.$root.$navigate({url: `/pages/charity/charity?bread_count=${this.bread_count}&open_id=${this.open_id}`})
+      },
+      reqRedpack (event) {
+        const cur = event.currentTarget.dataset.curredpackindex
+        if (cur === 0) {
+          this.current_redpack_nation_index = nationImgs.length - 1
+        } else {
+          this.current_redpack_nation_index = cur - 1
+        }
+        this.show_redpack_open = true
+      },
+      oepnRedpack () {
+        if (this.can_open_redpack) {
+          this.can_open_redpack = false
+          this.requestRedpack()
+        }
+      }
+    }
+    bindSwiperNation (e) {
+      this.swiper_info.current_index = e.detail.current
+    }
+    getUserInfoCb (res) {
+      console.log('getUserInfoCb', res)
+      this.user_info = res.detail.userInfo
+      this.user_info.score = 0
+      this.user_rawData = res.detail.rawData
+      this.user_signature = res.detail.signature
+      this.show_auth_userinfo = false
+      if (!this.run_data_param.encryptedData || !this.run_data_param.iv) {
+        wepy.showModal({
+          content: '您点击了拒绝授权，无法使用此功能。请删除小程序重新进入。',
+          showCancel: false
+        })
+        wepy.hideLoading()
+        return
+      }
+      this.requestRunData()
+    }
+    getUserRun () {
+      wepy.getWeRunData().then((res) => {
+        this.run_data_param.encryptedData = res.encryptedData
+        this.run_data_param.iv = res.iv
+        console.log('run_data_param', this.run_data_param)
+        this.$apply()
+      }).then((res) => {
+        this.getUserSetting()
+      }).catch((err) => {
+        console.log(err)
+        wepy.hideLoading()
+        wepy.showModal({
+          content: '您点击了拒绝授权，无法使用此功能。请删除小程序重新进入。',
+          showCancel: false
+        })
+      })
+    }
+    requestRunData () {
+      wepy.showLoading({
+        title: '数据加载中',
+        mask: true
+      })
+      const param = {
+        signature: this.user_signature,
+        code: this.code,
+        rawData: this.user_rawData,
+        nickname: this.user_info.nickName,
+        avatarurl: this.user_info.avatarUrl,
+        iv: this.run_data_param.iv,
+        encryptedData: this.run_data_param.encryptedData
+      }
+      wepy.request({
+        url: service.wxStepDecrypt,
+        method: 'GET',
+        data: param,
+        header: { 'Content-Type': 'application/json' }
+      }).then((res) => {
+        wepy.hideLoading()
+        console.log('REQ_wxStepDecrypt res:', res)
+        if (res.data.code === '200' || res.data.code === 200) {
+          this.open_id = res.data.result.open_id
+          this.handleRunData(res.data.result)
+        } else {
+          wepy.showModal({
+            content: '获取步数失败',
+            showCancel: false
+          })
+        }
+      }).catch(err => {
+        wepy.hideLoading()
+        console.log(err)
+      })
+    }
+    getTotalStepIndex (step) {
+      const curStep = Math.floor(step / 1000)
+      let stepIndex
+      if (curStep < stepStandard[0]) {
+        return 0
+      }
+      if (curStep >= stepStandard[stepStandard.length - 1]) {
+        return 23
+      }
+      stepStandard.forEach((val, index) => {
+        if (val > curStep && !stepIndex) {
+          stepIndex = index
+        }
+      })
+      return stepIndex
+    }
+    handleRunData (resdata) {
+      this.today_step = resdata.todayStep
+      this.total_step = resdata.total_step
+      this.is_signin = resdata.signIn // 是否已经签到过
+      this.user_info.score = resdata.integral
+      this.medal_count = resdata.medalCount
+      this.bread_count = resdata.bread_count
+      this.finish_red_pack = resdata.money.map((val) => {
+        return val / 1000
+      })
+      console.log('已领取红包档位: ', this.finish_red_pack)
+      // 处理步数
+      const curIndex = this.getTotalStepIndex(this.total_step)
+      console.log('curIndex: ', curIndex)
+      if (curIndex > 0) {
+        stepStandard.forEach((val, index) => {
+          if (index < curIndex) {
+            this.finish_step[`${val}k`].km = `${val}k`
+          }
+        })
+        // 改变国家显示的位置
+        this.swiper_info.current_index = curIndex - 1
+      }
+      // 现实medal弹窗
+      if (this.total_step / 1000 >= stepStandard[0]) {
+        this.medal_info.km = `${stepStandard[curIndex - 1]}k`
+        this.show_medal = true
+      }
+      // 判断红包显示
+      for (let i = 0; i < curIndex; i++) {
+        console.log('openedStep: ', stepStandard[i])
+        if (redStandard.indexOf(stepStandard[i]) !== -1) { // 判断 有红包
+          if (this.finish_red_pack.indexOf(stepStandard[i]) === -1) {
+            this.finish_step[`${stepStandard[i]}k`].have_redpack_open = true
+          }
+        }
+      }
+      this.$apply()
+    }
+    requestRedpack () {
+      wepy.showLoading({
+        title: '正在打开红包',
+        mask: true
+      })
+      wepy.request({
+        url: service.wxSendRed,
+        method: 'POST',
+        data: {
+          open_id: this.open_id,
+          nickname: this.user_info.nickName,
+          step: stepStandard[this.current_redpack_nation_index] * 1000
+        },
+        header: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      }).then((res) => {
+        wepy.hideLoading()
+        console.log('REQ_wxSendRed res: ', res)
+        if (res.statusCode === 200) {
+          this.show_redpack_open = false
+          this.show_redpack_success = true
+          this.can_open_redpack = true
+          this.red_num = res.data.result
+          // 重置所领取的国家上的红包按钮
+          if (this.finish_step[`${stepStandard[this.current_redpack_nation_index]}k`]) {
+            this.finish_step[`${stepStandard[this.current_redpack_nation_index]}k`].have_redpack_open = false
+          }
+          this.$apply()
+        } else {
+          wepy.showModal({
+            content: res.data.message,
+            showCancel: false
+          })
+        }
+      })
+    }
+    previewErcode (e) {
+      wepy.previewImage({
+        urls: [this.$parent.globalData.ercode_img]
+      })
+    }
+    getUserSetting () {
+      wepy.getSetting().then((res) => {
+        console.log(res)
+        if (res.authSetting['scope.userInfo']) {
+          this.scope_userinfo = true
+          console.log('scope.userInfo/true')
+          wepy.getUserInfo().then((res) => {
+            console.log(res)
+            this.user_info = res.userInfo
+            this.user_info.score = 0
+            this.user_rawData = res.rawData
+            this.user_signature = res.signature
+            this.show_auth_userinfo = false
+            if (!this.run_data_param.encryptedData || !this.run_data_param.iv) {
+              wepy.showModal({
+                content: '您xxxx点击了拒绝授权，无法使用此功能。请删除小程序重新进入。',
+                showCancel: false
+              })
+              wepy.hideLoading()
+              return
+            }
+            this.requestRunData()
+            this.$apply()
+          })
+        } else {
+          wepy.hideLoading()
+          this.scope_userinfo = false
+          console.log('scope.userInfo/false')
+          this.show_auth_userinfo = true
+          this.$apply()
+        }
+      }).catch((err) => {
+        console.log(err)
+        wepy.hideLoading()
+        wepy.showModal({
+          content: '获取信息失败',
+          showCancel: false
+        })
+      })
+    }
+    onShareAppMessage (res) {
+      return {
+        title: '宾堡环球健康跑',
+        path: '/pages/index',
+        imageUrl: 'https://bimbochinaclub.ysmine.com/Public/2018/07/common/shareimg.jpg'
+      }
+    }
+    onShow () {
+      this.iphonex_class = this.$parent.globalData.iphonex_class
+    }
+    onLoad () {
+      wepy.getSystemInfo().then((data) => {
+        console.log('system_info: ', data)
+        console.log('屏幕内容高度: ', data.windowHeight)
+        console.log('屏幕内容宽度: ', data.windowWidth)
+        if (data.windowHeight / data.windowWidth > 1.75) {
+          if (data.windowHeight > 720) {
+            this.$parent.globalData.iphonex_class = 'iphonex'
+            this.iphonex_class = 'iphonex'
+            this.$apply()
+          } else if (data.windowHeight > 630) {
+            this.$parent.globalData.iphonex_class = 'vivo'
+            this.iphonex_class = 'vivo'
+          }
+        }
+      })
+      wepy.showLoading({
+        title: '数据加载中',
+        mask: true
+      })
+      wepy.login().then((res) => {
+        console.log(res)
+        this.code = res.code
+      }).then((res) => {
+        this.getUserRun()
+      })
+
+      // 判断带红包的国家
+      stepStandard.forEach((val, index) => {
+        this.finish_step[`${val}k`] = {}
+        if (redStandard.indexOf(val) !== -1) {
+          this.finish_step[`${val}k`].red = true
+        }
+      })
+    }
+  }
+</script>

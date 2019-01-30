@@ -1,0 +1,109 @@
+<style lang="less">
+  .footnav_container {
+    width: 700rpx;
+    height: 95rpx;
+    margin: 0 auto;
+    background: #00a1e1;
+    border-radius: 60rpx 0 60rpx 0;
+    overflow: hidden;
+    .footnav_content {
+      display: flex;
+      text-align: center;
+      color: #fff;
+      font-size: 20rpx;
+      .navitem {
+        flex: 1;
+        height: 100%;
+        padding-top: 15rpx;
+        position: relative;
+        &::after {
+          content: '';
+          height: 50rpx;
+          width: 1px;
+          background: #fff;
+          position: absolute;
+          right: 0;
+          top: 30%;
+        }
+        &:last-child {
+          &::after {
+            content: '';
+            width: 0;
+          }
+        }
+        &.active {
+          color: #32526d;
+        }
+        image {
+          width: 40rpx;
+          height: 40rpx;
+        }
+      }
+    }
+  }
+</style>
+<template>
+  <view class="footnav_container">
+    <view class="footnav_content">
+      <view class="navitem" @tap="jumpJkp">
+        <image src="../images/component/icon_jkp.png"/>
+        <view>健康跑报名</view>
+      </view>
+      <view class="navitem" @tap="jumpGrzx">
+        <image src="../images/component/icon_grzx.png"/>
+        <view>个人中心</view>
+      </view>
+      <view class="navitem {{navindex == 2 ? 'active' : ''}}" @tap="jumpSjs">
+        <image src="../images/component/icon_sjs_1.png" wx:if="{{navindex == 2}}"/>
+        <image src="../images/component/icon_sjs.png" wx:else/>
+        <view>赏金赛</view>
+      </view>
+      <view class="navitem {{navindex == 3 ? 'active' : ''}}" @tap="jumpJfcj">
+        <image src="../images/component/icon_jfcj_1.png" wx:if="{{navindex == 3}}"/>
+        <image src="../images/component/icon_jfcj.png" wx:else/>
+        <view>积分抽奖</view>
+      </view>
+    </view>
+  </view>
+</template>
+<script>
+  import wepy from 'wepy'
+
+  export default class Footnav extends wepy.component {
+    props = {
+      navindex: String,
+      openId: '',
+      score: 0
+    }
+    data = {}
+    computed = {}
+    methods = {
+      jumpJkp () {
+        // this.$root.$navigate({url: `/pages/jkp/jkp?open_id=${this.openId}`})
+        this.$root.$redirect({url: `/pages/jkp/jkp?open_id=${this.openId}`})
+      },
+      jumpGrzx () {
+        // this.$root.$navigate({url: `/pages/index?open_id=${this.openId}`})
+        this.$root.$redirect({url: `/pages/index?open_id=${this.openId}`})
+      },
+      jumpSjs () {
+        // if (this.navindex === '2') {
+        //   return
+        // }
+        // this.$root.$navigate({url: `/pages/reward/index?open_id=${this.openId}`})
+        this.$root.$redirect({url: `/pages/reward/index?open_id=${this.openId}&score=${this.score}`})
+      },
+      jumpJfcj () {
+        // if (this.navindex === '3') {
+        //   return
+        // }
+        // this.$root.$navigate({url: `/pages/lottery/index?open_id=${this.openId}`})
+        this.$root.$redirect({url: `/pages/lottery/index?open_id=${this.openId}&score=${this.score}`})
+      }
+    }
+    onShow () {
+      console.log(this.openId)
+      console.log(this.score)
+    }
+  }
+</script>
