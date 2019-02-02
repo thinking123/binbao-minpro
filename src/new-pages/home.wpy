@@ -1,6 +1,14 @@
 <template>
   <view class="page">
-    <image class="banner" src="{{url}}home-banner.png"/>
+    <view class="banner">
+      <image class="banner-bg" src="{{url}}home-banner.png"/>
+      <button
+        class="bonus"
+        @tap="handleBonus">
+        瓜分{{bonusStr}} 奖金
+      </button>
+    </view>
+
     <view class="nav-btns">
 
       <repeat key="index"
@@ -47,11 +55,13 @@
               当前麦力值：{{currentMlValue}}
             </view>
             <view class="his-ml-value">
-              历史累计麦力值：{{historyMlValue}}
+              /历史累计麦力值：{{historyMlValue}}
             </view>
           </view>
         </view>
-        <view class="step-wrap">
+        <view
+          @tap="handleMyStep"
+          class="step-wrap">
           <image src="{{url}}home-footer-my-step.png"/>
           <view class="step">
             我的步数
@@ -60,7 +70,7 @@
       </view>
       <view class="footer-btm">
         <view class="line"/>
-        <view class="footer-btm-text">
+        <view class="footer-btm-text" @tap="handleHowToPlay">
           玩法说明
         </view>
         <view class="line"/>
@@ -71,6 +81,7 @@
 
 <script>
   import wepy from 'wepy'
+  import {numberWithCommas} from '../utils/common'
 
   const url = './'
   export default class Home extends wepy.page {
@@ -85,13 +96,29 @@
         { key: 'home-nav-btn3', text: '知识挑战' },
         { key: 'home-nav-btn4', text: '幸运挑战' }
       ],
-      medalNum:5,
-      currentMlValue:2700,
-      historyMlValue:288890
+      medalNum: 5,
+      currentMlValue: 2700,
+      historyMlValue: 288890,
+      bonus:100000
+    }
+    computed = {
+      bonusStr () {
+        const str = `${this.bonus}`
+        return numberWithCommas(str)
+      }
     }
     methods = {
       handleNavBtn(btn) {
         console.log('tap', btn)
+      },
+      handleHowToPlay(){
+        console.log('handleHowToPlay')
+      },
+      handleMyStep(){
+        console.log('handleMyStep')
+      },
+      handleBonus(){
+        console.log('handleBonus')
       }
     }
 
@@ -108,6 +135,7 @@
 <style lang="scss">
   @import "../css/variables";
 
+  $footer-fontsize: 18rpx;
   .page {
     width: 100%;
     height: 100%;
@@ -122,6 +150,34 @@
     .banner {
       height: percentage((187 - $statusBarHeight) / 667);
       width: 100%;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      >image{
+        width: 100%;
+        height: 100%;
+      }
+
+      >button{
+        width: 370rpx;
+        height: 45rpx;
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        border: none;
+        border-radius: 45rpx;
+        bottom: 26rpx;
+        background-color: #F5B020;
+        color:white;
+        font-weight: bold;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 32rpx;
+
+        box-shadow:  0 10rpx 30rpx black;
+      }
+
     }
 
     .nav-btns {
@@ -136,14 +192,14 @@
         flex-direction: column;
         align-items: center;
         /*padding: 14rpx 44rpx 20rpx 44rpx;*/
-        margin: 14 rpx 0 20 rpx;
+        margin: 14rpx 0 20rpx;
 
 
         .nav-btn-bg-wrap {
-          width: 88 rpx;
-          height: 88 rpx;
+          width: 88rpx;
+          height: 88rpx;
           /*padding: 14rpx 44rpx 0 44rpx;*/
-          border-radius: 88 rpx;
+          border-radius: 88rpx;
 
           overflow: hidden;
         }
@@ -154,9 +210,9 @@
         }
 
         .nav-btn-text {
-          font-size: 20 rpx;
+          font-size: 20rpx;
           /*padding: 10rpx 0 20rpx 0;*/
-          margin-top: 10 rpx;
+          margin-top: 10rpx;
           white-space: nowrap;
         }
 
@@ -167,7 +223,7 @@
           /*background-color: #D2D2D2;*/
           /*margin-top: 8rpx;*/
 
-          border-right: 1 rpx solid #D2D2D2;
+          border-right: 1rpx solid #D2D2D2;
         }
       }
 
@@ -192,31 +248,38 @@
       height: 178rpx;
       background-color: #FFFFFF;
       padding: 6rpx 30rpx 8rpx;
-      .footer-body{
+
+      .footer-body {
         /*margin: 0 30rpx;*/
         display: flex;
         flex-direction: row;
+        margin-bottom: 24rpx;
 
-        .medal-wrap{
+        .medal-wrap {
           display: flex;
           flex-direction: column;
           width: 138rpx;
           justify-content: center;
           align-items: center;
           white-space: nowrap;
-          >image{
+
+          > image {
             width: 76rpx;
             height: 68rpx;
           }
 
-          .got-medal{
-            font-size: 24rpx;
+          .got-medal {
+            font-size: $footer-fontsize;
             display: flex;
             flex-direction: row;
             flex-wrap: nowrap;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
 
-            .medal-num{
-              color:red;
+            .medal-num {
+              color: red;
               font-size: 28rpx;
               font-weight: bold;
               margin: 0 2rpx;
@@ -224,37 +287,83 @@
           }
         }
 
-        .footer-text{
-          flex:1;
+        .footer-text {
+          flex: 1;
           display: flex;
           flex-direction: column;
 
           justify-content: center;
           align-items: center;
 
-          margin-top: 26rpx;
-          .footer-text-title{
+          /*margin-top: 26rpx;*/
+          .footer-text-title {
             font-weight: bold;
             font-size: 30rpx;
 
-            margin-bottom: 22rpx;
+            /*margin-bottom: 22rpx;*/
+            height: 68rpx;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
           }
 
-          .ml-wrap{
+          .ml-wrap {
             display: flex;
             flex-direction: row;
-            font-size: 22rpx;
+            font-size: $footer-fontsize;
             white-space: nowrap;
+
+            >view{
+              margin: 0 10rpx;
+            }
           }
         }
 
-        .step-wrap{
+        .step-wrap {
           width: 138rpx;
-          font-size: 24rpx;
-          >image{
-            width: 76rpx;
-            height: 68rpx;
+          font-size: $footer-fontsize;
+          position: relative;
+
+          display: flex;
+          flex-direction: column;
+
+          justify-content: center;
+          align-items: center;
+          > image {
+            width: 72rpx;
+            height: 50rpx;
+            position: relative;
+            top:9rpx;
+            margin-bottom: 18rpx;
           }
+        }
+      }
+
+      .footer-btm {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .line {
+          height: 0;
+          border-bottom: 1rpx solid black;
+          /*background-color: black;*/
+          flex: 1;
+        }
+
+        .footer-btm-text {
+          font-size: $footer-fontsize + 4rpx;
+          margin: 0 10rpx;
+          position: relative;
+
+
+        }
+        .footer-btm-text::after {
+          content: '>';
+          position: absolute;
+          transform: rotate(90deg);
+          left: 50%;
+          top: 100%;
         }
       }
     }
