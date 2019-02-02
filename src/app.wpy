@@ -19,6 +19,12 @@ import 'wepy-async-function'
 export default class extends wepy.app {
   config = {
     pages: [
+      //new pages
+      'new-pages/home',
+
+
+
+      //old version pages
       'pages/index', // 个人中心
       'pages/reward/myreward', // 赏金赛我的奖励
       'pages/reward/index', // 赏金赛主页
