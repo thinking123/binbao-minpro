@@ -147,6 +147,7 @@
     flex-direction: column;
     justify-content: stretch;
 
+    background-color: #F3F1EA;
     .banner {
       height: percentage((187 - $statusBarHeight) / 667);
       width: 100%;
@@ -240,7 +241,7 @@
 
     .content {
       flex: 1;
-      background-color: #40c463;
+
     }
 
     .footer {
