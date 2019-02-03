@@ -26,13 +26,18 @@
           </view>
 
         </view>
-        <!--<view class="nav-btn-line"/>-->
+        <!--<view class="nav-btn-line"/>
+           locked="{{url}}locked.png"
+        -->
       </repeat>
 
 
     </view>
     <view class="content">
+      <carouselswiper
+        :selected.sync="selected"
 
+        :images.sync="images"/>
     </view>
     <view class="footer">
       <view class="footer-body">
@@ -82,11 +87,14 @@
 <script>
   import wepy from 'wepy'
   import {numberWithCommas} from '../../utils/common'
-
+  //组件引用不能带.wpy后缀
+  import CarouselSwiper from '../../components/carouse-item/carousel-swiper'
   const url = './'
   export default class Home extends wepy.page {
     config = {}
-    components = {}
+    components = {
+      'carouselswiper':CarouselSwiper
+    }
 
     data = {
       url: url,
@@ -99,7 +107,9 @@
       medalNum: 5,
       currentMlValue: 2700,
       historyMlValue: 288890,
-      bonus:100000
+      bonus:100000,
+      images:[],
+      selected:0
     }
     computed = {
       bonusStr () {
@@ -125,6 +135,20 @@
     events = {}
 
     onLoad() {
+      const steps = [5,8,15,40,80,120,160,200,280,240,320,360]
+      this.selected = 5
+      for (let i = 0; i < 12; i++) {
+          let m = {
+            url:`${this.url}home-level${i+1}.png`,
+            icon:`${this.url}home-icon${i+1}.png`,
+            locked:i > this.selected,
+            step:`${steps[i]}k`
+          }
+
+          this.images.push(m)
+      }
+
+      console.log('init images' , this.images)
     };
 
     // Other properties
@@ -241,7 +265,11 @@
 
     .content {
       flex: 1;
-
+      display: flex;
+      > view{
+        flex:1;
+        margin: 14rpx 10rpx;
+      }
     }
 
     .footer {

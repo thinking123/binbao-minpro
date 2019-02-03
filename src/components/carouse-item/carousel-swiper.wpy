@@ -1,0 +1,321 @@
+<template>
+  <view
+    @touchstart="handleTouchStart"
+    @touchend="handleTouchEnd"
+    class="carousel-swiper">
+    <repeat key="index"
+            index="index"
+            item="image"
+            for="{{images}}">
+
+      <view
+        class="image-wrap  {{index > selected + 1 ? 'image-next-hidden' : ''}} {{index < selected - 1 ? 'image-pre-hidden' : ''}} {{index == selected + 1 ? 'image-next' : ''}} {{index == selected - 1 ? 'image-pre' : ''}} {{index == selected ? 'image-current' : ''}} ">
+        <image src="{{image.url}}"
+
+               class="bg"/>
+
+        <image src="{{image.icon}}"
+               class="icon"
+               wx:if="{{selected===index && !image.locked}}"/>
+
+        <view
+          class="step-content {{image.locked ? 'locked':''}}"
+          wx:if="{{selected!==index}}">
+          <view class="step-wrap">
+            <view class="step">
+              {{image.step}}
+            </view>
+            <view>
+              步
+            </view>
+
+          </view>
+          <image wx:if="{{image.locked}}" src="{{url}}home-locked.png" class="lock"/>
+        </view>
+
+      </view>
+    </repeat>
+    <image class="prev-btn"
+           @tap="hanleLeft"
+           src="{{url}}carousel-swiper-left-btn.png"/>
+    <image class="next-btn"
+           @tap="hanleRight"
+           src="{{url}}carousel-swiper-right-btn.png"/>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import CarouseItem from './carouse-item'
+  const app = getApp()
+  const url = './'
+  export default class CarouselSwiper extends wepy.component {
+    components = {
+      'carouse-item':CarouseItem
+    }
+
+    data = {
+      startX: 0,
+      endX: 0,
+      url: url
+    }
+
+
+    getImageClass(index){
+      let cs = ''
+      if(index == this.selected){
+        cs = 'image-current'
+      }else if(index == (this.selected + 1)){
+        cs = 'image-next'
+      }else if(index == (this.selected - 1)){
+        cs = 'image-pre'
+      }else if(index > (this.selected + 1)){
+        cs = 'image-next-hidden'
+      }else if(index < (this.selected - 1)){
+        cs = 'image-pre-hidden'
+      }
+
+      return cs
+    }
+    methods = {
+      hanleLeft(){
+        if (this.selected < (this.images.length - 1)) {
+          console.log('move left')
+
+          // this.moveRight();
+          this.selected++
+        }
+      },
+      hanleRight(){
+        if (this.selected > 0) {
+          console.log('move right')
+          // this.moveLeft();
+          this.selected--
+        }
+      },
+      handleTouchStart(e) {
+
+        // console.log(e)
+        if(!e.changedTouches || e.changedTouches.length === 0){
+          return
+        }
+        var startX = e.changedTouches[0].pageX
+        this.startX = startX
+        // this.setData({
+        //   startX: startX
+        // })
+      },
+      handleTouchEnd(e) {
+        // console.log(e)
+        if(!e.changedTouches || e.changedTouches.length === 0){
+          return
+        }
+        var that = this
+        var endX = e.changedTouches[0].pageX
+        this.endX = endX
+        // this.setData({
+        //   endX: endX
+        // })
+        //计算手指触摸偏移剧距离
+        var moveX = this.startX - this.endX
+        //向左移动
+        if (moveX > 30 && this.selected < (this.images.length - 1)) {
+          console.log('move left')
+
+          // this.moveRight();
+          this.selected++
+        }
+        if (moveX < -30 && this.selected > 0) {
+          console.log('move right')
+          // this.moveLeft();
+          this.selected--
+        }
+      }
+    }
+
+    computed = {
+      getImageClass() {
+        let index = this.index
+        let cs = ''
+        if(index == this.selected){
+          cs = 'image-current'
+        }else if(index == (this.selected + 1)){
+          cs = 'image-next'
+        }else if(index == (this.selected - 1)){
+          cs = 'image-pre'
+        }else if(index > (this.selected + 1)){
+          cs = 'image-next-hidden'
+        }else if(index < (this.selected - 1)){
+          cs = 'image-pre-hidden'
+        }
+
+        return cs
+      }
+    }
+    events = {}
+    props = {
+      images: {
+        type: Array,
+        default: []
+      },
+      selected: {
+        type: Number,
+        default: 0,
+        twoWay: true
+      },
+      locked:String
+
+    }
+    // Other properties
+  }
+</script>
+
+<style lang="scss">
+  /*
+  H:300
+  hpre:255
+  */
+  .carousel-swiper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+
+
+
+
+
+    .prev-btn{
+      position: absolute;
+      width: 80rpx;
+      height: 80rpx;
+      left: 18.13%;
+      top:50%;
+      transform: translate(-50% , -50%);
+    }
+    .next-btn{
+      position: absolute;
+      width: 80rpx;
+      height: 80rpx;
+      right: 18.13%;
+      top:50%;
+      transform: translate(50% , -50%);
+    }
+    .image-wrap{
+      display: flex;
+      position: absolute;
+      height: 100%;
+      transition:all 0.5s ease-in-out;
+      border-radius: 20rpx;
+      overflow: hidden;
+      .step-content{
+        background-color: #4C4B41;
+        opacity: 0.5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        .step-wrap{
+          white-space: nowrap;
+          color:white;
+          font-size: 24rpx;
+          margin-top: 76rpx;
+          >view{
+            display: inline-block;
+          }
+          .step{
+            font-size: 50rpx;
+            font-weight: bold;
+            margin-right: 6rpx;
+          }
+        }
+
+        .lock{
+          width: 40rpx;
+          height: 40rpx;
+        }
+        &.locked{
+          background-color: #4C4B41;
+          opacity: 0.8;
+        }
+      }
+
+      .bg{
+        flex:1;
+        height: 100%;
+      }
+      .icon{
+        position: absolute;
+        height: 106rpx;
+        width: 116rpx;
+        top:22rpx;
+        left:50%;
+        transform: translateX(-50%);
+      }
+
+      .step-content{
+        position: absolute;
+      }
+    }
+    .image-current{
+      width:59.5%;
+      left:50%;
+      transform: scale(1) translateX(-50%);
+    }
+
+    .image-pre{
+      width:19.56%;
+      transform: scale(0.85);
+      left:0;
+    }
+
+    .image-pre-hidden{
+      left:0;
+      width:19.56%;
+      transform: scale(0.85) translateX(-110%);
+    }
+    .image-next{
+      width:19.56%;
+      transform: scale(0.85);
+      right:0;
+    }
+    .image-next-hidden{
+      right:0;
+      width:19.56%;
+      transform: scale(0.85)  translateX(110%);
+    }
+    /*
+     right:-100%;
+    .image-current{*/
+      /*flex:57.3;*/
+      /*transform: scale(1);*/
+      /*justify-content: center;*/
+    /*}*/
+
+    /*.image-pre{*/
+      /*flex:18.93;*/
+      /*transform: scale(0.85);*/
+      /*justify-content: flex-start;*/
+    /*}*/
+
+    /*.image-pre-hidden{*/
+      /*flex:0;*/
+      /*transform: scale(0.85);*/
+      /*justify-content: flex-start;*/
+    /*}*/
+    /*.image-next{*/
+      /*flex:18.93;*/
+      /*transform: scale(0.85);*/
+      /*justify-content: flex-end;*/
+    /*}*/
+    /*.image-next-hidden{*/
+      /*flex:18.93;*/
+      /*transform: scale(0.85);*/
+      /*justify-content: flex-end;*/
+    /*}*/
+  }
+</style>

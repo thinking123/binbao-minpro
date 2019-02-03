@@ -1,0 +1,109 @@
+<template>
+  <view>
+    <image src="{{url}}" :class="{'image-current':isCur,'image-pre':isPre}" class="bg"/>
+
+    {{index}}:{{selected}}
+  </view>
+
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class CarouseItem extends wepy.component {
+    components = {}
+
+    data = {
+    }
+    methods = {}
+    computed = {
+      isCur(){
+        console.log('index , selected' ,  this.index , this.selected , this)
+          return this.index == this.selected
+      },
+      isPre(){
+        return this.index == (this.selected - 1)
+      },
+      isNext(){
+        return this.index == (this.selected + 1)
+      },
+      isPreHidden(){
+        return this.index > (this.selected - 1)
+      },
+      isNextHidden(){
+        return this.index < (this.selected + 1)
+      },
+      cls(){
+        let index = this.index
+        let cs = ''
+        if(index == this.selected){
+          cs = 'image-current'
+        }else if(index == (this.selected + 1)){
+          cs = 'image-next'
+        }else if(index == (this.selected - 1)){
+          cs = 'image-pre'
+        }else if(index > (this.selected + 1)){
+          cs = 'image-next-hidden'
+        }else if(index < (this.selected - 1)){
+          cs = 'image-pre-hidden'
+        }
+
+        return cs
+      },
+      imageUrl(){
+        return this.url
+      }
+    }
+    events = {}
+    props = {
+      selected: {
+        type: Number,
+        default: 0
+      },
+      index: {
+        type: Number,
+        default: 0
+      },
+      url:{
+        type:String,
+        default:''
+      }
+
+    }
+    // Other properties
+  }
+</script>
+
+<style lang="scss">
+  .bg{
+    flex:1;
+    height: 100%;
+  }
+  .image-current {
+    width: 57.3%;
+    left: 50%;
+    transform: scale(1) translateX(-50%);
+  }
+
+  .image-pre {
+    width: 18.93%;
+    transform: scale(0.85);
+    left: 0;
+  }
+
+  .image-pre-hidden {
+    left: -100%;
+    transform: scale(0.85);
+  }
+
+  .image-next {
+    width: 18.93%;
+    transform: scale(0.85);
+    right: 0;
+  }
+
+  .image-next-hidden {
+    right: 100%;
+    transform: scale(0.85);
+  }
+</style>
