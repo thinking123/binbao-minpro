@@ -19,9 +19,9 @@
                wx:if="{{selected===index && !image.locked}}"/>
 
         <view
-          class="step-content {{image.locked ? 'locked':''}}"
-          wx:if="{{selected!==index}}">
-          <view class="step-wrap">
+          class="step-content {{selected!==index ? 'not-current' : ''}} {{image.locked ? 'locked':''}}">
+          <view class="step-wrap"
+                style="visibility: {{selected!==index ? 'visible' : 'hidden'}}">
             <view class="step">
               {{image.step}}
             </view>
@@ -211,9 +211,13 @@
       transition:all 0.5s ease-in-out;
       border-radius: 20rpx;
       overflow: hidden;
-      .step-content{
+
+      .not-current{
         background-color: #4C4B41;
         opacity: 0.5;
+      }
+      .step-content{
+
         display: flex;
         flex-direction: column;
         align-items: center;
