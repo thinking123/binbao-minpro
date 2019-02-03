@@ -20,7 +20,7 @@ export default class extends wepy.app {
   config = {
     pages: [
       //new pages
-      'new-pages/home',
+      'new-pages/home/home',
 
 
 

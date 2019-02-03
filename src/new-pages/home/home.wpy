@@ -81,7 +81,7 @@
 
 <script>
   import wepy from 'wepy'
-  import {numberWithCommas} from '../utils/common'
+  import {numberWithCommas} from '../../utils/common'
 
   const url = './'
   export default class Home extends wepy.page {
@@ -133,7 +133,7 @@
 
 
 <style lang="scss">
-  @import "../css/variables";
+  @import "../../css/variables";
 
   $footer-fontsize: 18rpx;
   .page {
