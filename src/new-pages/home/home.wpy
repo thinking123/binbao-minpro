@@ -126,6 +126,7 @@
       },
       handleMyStep(){
         console.log('handleMyStep')
+        this.$navigate('../step-share')
       },
       handleBonus(){
         console.log('handleBonus')

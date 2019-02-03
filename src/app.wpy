@@ -20,7 +20,9 @@ export default class extends wepy.app {
   config = {
     pages: [
       //new pages
+      'new-pages/step-share/index',
       'new-pages/home/home',
+
 
 
 
@@ -45,7 +47,7 @@ export default class extends wepy.app {
     window: {
       backgroundTextStyle: 'light',
       navigationBarBackgroundColor: '#fff',
-      navigationBarTitleText: '宾堡环球健康跑',
+      navigationBarTitleText: '麦向健康每一天',
       navigationBarTextStyle: 'black'
     }
   }
