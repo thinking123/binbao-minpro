@@ -36,7 +36,7 @@
     <view class="content">
       <carouselswiper
         :selected.sync="selected"
-
+        carousel-swiper-external="carousel-swiper"
         :images.sync="images"/>
     </view>
     <view class="footer">
@@ -270,9 +270,15 @@
     .content {
       flex: 1;
       display: flex;
-      > view{
-        flex:1;
+      /*> view{*/
+        /*flex:1;*/
+        /*margin: 14rpx 10rpx;*/
+      /*}*/
+      .carousel-swiper{
         margin: 14rpx 10rpx;
+        /*width: 100%;*/
+        /*height: 100%;*/
+        flex:1;
       }
     }
 

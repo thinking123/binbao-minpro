@@ -2,7 +2,7 @@
   <view
     @touchstart="handleTouchStart"
     @touchend="handleTouchEnd"
-    class="carousel-swiper">
+    class="carousel-swiper carousel-swiper-external">
     <repeat key="index"
             index="index"
             item="image"
@@ -46,14 +46,11 @@
 
 <script>
   import wepy from 'wepy'
-  import CarouseItem from './carouse-item'
   const app = getApp()
   // const url = './'
   export default class CarouselSwiper extends wepy.component {
-    components = {
-      'carouse-item':CarouseItem
-    }
-
+    components = {}
+    externalClasses= ['carousel-swiper-external']
     onLoad(){
       this.url = wepy.$instance.globalData.url
     }
@@ -275,8 +272,7 @@
     }
     .image-current{
       width:59.5%;
-      left:50%;
-      transform: scale(1) translateX(-50%);
+      left:19.73%;
     }
 
     .image-pre{
@@ -286,48 +282,19 @@
     }
 
     .image-pre-hidden{
-      left:0;
+      left:-100%;
       width:19.56%;
-      transform: scale(0.85) translateX(-110%);
+      transform: scale(0.85);
     }
     .image-next{
       width:19.56%;
       transform: scale(0.85);
-      right:0;
+      left:80%;
     }
     .image-next-hidden{
-      right:0;
+      left:100%;
       width:19.56%;
-      transform: scale(0.85)  translateX(110%);
+      transform: scale(0.85);
     }
-    /*
-     right:-100%;
-    .image-current{*/
-      /*flex:57.3;*/
-      /*transform: scale(1);*/
-      /*justify-content: center;*/
-    /*}*/
-
-    /*.image-pre{*/
-      /*flex:18.93;*/
-      /*transform: scale(0.85);*/
-      /*justify-content: flex-start;*/
-    /*}*/
-
-    /*.image-pre-hidden{*/
-      /*flex:0;*/
-      /*transform: scale(0.85);*/
-      /*justify-content: flex-start;*/
-    /*}*/
-    /*.image-next{*/
-      /*flex:18.93;*/
-      /*transform: scale(0.85);*/
-      /*justify-content: flex-end;*/
-    /*}*/
-    /*.image-next-hidden{*/
-      /*flex:18.93;*/
-      /*transform: scale(0.85);*/
-      /*justify-content: flex-end;*/
-    /*}*/
   }
 </style>
