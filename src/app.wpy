@@ -15,34 +15,45 @@ page {
 <script>
 import wepy from 'wepy'
 import 'wepy-async-function'
-
+// const cdnBaseUrl = './'
+const cdnBaseUrl = 'http://pmdtwfss0.bkt.clouddn.com/'
 export default class extends wepy.app {
   config = {
     pages: [
       //new pages
-      'new-pages/step-share/index',
+
       'new-pages/home/home',
+      'new-pages/step-share/index',
 
 
 
 
-      //old version pages
-      'pages/index', // 个人中心
-      'pages/reward/myreward', // 赏金赛我的奖励
-      'pages/reward/index', // 赏金赛主页
-      'pages/reward/rtrank', // 赏金赛实时排行
-      'pages/lottery/index', // 积分抽奖主页
-      'pages/jkp/inquire', // 赛后查询页面
-      'pages/link/jd', // 京东优惠券外部链接
-      'pages/link/photo', // 京东优惠券外部链接
-      'pages/link/fengxiang', // 凤祥优惠券连接
-      'pages/jkp/jkp_apply', // 选手申明，填写信息，信息填全（支付之前）
-      'pages/jkp/apply_pay', // 报名费用，报名成功，参赛选手信息
-      'pages/charity/charity_pay', // 慈善支付
-      'pages/charity/charity', // 慈善
-      'pages/jkp/jkp', // 宾堡环球健康跑
-      'pages/jkp/learn_more', // 了解更多
-      'pages/jkp/poster' // 海报
+
+    ],
+    subpackages: [
+      {
+        root:"pages",
+        name:"old-version",
+        pages:[
+          //old version pages
+          'index', // 个人中心
+          'reward/myreward', // 赏金赛我的奖励
+          'reward/index', // 赏金赛主页
+          'reward/rtrank', // 赏金赛实时排行
+          'lottery/index', // 积分抽奖主页
+          'jkp/inquire', // 赛后查询页面
+          'link/jd', // 京东优惠券外部链接
+          'link/photo', // 京东优惠券外部链接
+          'link/fengxiang', // 凤祥优惠券连接
+          'jkp/jkp_apply', // 选手申明，填写信息，信息填全（支付之前）
+          'jkp/apply_pay', // 报名费用，报名成功，参赛选手信息
+          'charity/charity_pay', // 慈善支付
+          'charity/charity', // 慈善
+          'jkp/jkp', // 宾堡环球健康跑
+          'jkp/learn_more', // 了解更多
+          'jkp/poster' // 海报
+        ]
+      }
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -53,7 +64,8 @@ export default class extends wepy.app {
   }
 
   globalData = {
-    ercode_img: 'https://bimbochinaclub.ysmine.com/Public/2018/07/common/bb_ercode.png'
+    ercode_img: 'https://bimbochinaclub.ysmine.com/Public/2018/07/common/bb_ercode.png',
+    url:cdnBaseUrl
     // iphonex_class: 'not'
   }
   onLaunch () {

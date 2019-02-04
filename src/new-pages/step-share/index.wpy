@@ -1,12 +1,12 @@
 <template>
     <view class="page" id="page">
       <!-- canvas 必须有 canvas-id ，否则display:none-->
-      <canvas   @longpress="handleSaveImage"  class="canvas" canvas-id="canvas">
+      <canvas   @longpress="handleSaveImage"  class="canvas" canvas-id="canvas" style="height:{{cHeight}}">
 
       </canvas>
       <image
 
-        src="{{url}}step-share-bg.png" class="bg"/>
+        src="{{url}}step-share-bg.png" class="bg" wx:if="sc"/>
 
       <view class="avatar-wrap">
         <view class="user-avatar">
@@ -56,102 +56,218 @@
 import wepy from 'wepy';
 import {numberWithCommas} from '../../utils/common'
 
-const url = './'
 export default class StepShare extends wepy.page {
-    config = {};
-    components = {};
+  config = {}
+  components = {}
 
-    data = {
-      url:url,
-      step:12345
-    };
+  data = {
+    url: '',
+    step: 12345,
+    sc:true,
+    cHeight:'100%'
+  }
   computed = {
-      stepStr(){
-        return numberWithCommas(this.step , 4)
-      }
+    stepStr() {
+      return numberWithCommas(this.step, 4)
     }
-    methods = {
-      handleShow(){
+  }
 
-      },
-      handleReturn(){
-        this.$navigateBack()
-      },
-      handleSaveImage(){
-        console.log('you press')
-        let q = wx.createSelectorQuery()
-        let page = q.select('#page')
-        if(!page){
-          console.log('page')
-        }else{
-          console.log(page)
-        }
-        page.boundingClientRect(rect => {
-          let w = rect.width
-          let h = rect.height
-          console.log(w , h)
-          const ctx = wx.createCanvasContext('canvas')
+  getScreenShot(){
+    const statusBarHeight = 64
+    const q = wx.createSelectorQuery()
+    const page = q.select('#page')
+    const url = this.url
+    const that = this
+    wx.getSystemInfo({
 
+      success: function(res) {
+        let clientHeight = res.windowHeight
+        let clientWidth = res.windowWidth
+        let ratio = 750 / clientWidth
+        let height = clientHeight * ratio
 
+        console.log(res , clientHeight , clientWidth , ratio , height)
+        // return
+        const w = res.screenWidth
+        const h = res.screenHeight
+        that.cHeight = h  + 'px'
+        const statusBarHeight = 0
+        console.log(w, h)
+        const ctx = wx.createCanvasContext('canvas')
 
-          ctx.setFillStyle('red')
-          ctx.fillRect(10, 10, 150, 100)
-          ctx.fillRect(50, 50, 150, 100)
-          ctx.draw(false, ()=>{
-            console.log('draw ,comper' )
-            const obj = {
-              x:0,
-              y:0,
-              width:w,
-              height:h,
+        //draw bg
+        const imageUrl = `${url}step-share-bg.png`
+        ctx.drawImage(imageUrl , 0 , 0 , w , h )
 
-              canvasId:'canvas',
-              success:tempFilePath=>{
-                console.log('file path' , tempFilePath.tempFilePath)
-                const urls = [tempFilePath.tempFilePath]
-                wx.previewImage({
-                  urls:urls
-                })
-              }
+        // ctx.rect(0 , 0 , w , h)
+
+        // ctx.draw(false)
+        // this.sc = false
+        // return;
+        ctx.draw(false , ()=>{
+          console.log('draw ,comper' , w, h )
+          const obj = {
+            x:0,
+            y:0,
+            width:w ,
+            height:h    + statusBarHeight,
+            // destWidth:w * 5,
+            // destHeight:h * 12,
+            canvasId:'canvas',
+            quality:1,
+            success:tempFilePath=>{
+              console.log('file path' , tempFilePath)
+              const urls = [tempFilePath.tempFilePath]
+              wx.previewImage({
+                urls:urls,
+                success:()=>{
+                  console.log("success")
+                },
+                fail:()=>{
+                  console.log("fail")
+                }
+              })
             }
-            wx.canvasToTempFilePath(obj, this)
-          })
+          }
 
 
-
-          // ctx.rect(0 , 0 , w , h)
-          // ctx.draw(false , ()=>{
-          //   console.log('draw ,comper' , w,h )
-          //   const obj = {
-          //     canvasId:'canvas',
-          //     success:tempFilePath=>{
-          //       console.log('file path' , tempFilePath)
-          //       const urls = [tempFilePath.tempFilePath]
-          //       wx.previewImage({
-          //         urls:urls,
-          //         success:()=>{
-          //           console.log("success")
-          //         },
-          //         fail:()=>{
-          //           console.log("fail")
-          //         }
-          //       })
-          //     }
-          //   }
-          //
-          //
-          //   wx.canvasToTempFilePath(obj, this)
-          // })
-        }).exec()
-
-
+          wx.canvasToTempFilePath(obj, this)
+        })
 
       }
-    };
+    })
+return
+    page.boundingClientRect(rect => {
+      const w = rect.width
+      const h = rect.height
+      console.log(w, h)
+      const ctx = wx.createCanvasContext('canvas')
+
+      //draw bg
+      const imageUrl = `${this.url}step-share-bg.png`
+      ctx.drawImage(imageUrl , 0 , 0 , w , h  + statusBarHeight)
+
+      // ctx.rect(0 , 0 , w , h)
+
+      // ctx.draw(false)
+      this.sc = false
+      // return;
+      ctx.draw(false , ()=>{
+        console.log('draw ,comper' , w, h )
+        const obj = {
+          x:0,
+          y:0,
+          width:w ,
+          height:h    + statusBarHeight,
+          // destWidth:w,
+          // destHeight:h,
+          canvasId:'canvas',
+          quality:1,
+          success:tempFilePath=>{
+            console.log('file path' , tempFilePath)
+            const urls = [tempFilePath.tempFilePath]
+            wx.previewImage({
+              urls:urls,
+              success:()=>{
+                console.log("success")
+              },
+              fail:()=>{
+                console.log("fail")
+              }
+            })
+          }
+        }
+
+
+        wx.canvasToTempFilePath(obj, this)
+      })
+    }).exec()
+  }
+  methods = {
+    handleShow() {
+
+    },
+    handleReturn() {
+      this.getScreenShot()
+      return
+      wx.navigateBack({
+        delta: 1
+      })
+    },
+    handleSaveImage() {
+      console.log('you press')
+
+      this.getScreenShot()
+
+      return
+      let q = wx.createSelectorQuery()
+      let page = q.select('#page')
+      if (!page) {
+        console.log('page')
+      } else {
+        console.log(page)
+      }
+      page.boundingClientRect(rect => {
+        let w = rect.width
+        let h = rect.height
+        console.log(w, h)
+        const ctx = wx.createCanvasContext('canvas')
+
+        ctx.setFillStyle('red')
+        ctx.fillRect(10, 10, 150, 100)
+        ctx.fillRect(50, 50, 150, 100)
+        ctx.draw(false, () => {
+          console.log('draw ,comper')
+          const obj = {
+            x: 0,
+            y: 0,
+            width: w,
+            height: h,
+
+            canvasId: 'canvas',
+            success: tempFilePath => {
+              console.log('file path', tempFilePath.tempFilePath)
+              const urls = [tempFilePath.tempFilePath]
+              wx.previewImage({
+                urls: urls
+              })
+            }
+          }
+          wx.canvasToTempFilePath(obj, this)
+        })
+
+        // ctx.rect(0 , 0 , w , h)
+        // ctx.draw(false , ()=>{
+        //   console.log('draw ,comper' , w,h )
+        //   const obj = {
+        //     canvasId:'canvas',
+        //     success:tempFilePath=>{
+        //       console.log('file path' , tempFilePath)
+        //       const urls = [tempFilePath.tempFilePath]
+        //       wx.previewImage({
+        //         urls:urls,
+        //         success:()=>{
+        //           console.log("success")
+        //         },
+        //         fail:()=>{
+        //           console.log("fail")
+        //         }
+        //       })
+        //     }
+        //   }
+        //
+        //
+        //   wx.canvasToTempFilePath(obj, this)
+        // })
+      }).exec()
+
+    }
+  }
 
   events = {}
 
   onLoad() {
+    this.url = this.$parent.globalData.url
   };
 
   onShareAppMessage(obj) {
@@ -159,7 +275,8 @@ export default class StepShare extends wepy.page {
 
     return obj
   }
-    // Other properties
+
+  // Other properties
 }
 </script>
 
@@ -187,10 +304,11 @@ export default class StepShare extends wepy.page {
 
   .canvas{
     width: 100%;
-    height: 50%;
+    /*height: 100%;*/
+    height: 1334rpx;
     position: absolute;
     display: block;
-    /*background-color: transparent;*/
+    background-color: transparent;
     /*opacity: 0;*/
   }
   .avatar-wrap{
@@ -266,11 +384,40 @@ export default class StepShare extends wepy.page {
     justify-content: space-around;
 
     >cover-view{
+      width: 100%;
+      padding:0;
+      margin: 0;
+      height: 100%;
       &:first-child{
         width: 308rpx;
       }
       &:last-child{
         width: 214rpx;
+      }
+
+      cover-view{
+        width: 100%;
+        padding:0;
+        margin: 0;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content:center;
+
+        border-radius: 74rpx;
+        font-size: 36rpx;
+        font-weight: bolder;
+        color: #009844;
+      }
+    }
+
+    .wx-button-cover-view-wrapper{
+      position: relative;
+      .wx-button-cover-view-inner{
+        position: absolute;
+        left:50%;
+        top:50%;
+        transform: translate(-50% , -50%);
       }
     }
     button{

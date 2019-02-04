@@ -89,7 +89,7 @@
   import {numberWithCommas} from '../../utils/common'
   //组件引用不能带.wpy后缀
   import CarouselSwiper from '../../components/carouse-item/carousel-swiper'
-  const url = './'
+
   export default class Home extends wepy.page {
     config = {}
     components = {
@@ -97,7 +97,7 @@
     }
 
     data = {
-      url: url,
+      url: '',
       navBtns: [
         { key: 'home-nav-btn1', text: '早起挑战' },
         { key: 'home-nav-btn2', text: '麦力值挑战' },
@@ -126,7 +126,7 @@
       },
       handleMyStep(){
         console.log('handleMyStep')
-        this.$navigate('../step-share')
+        this.$navigate('../step-share/index')
       },
       handleBonus(){
         console.log('handleBonus')
@@ -136,6 +136,9 @@
     events = {}
 
     onLoad() {
+
+      this.url = this.$parent.globalData.url
+
       const steps = [5,8,15,40,80,120,160,200,280,240,320,360]
       this.selected = 5
       for (let i = 0; i < 12; i++) {
