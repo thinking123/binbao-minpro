@@ -1,11 +1,19 @@
 <template>
     <view class="page" id="page">
+      <auth-dialog
+        :visible.sync="showDialog"/>
+      <!--
+        @getuserinfo.user="handleUserInfo"-->
       <!-- canvas 必须有 canvas-id ，否则display:none-->
-      <canvas   @longpress="handleSaveImage"  class="canvas" canvas-id="canvas" style="height:{{cHeight}}">
+      <canvas  wx:if="{{!showDialog}}"
+
+               style="top:{{cTop}};height:{{cHeight}}"
+               class="canvas"
+               canvas-id="canvas">
 
       </canvas>
       <image
-
+        @longpress="handleSaveImage"
         src="{{url}}step-share-bg.png" class="bg" wx:if="sc"/>
 
       <view class="avatar-wrap">
@@ -34,250 +42,393 @@
       <view class="save-link">
         长按保持图片
       </view>
+      <!--<view class="btn-group">-->
+        <!--<cover-view>-->
+          <!--<button class="btn"-->
+                  <!--open-type="share">-->
+            <!--show给好友看-->
+          <!--</button>-->
+        <!--</cover-view>-->
+        <!--<cover-view>-->
+          <!--<button class="btn" @tap="handleReturn">-->
+            <!--返回-->
+          <!--</button>-->
+        <!--</cover-view>-->
+
+      <!--</view>-->
+
       <view class="btn-group">
-        <cover-view>
-          <button class="btn"
-                  open-type="share">
-            show给好友看
-          </button>
-        </cover-view>
-        <cover-view>
-          <button class="btn" @tap="handleReturn">
-            返回
-          </button>
-        </cover-view>
+        <button class="btn"
+                open-type="share">
+          show给好友看
+        </button>
+        <button class="btn" @tap="handleReturn">
+          返回
+        </button>
 
       </view>
+
 
     </view>
 </template>
 
 <script>
-import wepy from 'wepy';
-import {numberWithCommas} from '../../utils/common'
+  import wepy from 'wepy'
+  import { numberWithCommas } from '../../utils/common'
+  import AuthDialog from '../../components/dialog/auth-dialog'
 
-export default class StepShare extends wepy.page {
-  config = {}
-  components = {}
-
-  data = {
-    url: '',
-    step: 12345,
-    sc:true,
-    cHeight:'100%'
-  }
-  computed = {
-    stepStr() {
-      return numberWithCommas(this.step, 4)
+  export default class StepShare extends wepy.page {
+    config = {}
+    components = {
+      'auth-dialog': AuthDialog
     }
-  }
 
-  getScreenShot(){
-    const statusBarHeight = 64
-    const q = wx.createSelectorQuery()
-    const page = q.select('#page')
-    const url = this.url
-    const that = this
-    wx.getSystemInfo({
+    data = {
+      url: './',
+      step: 12345,
+      sc: true,
+      cTop:0,
+      cHeight: 0,
+      showDialog: false,
+      userInfo: null,
+      isPreviewPage: false
+    }
+    //
+    // handleUserInfo(userInfo) {
+    //   this.showDialog = false
+    //   console.log('handleUserInfo', userInfo)
+    // }
 
-      success: function(res) {
-        let clientHeight = res.windowHeight
-        let clientWidth = res.windowWidth
-        let ratio = 750 / clientWidth
-        let height = clientHeight * ratio
-
-        console.log(res , clientHeight , clientWidth , ratio , height)
-        // return
-        const w = res.screenWidth
-        const h = res.screenHeight
-        that.cHeight = h  + 'px'
-        const statusBarHeight = 0
-        console.log(w, h)
-        const ctx = wx.createCanvasContext('canvas')
-
-        //draw bg
-        const imageUrl = `${url}step-share-bg.png`
-        ctx.drawImage(imageUrl , 0 , 0 , w , h )
-
-        // ctx.rect(0 , 0 , w , h)
-
-        // ctx.draw(false)
-        // this.sc = false
-        // return;
-        ctx.draw(false , ()=>{
-          console.log('draw ,comper' , w, h )
-          const obj = {
-            x:0,
-            y:0,
-            width:w ,
-            height:h    + statusBarHeight,
-            // destWidth:w * 5,
-            // destHeight:h * 12,
-            canvasId:'canvas',
-            quality:1,
-            success:tempFilePath=>{
-              console.log('file path' , tempFilePath)
-              const urls = [tempFilePath.tempFilePath]
-              wx.previewImage({
-                urls:urls,
-                success:()=>{
-                  console.log("success")
-                },
-                fail:()=>{
-                  console.log("fail")
-                }
-              })
-            }
-          }
-
-
-          wx.canvasToTempFilePath(obj, this)
-        })
-
+    computed = {
+      stepStr() {
+        return numberWithCommas(this.step, 4)
       }
-    })
-return
-    page.boundingClientRect(rect => {
-      const w = rect.width
-      const h = rect.height
-      console.log(w, h)
-      const ctx = wx.createCanvasContext('canvas')
+    }
+    events = {
+      'getuserinfo': (userInfo) => {
+        this.showDialog = false
+        this.userInfo = userInfo
+        console.log('userInfo', userInfo)
+      }
+    }
 
-      //draw bg
-      const imageUrl = `${this.url}step-share-bg.png`
-      ctx.drawImage(imageUrl , 0 , 0 , w , h  + statusBarHeight)
+    async getSystemInfo() {
+      return new Promise((resolve, rej) => {
+        wx.getSystemInfo({
 
-      // ctx.rect(0 , 0 , w , h)
+          success: resolve,
+          fail: rej
+        })
+      })
+    }
 
-      // ctx.draw(false)
-      this.sc = false
-      // return;
-      ctx.draw(false , ()=>{
-        console.log('draw ,comper' , w, h )
+    async downloadFile(url) {
+      return new Promise((resolve, rej) => {
+        wx.downloadFile({
+          url: url,
+          success: resolve,
+          fail: rej
+        })
+      })
+    }
+
+    async draw(ctx) {
+      return new Promise((resolve, rej) => {
+        ctx.draw(false, resolve)
+      })
+    }
+
+    async canvasToTempFilePath(w, h) {
+      return new Promise((resolve, rej) => {
         const obj = {
-          x:0,
-          y:0,
-          width:w ,
-          height:h    + statusBarHeight,
-          // destWidth:w,
-          // destHeight:h,
-          canvasId:'canvas',
-          quality:1,
-          success:tempFilePath=>{
-            console.log('file path' , tempFilePath)
-            const urls = [tempFilePath.tempFilePath]
-            wx.previewImage({
-              urls:urls,
-              success:()=>{
-                console.log("success")
-              },
-              fail:()=>{
-                console.log("fail")
-              }
-            })
-          }
+          x: 0,
+          y: 0,
+          width: w,
+          height: h,
+          // destWidth:w * 5,
+          // destHeight:h * 12,
+          canvasId: 'canvas',
+          quality: 1,
+          success: resolve,
+          fail: rej
         }
-
-
         wx.canvasToTempFilePath(obj, this)
       })
-    }).exec()
-  }
-  methods = {
-    handleShow() {
+    }
 
-    },
-    handleReturn() {
-      this.getScreenShot()
-      return
-      wx.navigateBack({
-        delta: 1
-      })
-    },
-    handleSaveImage() {
-      console.log('you press')
-
-      this.getScreenShot()
-
-      return
-      let q = wx.createSelectorQuery()
-      let page = q.select('#page')
-      if (!page) {
-        console.log('page')
-      } else {
-        console.log(page)
-      }
-      page.boundingClientRect(rect => {
-        let w = rect.width
-        let h = rect.height
-        console.log(w, h)
-        const ctx = wx.createCanvasContext('canvas')
-
-        ctx.setFillStyle('red')
-        ctx.fillRect(10, 10, 150, 100)
-        ctx.fillRect(50, 50, 150, 100)
-        ctx.draw(false, () => {
-          console.log('draw ,comper')
-          const obj = {
-            x: 0,
-            y: 0,
-            width: w,
-            height: h,
-
-            canvasId: 'canvas',
-            success: tempFilePath => {
-              console.log('file path', tempFilePath.tempFilePath)
-              const urls = [tempFilePath.tempFilePath]
-              wx.previewImage({
-                urls: urls
-              })
-            }
-          }
-          wx.canvasToTempFilePath(obj, this)
+    async previewImage(urls) {
+      return new Promise((resolve, rej) => {
+        wx.previewImage({
+          urls: urls,
+          success: resolve,
+          fail: rej
         })
+      })
+    }
 
-        // ctx.rect(0 , 0 , w , h)
-        // ctx.draw(false , ()=>{
-        //   console.log('draw ,comper' , w,h )
-        //   const obj = {
-        //     canvasId:'canvas',
-        //     success:tempFilePath=>{
-        //       console.log('file path' , tempFilePath)
-        //       const urls = [tempFilePath.tempFilePath]
-        //       wx.previewImage({
-        //         urls:urls,
-        //         success:()=>{
-        //           console.log("success")
-        //         },
-        //         fail:()=>{
-        //           console.log("fail")
-        //         }
-        //       })
-        //     }
-        //   }
-        //
-        //
-        //   wx.canvasToTempFilePath(obj, this)
-        // })
-      }).exec()
+    async clearCanvas() {
+      try {
+        const { screenWidth, screenHeight } = await this.getSystemInfo()
+        const ctx = wx.createCanvasContext('canvas')
+        ctx.clearRect(0, 0, screenWidth, screenHeight)
+        ctx.draw(false, () => {
+        })
+      } catch (e) {
+        console.error('clear canvas ', e)
+      }
 
     }
+
+
+    drawStepText(ctx ,
+                 screenWidth,screenHeight,
+                 x , y,
+                 step,
+                 top = 0,
+                 fontSize = 18,
+                 weight = 0.2){
+      ctx.save()
+      // ctx.setTextAlign('center')
+      ctx.setTextBaseline('middle')
+      ctx.setFillStyle('black')
+      let hRatio = (y + top) / 667
+      // x = screenWidth / 2
+      x = 111
+      y = hRatio * screenHeight
+      ctx.translate(x, y)
+
+      ctx.font = 'bold 17px sans-serif'
+      let text = '迈出'
+      let textW = ctx.measureText(text)
+      textW = textW.width
+      ctx.fillText(text, 0, 0)
+
+
+      ctx.font = 'bold 32px sans-serif'
+      // ctx.save()
+
+      text = step
+      console.log('textW' , textW , step)
+      let textStep = ctx.measureText(text)
+
+      textStep = textStep.width
+      ctx.setFillStyle('#DD0330')
+      ctx.fillText(text, textW, 0)
+      // ctx.stroke()
+      // ctx.restore()
+
+      ctx.setFillStyle('black')
+      ctx.font = 'bold 17px sans-serif'
+      text = '步'
+      ctx.fillText(text, textW + textStep, 0)
+
+
+      ctx.restore()
+    }
+    drawText(ctx ,
+             screenWidth,screenHeight,
+             x , y,
+             text,
+             top = 0,
+             fontSize = 18,
+             weight = 0.2 ,
+             color = 'black') {
+      ctx.save()
+      // const top = 10
+      // const fontSize = 18
+      // const weight = 0.2
+      //draw Text
+      // let text = '我已在“麦”向健康每一天'
+      ctx.setTextAlign('center')
+      ctx.setStrokeStyle(color)
+      // ctx.font = `bold 20px`
+      //260 - 58 / 609
+      let hRatio = (y + top) / 667
+      x = screenWidth / 2
+      y = hRatio * screenHeight
+      ctx.translate(x, y)
+      ctx.font = 'bold 17px sans-serif'
+      // ctx.setFontSize(fontSize)
+      // ctx.fillText(text, 0, -weight)
+      // ctx.fillText(text, -weight, 0)
+      // ctx.fillText(text, 0, weight)
+      // ctx.fillText(text, weight, 0)
+      ctx.fillText(text, 0, 0)
+
+      ctx.restore()
+    }
+    async getScreenShot() {
+      try {
+        const dev = await this.getSystemInfo()
+        console.log('dev' , dev)
+        const {windowHeight} = dev
+        const { screenWidth, screenHeight } = dev
+        const statusHeight = 0
+
+        this.$apply(()=>{
+          this.cHeight = screenHeight + 'px'
+          this.cTop = windowHeight - screenHeight + 'px'
+        })
+
+        const ctx = wx.createCanvasContext('canvas')
+        //draw bg
+        /*
+        * statusHeight = 58
+        * bg , H:609 , W:375
+        * */
+        const imageUrl = `${this.url}step-share-bg.png`
+        ctx.drawImage(imageUrl, 0, 0, screenWidth, screenHeight)
+        //draw avatar
+        ctx.save()
+
+        // let hRatio = 0.2332
+        // let hRatio = (140 - statusHeight)/609
+        let hRatio = 90/667
+        let x = screenWidth / 2
+        let y = hRatio * screenHeight
+        console.log('top',y)
+        // y = 59
+        // let wd = (116/609)*screenHeight
+        let wd = (126/667)*screenHeight
+        ctx.translate(x, y + wd/2)
+
+        //clip circle
+        ctx.beginPath()
+        ctx.arc(0, 0, wd / 2, 0, 2 * Math.PI)
+        ctx.clip()
+
+        console.log('url ', this.userInfo.avatarUrl)
+
+        if(this.userInfo && this.userInfo.avatarUrl){
+          let avatarUrl = this.userInfo.avatarUrl
+          let { tempFilePath } = await this.downloadFile(avatarUrl)
+          ctx.drawImage(tempFilePath, -wd / 2, -wd / 2, wd, wd)
+        }else{
+          console.log('图片正在加载')
+        }
+
+        ctx.restore()
+
+        this.drawText(
+          ctx ,
+          screenWidth , screenHeight ,
+          screenWidth / 2, 239 ,
+          this.userInfo.nickName
+        )
+
+
+        this.drawText(
+          ctx ,
+          screenWidth ,
+          screenHeight ,
+          screenWidth / 2,
+          268 ,
+          '我已在“麦”向健康每一天'
+        )
+
+        this.drawStepText(
+          ctx ,
+          screenWidth ,
+          screenHeight ,
+          screenWidth / 2,
+          298 ,
+          this.stepStr
+        )
+
+
+        this.drawText(
+          ctx ,
+          screenWidth ,
+          screenHeight ,
+          screenWidth / 2,
+          340 ,
+          '跟我一起来“麦”向健康吧！'
+        )
+
+        console.log('start draw')
+        await this.draw(ctx)
+        console.log('end draw')
+        let res = await this.canvasToTempFilePath(screenWidth, screenHeight)
+        let tempFilePath = res.tempFilePath
+        await this.previewImage([tempFilePath])
+        this.isPreviewPage = true
+        console.log('preview image success')
+
+      } catch (e) {
+        console.error('getScreenShot', e)
+        wx.showToast({
+          title:e.message,
+          icon:'none'
+        })
+      }
+    }
+
+    methods = {
+      handleShow() {
+
+      },
+      handleReturn() {
+        // this.getScreenShot()
+        // return
+        wx.navigateBack({
+          delta: 1
+        })
+      },
+      handleSaveImage() {
+        console.log('you press')
+
+        this.getScreenShot()
+      }
+    }
+
+    async getUserInfo() {
+      const { authSetting } = await wepy.getSetting()
+      console.log('authSetting' , authSetting)
+      if (authSetting['scope.userInfo']) {
+        //授权过用户信息
+        const { userInfo } = await wepy.getUserInfo()
+        this.userInfo = userInfo
+      } else {
+
+        this.$apply(()=>{
+          this.showDialog = true
+        })
+
+        console.log('showDialog' , this.showDialog)
+      }
+    }
+    onLoad() {
+      // this.url = this.$parent.globalData.url
+      // this.showDialog = true
+
+      // const { userInfo } = await wepy.getUserInfo()
+      // this.userInfo = userInfo
+      // console.log(this.userInfo)
+
+      this.getUserInfo()
+    };
+
+    onShow() {
+      console.log('onShow page')
+      if (this.isPreviewPage) {
+        this.clearCanvas()
+        this.isPreviewPage = false
+
+        this.$apply(()=>{
+          this.cHeight = 0
+          this.cTop = 0
+        })
+      }
+    }
+
+    onShareAppMessage(obj) {
+      console.log('onShareAppMessage', obj)
+
+      return obj
+    }
+
+    // Other properties
   }
-
-  events = {}
-
-  onLoad() {
-    this.url = this.$parent.globalData.url
-  };
-
-  onShareAppMessage(obj) {
-    console.log('onShareAppMessage', obj)
-
-    return obj
-  }
-
-  // Other properties
-}
 </script>
 
 
@@ -303,9 +454,12 @@ return
   }
 
   .canvas{
+    /*width: 200rpx;*/
+    /*height: 200rpx;*/
     width: 100%;
     /*height: 100%;*/
-    height: 1334rpx;
+    /*height: 1334rpx;*/
+    background-color: #00A1E1;
     position: absolute;
     display: block;
     background-color: transparent;
@@ -420,6 +574,7 @@ return
         transform: translate(-50% , -50%);
       }
     }
+
     button{
       margin: 0;
       padding: 0;
@@ -434,7 +589,12 @@ return
       font-size: 36rpx;
       font-weight: bolder;
       color: #009844;
-
+      &:first-child{
+        width: 308rpx;
+      }
+      &:last-child{
+        width: 214rpx;
+      }
 
     }
   }
