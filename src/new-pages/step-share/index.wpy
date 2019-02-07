@@ -14,7 +14,7 @@
       </canvas>
       <image
         @longpress="handleSaveImage"
-        src="{{url}}step-share-bg.png" class="bg" wx:if="sc"/>
+        src="{{url}}step-share-bg.png" class="bg"/>
 
       <view class="avatar-wrap">
         <view class="user-avatar">
@@ -84,7 +84,7 @@
     }
 
     data = {
-      url: './',
+      url: '',
       step: 12345,
       sc: true,
       cTop:0,
@@ -398,15 +398,13 @@
       }
     }
     onLoad() {
-      // this.url = this.$parent.globalData.url
-      // this.showDialog = true
+      this.$apply(()=>{
+        this.url = this.$parent.globalData.url
 
-      // const { userInfo } = await wepy.getUserInfo()
-      // this.userInfo = userInfo
-      // console.log(this.userInfo)
+      })
 
       this.getUserInfo()
-    };
+    }
 
     onShow() {
       console.log('onShow page')

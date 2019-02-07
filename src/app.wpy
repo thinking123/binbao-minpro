@@ -23,21 +23,17 @@ export default class extends wepy.app {
       //new pages
 
       'home/home'
-
-
-
-
-
-
     ],
     subpackages: [
       {
-        root:"new-pages/step-share",
-        name:"new-version-step-share",
-        pages:[
+
+        root: 'new-pages/step-share',
+        name: 'new-version-step-share',
+        pages: [
           'index'
         ]
       },
+
       {
 
         root:"pages",

@@ -57,6 +57,9 @@
           console.log('用户拒绝授权')
         }
 
+      },
+      handlemove(e){
+
       }
     }
 

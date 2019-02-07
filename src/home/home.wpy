@@ -130,7 +130,7 @@
       },
       handleMyStep(){
         console.log('handleMyStep')
-        this.$navigate('../step-share/index')
+        this.$navigate('../new-pages/step-share/index')
       },
       handleBonus(){
         console.log('handleBonus')

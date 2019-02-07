@@ -1,13 +1,11 @@
 <template>
-  <view class="dialog" wx:if="{{visible}}">
+  <view class="dialog" wx:if="{{visible}}"  catchtouchmove="handlemove">
     <view class="mask"
           @tap="handleOutHide"
           id="mask"/>
-    <view class="body">
-      <image
-        class="bg"
-        src="{{url}}how-to-play-dialog-bg.png"/>
-    </view>
+    <image
+      class="bg"
+      src="{{url}}how-to-play-dialog-bg.png"/>
     <scroll-view class="dialog-content" scroll-y>
       <view class="content-text">
         {{text}}
@@ -23,17 +21,19 @@
     components = {}
 
     data = {
-      url:''
+      url:'',
+      text:'sdfdsfdslfkjdslfkjdsflkj'
     }
     methods = {
       handleOutHide(e) {
         if (e && e.target && e.target.id === 'mask') {
           this.visible = false
         }
+      },
+      handlemove(e){
+
       }
     }
-
-    events = {}
     props = {
       visible: {
         type: Boolean,
@@ -42,8 +42,11 @@
       }
 
     }
+
     onLoad() {
-      this.url = this.$parent.globalData.url
+      this.$apply(()=>{
+        this.url = this.$root.$parent.globalData.url
+      })
     }
   }
 </script>
@@ -57,10 +60,6 @@
     top:0;
     bottom:0;
     right:0;
-    display:flex;
-    flex-direction:row;
-    justify-content:center;
-    align-items:center;
     .mask {
       position:absolute;
       width:100%;
@@ -73,26 +72,16 @@
       opacity:0.9;
 
     }
-    .body {
+
+    .bg {
+
       z-index:2;
       height:78.10945%;
       width:516rpx;
-      position:relative;
-      display:flex;
-      flex-direction:row;
-      justify-content:center;
-
-      .bg {
-        width:100%;
-        height:100%;
-        position:absolute;
-        left:0;
-        top:0;
-        bottom:0;
-        right:0;
-
-      }
-
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform: translate(-50% , -50%);
     }
 
     .dialog-content {
@@ -103,7 +92,10 @@
       width:420rpx;
       border-top:1px solid;
       border-bottom:1px solid;
-
+      align-self: center;
+      left:50%;
+      top:33.33333%;
+      transform: translateX(-50%);
       &::before{
         width: 36rpx;
         height: 36rpx;
@@ -131,7 +123,7 @@
         background-size: 100% 100%;
         z-index: 2;
       }
-      content-text {
+      .content-text {
         padding:10rpx;
 
       }
