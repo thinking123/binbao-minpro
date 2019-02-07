@@ -81,7 +81,7 @@
     methods = {
       hanleLeft(){
         if (this.selected < (this.images.length - 1)) {
-          console.log('move left')
+          // console.log('move left')
 
           // this.moveRight();
           this.selected++
@@ -89,7 +89,7 @@
       },
       hanleRight(){
         if (this.selected > 0) {
-          console.log('move right')
+          // console.log('move right')
           // this.moveLeft();
           this.selected--
         }
@@ -121,13 +121,13 @@
         var moveX = this.startX - this.endX
         //向左移动
         if (moveX > 30 && this.selected < (this.images.length - 1)) {
-          console.log('move left')
+          // console.log('move left')
 
           // this.moveRight();
           this.selected++
         }
         if (moveX < -30 && this.selected > 0) {
-          console.log('move right')
+          // console.log('move right')
           // this.moveLeft();
           this.selected--
         }

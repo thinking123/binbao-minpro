@@ -22,8 +22,7 @@ export default class extends wepy.app {
     pages: [
       //new pages
 
-      'new-pages/home/home',
-      'new-pages/step-share/index',
+      'home/home'
 
 
 
@@ -33,17 +32,18 @@ export default class extends wepy.app {
     ],
     subpackages: [
       {
+        root:"new-pages/step-share",
+        name:"new-version-step-share",
+        pages:[
+          'index'
+        ]
+      },
+      {
+
         root:"pages",
-        name:"old-version",
+        name:"old-version1",
         pages:[
           //old version pages
-          'index', // 个人中心
-          'reward/myreward', // 赏金赛我的奖励
-          'reward/index', // 赏金赛主页
-          'reward/rtrank', // 赏金赛实时排行
-          'lottery/index', // 积分抽奖主页
-          'jkp/inquire', // 赛后查询页面
-          'link/jd', // 京东优惠券外部链接
           'link/photo', // 京东优惠券外部链接
           'link/fengxiang', // 凤祥优惠券连接
           'jkp/jkp_apply', // 选手申明，填写信息，信息填全（支付之前）
@@ -53,6 +53,20 @@ export default class extends wepy.app {
           'jkp/jkp', // 宾堡环球健康跑
           'jkp/learn_more', // 了解更多
           'jkp/poster' // 海报
+        ]
+      },
+      {
+        root:"pages",
+        name:"old-version2",
+        pages:[
+          //old version pages
+          'index', // 个人中心
+          'reward/myreward', // 赏金赛我的奖励
+          'reward/index', // 赏金赛主页
+          'reward/rtrank', // 赏金赛实时排行
+          'lottery/index', // 积分抽奖主页
+          'jkp/inquire', // 赛后查询页面
+          'link/jd' // 京东优惠券外部链接
         ]
       }
     ],

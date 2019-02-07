@@ -75,7 +75,7 @@
 <script>
   import wepy from 'wepy'
   import { numberWithCommas } from '../../utils/common'
-  import AuthDialog from '../../components/dialog/auth-dialog'
+  import AuthDialog from '../../components/dialog/auth-dialog/auth-dialog'
 
   export default class StepShare extends wepy.page {
     config = {}

@@ -81,19 +81,21 @@
         <view class="line"/>
       </view>
     </view>
+    <how-to-play-dialog :visible.sync="showHowToPlayDialog"/>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
-  import {numberWithCommas} from '../../utils/common'
+  import {numberWithCommas} from '../utils/common'
   //组件引用不能带.wpy后缀
-  import CarouselSwiper from '../../components/carouse-item/carousel-swiper'
-
+  import CarouselSwiper from '../components/carouse-item/carousel-swiper'
+  import HowToPlayDialog from '../components/dialog/how-to-play-dialog/HowToPlayDialog'
   export default class Home extends wepy.page {
     config = {}
     components = {
-      'carouselswiper':CarouselSwiper
+      'carouselswiper':CarouselSwiper,
+      'how-to-play-dialog':HowToPlayDialog
     }
 
     data = {
@@ -109,7 +111,8 @@
       historyMlValue: 288890,
       bonus:100000,
       images:[],
-      selected:0
+      selected:0,
+      showHowToPlayDialog:true
     }
     computed = {
       bonusStr () {
@@ -123,6 +126,7 @@
       },
       handleHowToPlay(){
         console.log('handleHowToPlay')
+        this.showHowToPlayDialog = true
       },
       handleMyStep(){
         console.log('handleMyStep')
@@ -161,7 +165,7 @@
 
 
 <style lang="scss">
-  @import "../../css/variables";
+  @import "../css/variables";
 
   $footer-fontsize: 18rpx;
   .page {
