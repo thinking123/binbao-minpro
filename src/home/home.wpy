@@ -82,6 +82,8 @@
       </view>
     </view>
     <how-to-play-dialog :visible.sync="showHowToPlayDialog"/>
+    <answer-dialog :visible.sync="showAnswerDialog"
+                   :answer="answer"/>
   </view>
 </template>
 
@@ -91,11 +93,13 @@
   //组件引用不能带.wpy后缀
   import CarouselSwiper from '../components/carouse-item/carousel-swiper'
   import HowToPlayDialog from '../components/dialog/how-to-play-dialog/HowToPlayDialog'
+  import AnswerDialog from '../components/dialog/answer-dialog/answer-dialog'
   export default class Home extends wepy.page {
     config = {}
     components = {
       'carouselswiper':CarouselSwiper,
-      'how-to-play-dialog':HowToPlayDialog
+      'how-to-play-dialog':HowToPlayDialog,
+      'answer-dialog':AnswerDialog,
     }
 
     data = {
@@ -112,7 +116,18 @@
       bonus:100000,
       images:[],
       selected:0,
-      showHowToPlayDialog:true
+      showHowToPlayDialog:false,
+      showAnswerDialog:false,
+      answerTopic:1,
+      answer:{
+        answerTopicBg:1,
+        answerTitle:'以下哪种食物是全麦食品？',
+        questions:[
+          '曼可顿全麦面包',
+          '锅包肉'
+        ],
+        rightIndex:0
+      }
     }
     computed = {
       bonusStr () {
@@ -122,6 +137,13 @@
     }
     methods = {
       handleNavBtn(btn) {
+
+        switch (btn.key) {
+          case 'home-nav-btn3':
+            this.showAnswerDialog = true
+            break
+        }
+
         console.log('tap', btn)
       },
       handleHowToPlay(){
@@ -137,7 +159,11 @@
       }
     }
 
-    events = {}
+    events = {
+      'answer-right':(answer) => {
+        console.log('answer right , ' , answer)
+      }
+    }
 
     onLoad() {
 
