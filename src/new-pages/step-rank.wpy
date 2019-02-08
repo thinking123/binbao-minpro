@@ -45,7 +45,7 @@
 
       </view>
       <view class="rank-list-table">
-        <view class="table-header">
+        <view class="table-header table-row">
           <view class="rank-column table-header-column">
             排行名次
           </view>
@@ -55,9 +55,6 @@
           <view class="mlvalue-column table-header-column">
             历史累积麦力值
           </view>
-        </view>
-        <view class="table-row table-first">
-
         </view>
         <scroll-view class="table-row-wrap" scroll-y>
           <repeat key="index"
@@ -162,7 +159,7 @@
         let rank = {
           rank: (i + 1),
           name: `userName${i + 1}`,
-          mlValue: (ml - i * 123)
+          mlValue: numberWithCommas((ml - i * 123), 4)
         }
 
         this.rankList.push(rank)
@@ -216,6 +213,7 @@
         align-items: center;
         font-size: 46rpx;
         margin: 0 28rpx;
+        letter-spacing: 6rpx;
         &.selected {
           background-color: #BF8247;
         }
@@ -319,8 +317,73 @@
 
       .rank-list-table{
         flex: 1;
-        height: percentage(227 / $contentHeight);
+        height: percentage((543-317) / $contentHeight);
+        margin-top: 30rpx;
+        width: 100%;
 
+        overflow: hidden;
+        $table-font-size:22rpx;
+        .table-header{
+          font-size: $table-font-size;
+          font-weight: bolder;
+
+          color: white;
+          background-color: #4C4C4C;
+          height: 38rpx;
+
+          >view{
+            &:not(:last-child)::after{
+              content:'';
+              display: block;
+              position: absolute;
+              top: 50%;
+              transform: translateY(-50%);
+              right: 0;
+              height: 80%;
+              background-color: white;
+              width: 1px;
+            }
+          }
+        }
+        .table-row{
+          display: flex;
+          flex-direction: row;
+          font-size: $table-font-size;
+          height: 42rpx;
+          border-bottom: 1px solid #E8E8E8;
+
+          &.table-first{
+            height: 52rpx;
+            color: #D19A0e;
+            font-size: $table-font-size + 6;
+            font-weight: bold;
+          }
+          >view{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            &:first-child{
+              flex:3;
+            }
+            &:nth-child(2){
+              flex:5;
+            }
+            &:last-child{
+              flex:4;
+            }
+          }
+
+        }
+        $scrollHeight:542 - 317;
+        .table-row-wrap{
+            flex:1;
+          height: percentage((542-336) / $scrollHeight);
+          .table-row{
+            margin: 0 10rpx;
+          }
+        }
       }
     }
 
@@ -329,12 +392,25 @@
       top: percentage((546 - $statusBarHeight) / $pageHeight);
       left:50%;
       transform: translateX(-50%);
+      font-size: 18rpx;
     }
     .get-prize-btn{
       position: absolute;
       top: percentage((560 - $statusBarHeight) / $pageHeight);
       left:50%;
       transform: translateX(-50%);
+      height: 56rpx;
+      border-radius: 56rpx;
+      width: 238rpx;
+      color: white;
+      font-weight: bolder;
+      border: 0;
+      background-color: #B67550;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 30rpx;
+      letter-spacing: 8rpx;
     }
     .footer{
       position: absolute;
