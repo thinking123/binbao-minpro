@@ -1,0 +1,22 @@
+<template>
+    <view>
+
+     </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+export default class SignInDialog extends wepy.component {
+    components = {};
+
+    data = {};
+    methods = {};
+
+    events = {};
+    // Other properties
+}
+</script>
+
+<style lang="scss">
+
+</style>

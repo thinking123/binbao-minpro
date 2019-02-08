@@ -1,0 +1,361 @@
+<template>
+  <view class="page">
+    <image class="banner" src="{{url}}step-rank-banner.png"/>
+    <view class="btn-group">
+      <button @tap="handleRank(0)"
+              class="rank-btn {{selected == 0? 'selected' : ''}}">
+        上周排名
+      </button>
+      <button @tap="handleRank(1)"
+              class="rank-btn {{selected == 1? 'selected' : ''}}">
+        总排名
+      </button>
+    </view>
+
+    <view class="content">
+      <view class="header">
+        <view class="avatar-wrap">
+          <view class="user-avatar">
+            <open-data type="userAvatarUrl"></open-data>
+          </view>
+          <view class="user-nick">
+            <open-data type="userNickName"></open-data>
+          </view>
+        </view>
+        <view class="rank-wrap">
+          <view class="rank-row">
+            <image class="rank-row-icon" src="{{url}}step-rank-my-rank-icon.png"/>
+            <view class="rank-text-wrap">
+              我的总排名：
+              <view class="rank-text">
+                {{myTotalRankStr}}
+              </view>
+            </view>
+          </view>
+          <view class="rank-row">
+            <image class="rank-row-icon" src="{{url}}step-rank-his-ml-icon.png"/>
+            <view class="rank-text-wrap">
+              历史累积麦力值：
+              <view class="rank-text">
+                {{myHisMLPointsStr}}
+              </view>
+            </view>
+          </view>
+        </view>
+
+      </view>
+      <view class="rank-list-table">
+        <view class="table-header">
+          <view class="rank-column table-header-column">
+            排行名次
+          </view>
+          <view class="name-column table-header-column">
+            用户名
+          </view>
+          <view class="mlvalue-column table-header-column">
+            历史累积麦力值
+          </view>
+        </view>
+        <view class="table-row table-first">
+
+        </view>
+        <scroll-view class="table-row-wrap" scroll-y>
+          <repeat key="index"
+                  index="index"
+                  item="rank"
+                  for="{{rankList}}">
+            <view class="table-row {{index === 0 ? 'table-first' : ''}}">
+              <view class="rank-column">
+                {{rank.rank}}
+              </view>
+              <view class="name-column">
+                {{rank.name}}
+              </view>
+              <view class="mlvalue-column">
+                {{rank.mlValue}}
+              </view>
+            </view>
+          </repeat>
+        </scroll-view>
+      </view>
+    </view>
+    <view class="content-tip">
+      本排名数据截止前一周周日24：00
+    </view>
+    <button class="get-prize-btn" @tap="handleGetPrize">
+      领取奖品
+    </button>
+    <view class="footer">
+      <image class="footer-bg" src="{{url}}navigate-bar.png"/>
+      <repeat key="index"
+              index="index"
+              item="btn"
+              for="{{navBtns}}">
+        <view class="footer-btn" @tap="handleNav({{index}})"/>
+      </repeat>
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import { numberWithCommas } from '../utils/common'
+
+  export default class StepRank extends wepy.page {
+    config = {}
+    components = {}
+
+    data = {
+      url: './',
+      myTotalRank: '35',
+      myHisMLPoints: '12345',
+      rankList: [],
+      selected: 0,
+      navBtns: [
+        { key: 'mzl' },
+        { key: 'zstz' },
+        { key: 'xytz' },
+        { key: 'return' }
+      ]
+    }
+    computed = {
+      myTotalRankStr() {
+        const str = `NO.${this.myTotalRank}`
+        return str
+      },
+      myHisMLPointsStr() {
+        const str = `${this.myHisMLPoints}`
+        return numberWithCommas(str, 4)
+      }
+    }
+    methods = {
+      handleGetPrize(){
+        console.log('handleGetPrize')
+      },
+      handleRank(index) {
+        this.selected = index
+      },
+      handleNav(index) {
+
+        switch (index) {
+          case 0:
+            break
+          case 1:
+            break
+          case 2:
+            break
+          case 3:
+            wx.navigateBack({
+              delta: 1
+            })
+            break
+        }
+      }
+    }
+
+    events = {}
+
+    onLoad() {
+      const ml = 338325
+      for (let i = 0; i < 20; i++) {
+        //rankList
+        let rank = {
+          rank: (i + 1),
+          name: `userName${i + 1}`,
+          mlValue: (ml - i * 123)
+        }
+
+        this.rankList.push(rank)
+      }
+    }
+
+    // Other properties
+  }
+</script>
+
+
+<style lang="scss">
+  @import "../css/variables";
+
+  $pageHeight:667- $statusBarHeight;
+  .page {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    background-color: #F3F1EA;
+    .banner {
+      height: percentage((187 - $statusBarHeight) / $pageHeight);
+      width: 100%;
+    }
+
+    .btn-group {
+      position: absolute;
+      z-index: 2;
+      height: percentage(34 / $pageHeight);
+      top: percentage((201 - $statusBarHeight) / $pageHeight);
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: row;
+
+      .rank-btn {
+        background-color: #F3D09E;
+        color: white;
+        font-weight: bolder;
+        border-radius: 0;
+        border: none;
+        width: 326rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 46rpx;
+        margin: 0 28rpx;
+        &.selected {
+          background-color: #BF8247;
+        }
+      }
+    }
+
+    .content{
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      position: absolute;
+      z-index: 1;
+      top: percentage((216 - $statusBarHeight) / $pageHeight);
+      width: 680rpx;
+      height: percentage((543 - 216) / $pageHeight);
+
+      background-color: white;
+      border-radius: 24rpx;
+      left:50%;
+      transform: translateX(-50%);
+      /*margin: 0 36rpx;
+      */
+      $contentHeight:543 - 216;
+      .header{
+        margin-top: 66rpx;
+        height: 110rpx;
+        display: flex;
+        flex-direction: row;
+        margin-left: 48rpx;
+        margin-right: 24rpx;
+        .avatar-wrap{
+
+          flex:1;
+          display: flex;
+          flex-direction: row;
+          align-items: flex-end;
+          justify-content: center;
+          .user-avatar{
+            height: 102rpx;
+            width: 102rpx;
+            border-radius: 102rpx;
+            overflow: hidden;
+          }
+          .user-nick{
+            font-size: 24rpx;
+            font-weight: bolder;
+          }
+        }
+        $rank-text-size:22rpx;
+        .rank-wrap{
+          display: flex;
+          flex-direction: column;
+          background-color: #F6EDE5;
+          border-radius: 10rpx;
+          font-size: $rank-text-size;
+          width: 412rpx;
+          .rank-row{
+            display: flex;
+            flex-direction: row;
+            margin-left: 26rpx;
+            margin-right: 14rpx;
+            align-items: center;
+            position: relative;
+            &:first-child{
+              margin-top: 10rpx;
+
+              &::after{
+                content:'';
+                display: block;
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                width: 70%;
+                background-color: white;
+                height: 1px;
+              }
+            }
+
+            .rank-row-icon{
+              border: 1px solid;
+              height: 42rpx;
+              width: 42rpx;
+              margin-right: 34rpx;
+              margin-bottom: 8rpx;
+            }
+            .rank-text-wrap{
+              display: flex;
+              flex-direction: row;
+              align-items: flex-end;
+
+
+              .rank-text{
+                font-weight: bolder;
+                font-size: $rank-text-size + 6;
+              }
+            }
+          }
+        }
+
+      }
+
+      .rank-list-table{
+        flex: 1;
+        height: percentage(227 / $contentHeight);
+
+      }
+    }
+
+    .content-tip{
+      position: absolute;
+      top: percentage((546 - $statusBarHeight) / $pageHeight);
+      left:50%;
+      transform: translateX(-50%);
+    }
+    .get-prize-btn{
+      position: absolute;
+      top: percentage((560 - $statusBarHeight) / $pageHeight);
+      left:50%;
+      transform: translateX(-50%);
+    }
+    .footer{
+      position: absolute;
+      width: 100%;
+      height: percentage(69 / $pageHeight);
+      bottom:0;
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      image{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+
+      view{
+        position: relative;
+        flex:1;
+        height: 100%;
+        width: 25%;
+      }
+    }
+  }
+</style>
