@@ -1,0 +1,188 @@
+<template>
+  <view class="step-rank-get-prize-dialog" wx:if="{{visible}}" @touchmove="handlemove">
+    <view class="mask"
+          @tap="handleOutHide"
+          id="mask"/>
+    <view class="dialog-content">
+      <image
+        class="header"
+        src="{{bg}}"/>
+
+
+      <image src="{{url}}dialog-close-btn.png"
+             @tap="handleClose"
+             class="close-btn"/>
+    </view>
+
+    <view class="dialog-content-wrap">
+      <view wx:if="{{isRight}}" class="row-wrap">
+        <view class="row row1">
+          信息填写正确
+        </view>
+        <view class="row row2-right">
+          奖品将在30天内寄出
+        </view>
+      </view>
+      <view wx:else class="row-wrap">
+        <view class="row row1">
+          信息填写不全
+        </view>
+        <view class="row row1">
+          请返回重新填写
+        </view>
+      </view>
+    </view>
+
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class StepRankGetPrizeDialog extends wepy.component {
+    components = {}
+
+    data = {
+      url:'./'
+    }
+    closeDialog(){
+      this.$emit('dialog-close')
+    }
+    methods = {
+      handleOutHide(e) {
+        if (e && e.target && e.target.id === 'mask') {
+          this.closeDialog()
+          this.visible = false
+        }
+      },
+      handlemove(e) {
+
+      },
+      handleClose(){
+        this.closeDialog()
+        this.visible = false
+      }
+    }
+    computed = {
+      bg(){
+        let str = ''
+        if(this.isRight){
+          str = `${this.url}step-rank-get-prize-right-dialog.png`
+        }else{
+          str = `${this.url}step-rank-get-prize-error-dialog.png`
+        }
+        return str
+      }
+    }
+
+    props = {
+      visible: {
+        type: Boolean,
+        value: false,
+        twoWay: true
+      },
+      isRight: {
+        type: Boolean,
+        value: false
+      }
+
+    }
+  }
+</script>
+
+<style lang="scss">
+  @import "../../../css/variables";
+  $pageHeight: 667- $statusBarHeight;
+  .step-rank-get-prize-dialog {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+
+    .mask {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background-color: #333333;
+      opacity: 0.9;
+
+    }
+    .dialog-content{
+      z-index: 1;
+      position: absolute;
+      left:50%;
+      transform: translate(-50%,0);
+      top:percentage((132 - $statusBarHeight) / $pageHeight);
+      /*height: 56.97%;*/
+      height: percentage((446 - 132) / $pageHeight);
+      width: 474rpx;
+      border-radius: 30rpx;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .header{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+
+      }
+
+
+      .close-btn{
+        position: absolute;
+        bottom: -20rpx;
+        height: 68rpx;
+        width: 68rpx;
+        left:50%;
+        transform: translate(-50% , 100%);
+      }
+
+
+    }
+
+    $contentHeight:446 - 132;
+    $font-size-text:32rpx;
+
+    .dialog-content-wrap{
+      z-index:2;
+      top: percentage((314 - $statusBarHeight) / $pageHeight);
+      position: absolute;
+      left:50%;
+      transform: translate(-50%,0);
+    }
+    .row-wrap{
+
+      color: #009844;
+
+
+      white-space: nowrap;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .row1{
+        font-weight: bolder;
+        letter-spacing: 8rpx;
+        font-size: $font-size-text;
+      }
+      .row2-right{
+        color: black;
+        font-size: $font-size-text - 8;
+        letter-spacing: 4rpx;
+      }
+      .row{
+        &:last-child{
+          margin-top: 20rpx;
+        }
+      }
+    }
+  }
+</style>

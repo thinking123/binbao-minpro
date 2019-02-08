@@ -8,6 +8,7 @@
       <input class="input" placeholder="姓名"
              placeholder-class="ph-input"
              value="{{name}}"
+             wx:if="{{!showDialog}}"
              @input="handleNameInput"/>
     </view>
     <view class="input-row input-phone">
@@ -17,6 +18,7 @@
       <input class="input" placeholder="电话"
              placeholder-class="ph-input"
              value="{{phone}}"
+             wx:if="{{!showDialog}}"
              @input="handlePhoneInput"/>
     </view>
     <view class="input-row input-address">
@@ -26,11 +28,14 @@
       <input class="input" placeholder="地址"
              placeholder-class="ph-input"
              value="{{address}}"
+             wx:if="{{!showDialog}}"
              @input="handleAddressInput"/>
     </view>
     <button class="submit-btn" @tap="handleSubmit">
       确认信息
     </button>
+    <step-rank-get-prize-dialog :visible.sync="showDialog"
+                                :isRight.sync="isRight"/>
   </view>
 
 </template>
@@ -38,18 +43,20 @@
 <script>
   import wepy from 'wepy'
   import {isEmpty} from '../utils/common'
-
+  import StepRankGetPrizeDialog from '../components/dialog/step-rank-get-prize-dialog/step-rank-get-prize-dialog'
   export default class Title extends wepy.page {
     config = {}
-    components = {}
+    components = {
+      'step-rank-get-prize-dialog':StepRankGetPrizeDialog
+    }
 
     data = {
       url: './',
       name: '',
       phone: '',
       address: '',
-      showErrorDialog:false,
-      showRightDialog:false
+      showDialog:false,
+      isRight:false
     }
     verifySubmit(){
       const pReg=/^[1][3,4,5,7,8][0-9]{9}$/
@@ -69,18 +76,23 @@
         this.address = e.detail.value
       },
       handleSubmit() {
-        if(this.verifySubmit()){
-          this.showRightDialog = true
-        }else{
-          this.showErrorDialog = true
-        }
-        console.log( this.name ,
+        this.showDialog = true
+        this.isRight = this.verifySubmit()
+        console.log(this.isRight, this.name ,
           this.phone,
           this.address)
       }
     }
 
-    events = {}
+    events = {
+      'dialog-close':()=>{
+        if(this.isRight){
+          wx.navigateBack({
+            delta: 1
+          })
+        }
+      }
+    }
 
     onLoad() {
     };
