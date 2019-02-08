@@ -277,7 +277,9 @@
         * bg , H:609 , W:375
         * */
         const imageUrl = `${this.url}step-share-bg.png`
-        ctx.drawImage(imageUrl, 0, 0, screenWidth, screenHeight)
+
+        let bg = await this.downloadFile(imageUrl)
+        ctx.drawImage(bg.tempFilePath, 0, 0, screenWidth, screenHeight)
         //draw avatar
         ctx.save()
 
@@ -498,7 +500,10 @@
     white-space: nowrap;
     font-size:  $font-size;
     font-weight: bold;
-
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     >view{
       margin-top: percentage(8/$pageHeight);
     }
@@ -587,6 +592,7 @@
       font-size: 36rpx;
       font-weight: bolder;
       color: #009844;
+      border:none;
       &:first-child{
         width: 308rpx;
       }

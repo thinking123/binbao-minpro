@@ -24,7 +24,7 @@ export default class extends wepy.app {
 
       'home/home'
     ],
-    subpackages: [
+    subPackages: [
       {
 
         root: 'new-pages/step-share',

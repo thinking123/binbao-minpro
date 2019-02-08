@@ -217,7 +217,7 @@
         height: 100%;
       }
 
-      >button{
+      .bonus{
         width: 370rpx;
         height: 45rpx;
         position: absolute;
@@ -226,6 +226,8 @@
         border: none;
         border-radius: 45rpx;
         bottom: 26rpx;
+        left:50%;
+        transform: translateX(-50%);
         background-color: #F5B020;
         color:white;
         font-weight: bold;

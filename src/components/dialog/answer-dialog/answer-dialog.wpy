@@ -1,5 +1,5 @@
 <template>
-  <view class="answer-dialog" wx:if="{{visible}}" catchtouchmove="handlemove">
+  <view class="answer-dialog" wx:if="{{visible}}" @touchmove="handlemove">
     <view class="mask"
           @tap="handleOutHide"
           id="mask"/>
