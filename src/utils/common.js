@@ -10,3 +10,10 @@ export function numberWithCommas(x , step = 3) {
 }
 
 
+export function isEmpty(str) {
+  // if(typeof str !== 'string' || !str){
+  //   return false
+  // }
+  str = str.trim()
+  return str.length === 0
+}
