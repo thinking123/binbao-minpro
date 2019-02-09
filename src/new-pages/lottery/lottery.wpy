@@ -1,0 +1,381 @@
+<template>
+  <view class="page">
+    <image class="banner" src="{{url}}lottery-banner.png"/>
+    <image class="lottery-logo" src="{{url}}lottery-logo.png"/>
+
+
+    <view class="content">
+      <image class="bg" src="{{url}}lottery-bg1.png"/>
+    </view>
+
+    <image class="lottery-ml ml-left"
+           wx:if="{{showMl == 0}}"
+           src="{{url}}lottery-ml-left.png"/>
+    <image class="lottery-ml ml-center"
+           wx:if="{{showMl == 1}}"
+           src="{{url}}lottery-ml-center.png"/>
+    <image class="lottery-ml ml-right"
+           wx:if="{{showMl == 2}}"
+           src="{{url}}lottery-ml-right.png"/>
+
+
+
+    <view class="lottery-btn-wrap"
+          @tap="handleLottery">
+      <image class="lottery-btn"
+             src="{{url}}lottery-btn.png"/>
+
+      <view class="lottery-btn-text">
+        <view class="need-ml-value">
+          -{{needMlValue}}
+        </view>
+        麦力值
+      </view>
+    </view>
+
+    <repeat key="index"
+            index="index"
+            item="prize"
+            for="{{prizes}}">
+      <view class="prize"
+            data-set-index="{{index}}"
+            @tap="handlePrize({{index}})">
+        <image class="prize-bg"
+               src="{{url}}lottery-prize.png"/>
+        <view class="prize-text">
+          {{prize.text}}
+        </view>
+      </view>
+    </repeat>
+
+
+
+
+    <image class="lottery-fixed-icon"
+           @tap="handleRedeemPrize"
+           src="{{url}}lottery-fixed-icon.png"/>
+
+    <view class="ml-value">
+      当前麦力值：{{mlValue}}
+    </view>
+    <view class="footer">
+      <image class="footer-bg" src="{{url}}navigate-bar.png"/>
+      <repeat key="index"
+              index="index"
+              item="btn"
+              for="{{navBtns}}">
+        <view class="footer-btn" @tap="handleNav({{index}})"/>
+      </repeat>
+    </view>
+
+  </view>
+
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class Title extends wepy.page {
+    config = {}
+    components = {}
+
+    data = {
+      url:'./',
+      navBtns: [
+        { key: 'mzl' },
+        { key: 'zstz' },
+        { key: 'xytz' },
+        { key: 'return' }
+      ],
+      mlValue:123456,
+      needMlValue:30,
+      prizes:[
+        {text:'曼可顿多士炉'},
+        {text:'曼可顿多士炉'},
+        {text:'曼可顿多士炉'},
+        {text:'曼可顿多士炉'},
+        {text:'曼可顿多士炉'},
+        {text:'曼可顿多士炉'}
+      ],
+      showMl:0,
+      showGetPrizeDialog:false,
+      showErrorDialog:false
+    }
+    methods = {
+      handleNav(index) {
+
+        switch (index) {
+          case 0:
+            break
+          case 1:
+            break
+          case 2:
+            break
+          case 3:
+            wx.navigateBack({
+              delta: 1
+            })
+            break
+        }
+      },
+      handlePrize(index){
+        console.log('handlePrize', index)
+      },
+      handleLottery(){
+        console.log('handleLottery')
+      },
+      handleRedeemPrize(){
+        console.log('handleRedeemPrize')
+      }
+    }
+
+    events = {}
+
+    onLoad() {
+      this.que = [0 , 1 ,2 , 1]
+      this.count = 0
+      this.time = setInterval(()=>{
+        this.count = (++this.count % 4)
+        this.showMl = this.que[this.count]
+
+        console.log(this.showMl)
+        this.$apply()
+      } , 1000)
+    };
+
+    // Other properties
+  }
+</script>
+
+
+<style lang="scss">
+  @import "../../css/variables";
+
+  $pageHeight: 667- $statusBarHeight;
+  .page {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    background-color: white;
+
+    .banner {
+      height: percentage((187 - $statusBarHeight) / $pageHeight);
+      width: 100%;
+    }
+
+
+    .lottery-logo{
+      position: absolute;
+      top: 0;
+      height: percentage((85 - 60) / $pageHeight);
+      width: 90rpx;
+      left:626rpx;
+    }
+    .content{
+      position: absolute;
+      width: 100%;
+      top: percentage((197 - $statusBarHeight) / $pageHeight);
+      height: percentage((593 - 197) / $pageHeight);;
+      >image{
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+
+
+    .prize{
+      z-index: 2;
+      position: absolute;
+      height: 128rpx;
+      width: 128rpx;
+      border-radius: 128rpx;
+      border: 2px solid #FAB600;
+      overflow: hidden;
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      >image{
+        width: 108rpx;
+        height: 62rpx;
+        margin-top: 20rpx;
+      }
+      .prize-text{
+        position: absolute;
+        top: 84rpx;
+        left:50%;
+        transform: translateX(-50%);
+        font-size: 18rpx;
+        white-space: nowrap;
+      }
+
+
+      &[data-set-index='0']{
+        top: percentage((229 - $statusBarHeight) / $pageHeight);
+        left: 60rpx;
+      }
+      &[data-set-index='1']{
+        top: percentage((340 - $statusBarHeight) / $pageHeight);
+        left: 90rpx;
+        /*height: 182rpx;*/
+        /*width: 182rpx;*/
+        /*border-radius: 182rpx;*/
+        transform: scale(1.42);
+      }
+      &[data-set-index='2']{
+        top: percentage((429 - $statusBarHeight) / $pageHeight);
+        left: 34rpx;
+      }
+      &[data-set-index='3']{
+        top: percentage((264 - $statusBarHeight) / $pageHeight);
+        left: 285*2rpx;
+      }
+      &[data-set-index='4']{
+        top: percentage((322 - $statusBarHeight) / $pageHeight);
+        left: 238*2rpx;
+      }
+      &[data-set-index='5']{
+        top: percentage((446 - $statusBarHeight) / $pageHeight);
+        left: 262*2rpx;
+      }
+    }
+
+
+    .ml-value{
+      position: absolute;
+      width: 100%;
+      top: percentage((202 - $statusBarHeight) / $pageHeight);
+      left:251*2rpx;
+      color:white;
+      font-size: 24rpx;
+      font-style: italic;
+      text-shadow:2rpx 2rpx 8rpx black;
+    }
+
+
+    $delay:3s;
+    .lottery-ml{
+      position: absolute;
+      top: percentage((215 - $statusBarHeight) / $pageHeight);
+      height: percentage((516 - 215) / $pageHeight);
+      width: 304rpx;
+      left:50%;
+      transform: translateX(-50%);
+
+      /*animation-name: lottery-ml-animation;*/
+      animation-duration: $delay * 2;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
+      animation-timing-function: linear;
+    }
+
+    @keyframes lottery-ml-animation {
+      from{
+        opacity: 1;
+      }
+      to{
+        opacity: 0;
+      }
+    }
+
+    .ml-left{
+    }
+
+    .ml-center{
+      animation-delay: $delay;
+    }
+
+    .ml-right{
+      animation-delay: $delay * 2;
+    }
+    .lottery-btn-wrap{
+      position: absolute;
+      top: percentage((490 - $statusBarHeight) / $pageHeight);
+      height: percentage((568 - 516) / $pageHeight);
+      width: 224rpx;
+      left:50%;
+      transform: translateX(-50%);
+      >image{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+
+      $btnHeight:52;
+      $ml-font-size:20rpx;
+      .lottery-btn-text{
+        position: relative;
+        color: white;
+        font-size: $ml-font-size;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        white-space: nowrap;
+        top: percentage((530 - 516) / $btnHeight);
+        font-weight: bolder;
+        .need-ml-value{
+          font-size: $ml-font-size + 20;
+
+        }
+      }
+    }
+
+
+
+
+    .lottery-fixed-icon{
+      z-index: 100;
+      position: absolute;
+      top: percentage((527 - $statusBarHeight) / $pageHeight);
+      height: percentage((598 - 527) / $pageHeight);
+      width: 186rpx;
+      left:546rpx;
+      animation-name: lottery-fixed-icon-animation;
+      animation-duration: 3s;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
+      animation-timing-function: linear;
+    }
+
+    @keyframes lottery-fixed-icon-animation {
+      from{
+        top:percentage((515 - $statusBarHeight) / $pageHeight);
+      }
+      to{
+        top:percentage((530 - $statusBarHeight) / $pageHeight);
+      }
+    }
+
+
+
+    .footer{
+      position: absolute;
+      width: 100%;
+      height: percentage(69 / $pageHeight);
+      bottom:0;
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      image{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+
+      view{
+        position: relative;
+        flex:1;
+        height: 100%;
+        width: 25%;
+      }
+    }
+  }
+</style>

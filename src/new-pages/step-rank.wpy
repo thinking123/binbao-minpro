@@ -135,6 +135,7 @@
       },
       handleNav(index) {
 
+        console.log('handleNav' , index)
         switch (index) {
           case 0:
             break

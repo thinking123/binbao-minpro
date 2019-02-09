@@ -22,6 +22,7 @@ export default class extends wepy.app {
     pages: [
       //new pages
 
+      'new-pages/lottery/lottery',
       'new-pages/step-rank',
       'new-pages/step-rank-get-prize',
       'home/home'
