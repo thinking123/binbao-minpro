@@ -65,6 +65,9 @@
     }
     computed = {
       bg(){
+        if(!this.answer){
+          return ''
+        }
         const str = `${this.url}answer-dialog-topic${this.answer.answerTopicBg}.png`
         return str
       }

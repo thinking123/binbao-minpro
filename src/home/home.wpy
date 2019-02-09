@@ -84,6 +84,13 @@
     <how-to-play-dialog :visible.sync="showHowToPlayDialog"/>
     <answer-dialog :visible.sync="showAnswerDialog"
                    :answer="answer"/>
+    <check-in-dialog
+    :visible.sync="showCheckInDialog"
+    :isKnowledge.sync="isKnowledge"
+                   :text="checkInText"
+                   :points="checkInPoints"
+                   :title="checkInTitle"
+  />
   </view>
 </template>
 
@@ -94,12 +101,14 @@
   import CarouselSwiper from '../components/carouse-item/carousel-swiper'
   import HowToPlayDialog from '../components/dialog/how-to-play-dialog/HowToPlayDialog'
   import AnswerDialog from '../components/dialog/answer-dialog/answer-dialog'
+  import CheckInDialog from '../components/dialog/check-in-dialog/check-in-dialog'
   export default class Home extends wepy.page {
     config = {}
     components = {
       'carouselswiper':CarouselSwiper,
       'how-to-play-dialog':HowToPlayDialog,
       'answer-dialog':AnswerDialog,
+      'check-in-dialog':CheckInDialog,
     }
 
     data = {
@@ -118,6 +127,11 @@
       selected:0,
       showHowToPlayDialog:false,
       showAnswerDialog:false,
+      showCheckInDialog:true,
+      isKnowledge:true,
+      checkInText:'全麦谷粒主要分为三层，包括最外层的糠，及内层的胚芽和内胚芽。',
+      checkInTitle:'全麦知识',
+      checkInPoints:1,
       answerTopic:1,
       answer:{
         answerTopicBg:1,
