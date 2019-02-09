@@ -63,6 +63,11 @@
         value: ''
       }
     }
+    onLoad() {
+      this.$apply(()=>{
+        this.url = this.$root.$parent.globalData.url
+      })
+    }
   }
 </script>
 

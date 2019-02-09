@@ -1,0 +1,98 @@
+<template>
+  <view class="footer navigate-bar-external">
+    <image class="footer-bg" src="{{url}}navigate-bar.png"/>
+    <repeat key="index"
+            index="index"
+            item="btn"
+            for="{{navBtns}}">
+      <view class="footer-btn" @tap="handleNav({{btn.key}})"/>
+    </repeat>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class NavigateBar extends wepy.component {
+    components = {}
+    externalClasses = ['navigate-bar-external']
+    data = {
+      url: '',
+      navBtns: [
+        { key: 'step-rank' },
+        { key: 'zstz' },
+        { key: 'lottery' },
+        { key: 'return' }
+      ]
+    }
+
+    nav(index) {
+      this.$emit('navigate-bar', index)
+    }
+
+    methods = {
+      handleNav(route) {
+
+
+        const pages = getCurrentPages()
+        const currentPage = pages[pages.length - 1].route.toString()
+        console.log('route' , route , currentPage)
+        if(currentPage.indexOf(route) != -1){
+          return
+        }
+        switch (route) {
+          case 'step-rank':
+            this.$parent.$navigate('/new-pages/step-rank/index')
+            break
+          case 'lottery':
+            this.$parent.$navigate('/new-pages/lottery/index')
+            break
+          case 'zstz':
+            break
+          case 'return':
+            wx.navigateBack({
+              delta: 1
+            })
+            break
+        }
+      }
+    }
+    events = {}
+    props = {}
+
+    onLoad() {
+      this.$apply(() => {
+        this.url = this.$root.$parent.globalData.url
+      })
+    }
+  }
+</script>
+
+<style lang="scss">
+  @import "../css/variables";
+
+  $pageHeight: 667- $statusBarHeight;
+  .footer {
+    position: absolute;
+    width: 100%;
+    height: percentage(69 / $pageHeight);
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+
+    image {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    view {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      height: 100%;
+      width: 25%;
+    }
+  }
+</style>

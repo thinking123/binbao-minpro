@@ -58,15 +58,17 @@
     <view class="ml-value">
       当前麦力值：{{mlValue}}
     </view>
-    <view class="footer">
-      <image class="footer-bg" src="{{url}}navigate-bar.png"/>
-      <repeat key="index"
-              index="index"
-              item="btn"
-              for="{{navBtns}}">
-        <view class="footer-btn" @tap="handleNav({{index}})"/>
-      </repeat>
-    </view>
+    <!--<view class="footer">-->
+      <!--<image class="footer-bg" src="{{url}}navigate-bar.png"/>-->
+      <!--<repeat key="index"-->
+              <!--index="index"-->
+              <!--item="btn"-->
+              <!--for="{{navBtns}}">-->
+        <!--<view class="footer-btn" @tap="handleNav({{index}})"/>-->
+      <!--</repeat>-->
+    <!--</view>-->
+
+    <navigate-bar/>
 
     <get-prize-dialog
       :text.sync="getPrizeText"
@@ -83,11 +85,13 @@
   import wepy from 'wepy'
   import GetPrizeDialog from '../../components/dialog/get-prize-dialog/get-prize-dialog'
   import LotteryPointsNotEnoughDialog from '../../components/dialog/lottery-points-not-enough-dialog/lottery-points-not-enough-dialog'
+  import NavigateBar from '../../components/navigate-bar'
   export default class Title extends wepy.page {
     config = {}
     components = {
       'get-prize-dialog':GetPrizeDialog,
-      'lottery-points-not-enough-dialog':LotteryPointsNotEnoughDialog
+      'lottery-points-not-enough-dialog':LotteryPointsNotEnoughDialog,
+      'navigate-bar':NavigateBar,
     }
 
     data = {
@@ -148,10 +152,18 @@
       'get-prize-dialog-close':()=>{
         console.log('colse dialog')
         this.$navigate('../step-rank-get-prize')
+      },
+      'navigate-bar':(index)=>{
+        console.log('navigate-bar' , index)
       }
     }
-
-    onLoad() {
+    onUnload(){
+      if(this.time){
+        clearInterval(this.time)
+        this.time = null
+      }
+    }
+    onShow(){
       this.que = [0 , 1 ,2 , 1]
       this.count = 0
       this.time = setInterval(()=>{
@@ -159,6 +171,17 @@
         this.showMl = this.que[this.count]
         this.$apply()
       } , 1000)
+    }
+
+    onHide(){
+      if(this.time){
+        clearInterval(this.time)
+        this.time = null
+      }
+    }
+    onLoad() {
+      this.url = this.$parent.globalData.url
+
     };
 
     // Other properties

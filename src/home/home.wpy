@@ -138,13 +138,20 @@
     methods = {
       handleNavBtn(btn) {
 
-        switch (btn.key) {
-          case 'home-nav-btn3':
+        switch (btn.text) {
+          case '早起挑战':
+
+            break
+          case '麦力值挑战':
+            this.$navigate('../new-pages/step-rank/index')
+            break
+          case '知识挑战':
             this.showAnswerDialog = true
             break
+          case '幸运挑战':
+            this.$navigate('../new-pages/lottery/index')
+            break
         }
-
-        console.log('tap', btn)
       },
       handleHowToPlay(){
         console.log('handleHowToPlay')

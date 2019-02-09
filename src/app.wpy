@@ -21,22 +21,38 @@ export default class extends wepy.app {
   config = {
     pages: [
       //new pages
-
-      'new-pages/lottery/lottery',
-      'new-pages/step-rank',
-      'new-pages/step-rank-get-prize',
       'home/home'
     ],
     subPackages: [
       {
-
         root: 'new-pages/step-share',
         name: 'new-version-step-share',
         pages: [
           'index'
         ]
       },
+      {
 
+        root: 'new-pages/lottery',
+        name: 'new-version-lottery',
+        pages: [
+          'index'
+        ]
+      },
+      {
+        root: 'new-pages/step-rank',
+        name: 'new-version-step-rank',
+        pages: [
+          'index'
+        ]
+      },
+      {
+        root: 'new-pages/step-rank-get-prize',
+        name: 'new-version-step-rank-get-prize',
+        pages: [
+          'index'
+        ]
+      },
       {
 
         root:"pages",

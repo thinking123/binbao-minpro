@@ -82,25 +82,28 @@
     <button class="get-prize-btn" @tap="handleGetPrize">
       领取奖品
     </button>
-    <view class="footer">
-      <image class="footer-bg" src="{{url}}navigate-bar.png"/>
-      <repeat key="index"
-              index="index"
-              item="btn"
-              for="{{navBtns}}">
-        <view class="footer-btn" @tap="handleNav({{index}})"/>
-      </repeat>
-    </view>
+    <!--<view class="footer">-->
+      <!--<image class="footer-bg" src="{{url}}navigate-bar.png"/>-->
+      <!--<repeat key="index"-->
+              <!--index="index"-->
+              <!--item="btn"-->
+              <!--for="{{navBtns}}">-->
+        <!--<view class="footer-btn" @tap="handleNav({{index}})"/>-->
+      <!--</repeat>-->
+    <!--</view>-->
+    <navigate-bar/>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
-  import { numberWithCommas } from '../utils/common'
-
+  import { numberWithCommas } from '../../utils/common'
+  import NavigateBar from '../../components/navigate-bar'
   export default class StepRank extends wepy.page {
     config = {}
-    components = {}
+    components = {
+      'navigate-bar':NavigateBar
+    }
 
     data = {
       url: './',
@@ -128,7 +131,7 @@
     methods = {
       handleGetPrize(){
         console.log('handleGetPrize')
-        this.$navigate('./step-rank-get-prize')
+        this.$navigate('/new-pages/step-rank-get-prize/index')
       },
       handleRank(index) {
         this.selected = index
@@ -152,9 +155,15 @@
       }
     }
 
-    events = {}
+    events = {
+      'navigate-bar':(index)=>{
+        console.log('navigate-bar' , index)
+      }
+    }
 
     onLoad() {
+      this.url = this.$parent.globalData.url
+
       const ml = 338325
       for (let i = 0; i < 20; i++) {
         //rankList
@@ -174,7 +183,7 @@
 
 
 <style lang="scss">
-  @import "../css/variables";
+  @import "../../css/variables";
 
   $pageHeight:667- $statusBarHeight;
   .page {
