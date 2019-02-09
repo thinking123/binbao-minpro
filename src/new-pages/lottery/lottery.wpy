@@ -68,16 +68,27 @@
       </repeat>
     </view>
 
+    <get-prize-dialog
+      :text.sync="getPrizeText"
+      :visible.sync="showGetPrizeDialog"/>
+    <lottery-points-not-enough-dialog
+      :visible.sync="showErrorDialog"/>
   </view>
 
 </template>
 
+
+
 <script>
   import wepy from 'wepy'
-
+  import GetPrizeDialog from '../../components/dialog/get-prize-dialog/get-prize-dialog'
+  import LotteryPointsNotEnoughDialog from '../../components/dialog/lottery-points-not-enough-dialog/lottery-points-not-enough-dialog'
   export default class Title extends wepy.page {
     config = {}
-    components = {}
+    components = {
+      'get-prize-dialog':GetPrizeDialog,
+      'lottery-points-not-enough-dialog':LotteryPointsNotEnoughDialog
+    }
 
     data = {
       url:'./',
@@ -99,7 +110,8 @@
       ],
       showMl:0,
       showGetPrizeDialog:false,
-      showErrorDialog:false
+      showErrorDialog:false,
+      getPrizeText:''
     }
     methods = {
       handleNav(index) {
@@ -123,13 +135,21 @@
       },
       handleLottery(){
         console.log('handleLottery')
+        this.getPrizeText = '曼可顿超醇全麦8片装'
+        this.showGetPrizeDialog = true
+        this.$apply()
       },
       handleRedeemPrize(){
         console.log('handleRedeemPrize')
       }
     }
 
-    events = {}
+    events = {
+      'get-prize-dialog-close':()=>{
+        console.log('colse dialog')
+        this.$navigate('../step-rank-get-prize')
+      }
+    }
 
     onLoad() {
       this.que = [0 , 1 ,2 , 1]
@@ -137,8 +157,6 @@
       this.time = setInterval(()=>{
         this.count = (++this.count % 4)
         this.showMl = this.que[this.count]
-
-        console.log(this.showMl)
         this.$apply()
       } , 1000)
     };

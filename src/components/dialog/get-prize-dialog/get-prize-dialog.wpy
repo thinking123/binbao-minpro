@@ -1,0 +1,144 @@
+<template>
+  <view class="get-prize-dialog" wx:if="{{visible}}" @touchmove="handlemove">
+    <view class="mask"
+          @tap="handleOutHide"
+          id="mask"/>
+    <view class="dialog-content">
+      <image
+        class="header"
+        src="{{url}}lottery-get-dialog-bg.png"/>
+
+
+      <image src="{{url}}dialog-close-btn.png"
+             @tap="handleClose"
+             class="close-btn"/>
+    </view>
+
+    <view class="dialog-text">
+      {{text}}
+    </view>
+    <image
+      class="dialog-icon"
+      src="{{url}}lottery-get-dialog-icon.png"/>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class GetPrizeDialog extends wepy.component {
+    components = {}
+
+    data = {
+      url:'./'
+    }
+    closeDialog(){
+      this.$emit('get-prize-dialog-close')
+    }
+    methods = {
+      handleOutHide(e) {
+        if (e && e.target && e.target.id === 'mask') {
+          this.closeDialog()
+          this.visible = false
+        }
+      },
+      handlemove(e) {
+
+      },
+      handleClose(){
+        this.closeDialog()
+        this.visible = false
+      }
+    }
+
+    events = {}
+    props = {
+      visible: {
+        type: Boolean,
+        value: false,
+        twoWay: true
+      },
+      text: {
+        type: String,
+        value: ''
+      }
+    }
+  }
+</script>
+
+<style lang="scss">
+  @import "../../../css/variables";
+  $pageHeight: 667;
+  .get-prize-dialog{
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+
+    .mask {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background-color: #333333;
+      opacity: 0.9;
+
+    }
+
+    .dialog-text{
+      position: absolute;
+      left:50%;
+      transform: translate(-50%,0);
+      top:percentage((445) / $pageHeight);
+      font-size: 28rpx;
+      letter-spacing: 2rpx;
+    }
+    .dialog-icon{
+      position: absolute;
+      left:50%;
+      transform: translate(-50%,0);
+      top:percentage((280) / $pageHeight);
+      height:percentage((432 - 280) / $pageHeight);
+      width: (230 - 142)*2rpx;
+      border: 1px solid;
+    }
+    .dialog-content{
+      position: absolute;
+      left:50%;
+      transform: translate(-50%,0);
+      top:percentage((55) / $pageHeight);
+      /*height: 56.97%;*/
+      height: percentage((489 - 55) / $pageHeight);
+      width: 474rpx;
+      border-radius: 30rpx;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .header{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+
+      }
+
+
+      .close-btn{
+        position: absolute;
+        bottom: -20rpx;
+        height: 68rpx;
+        width: 68rpx;
+        left:50%;
+        transform: translate(-50% , 100%);
+      }
+
+
+    }
+  }
+</style>
