@@ -1,0 +1,216 @@
+<template>
+  <view
+    class="ml-value-dialog"
+    wx:if="{{visible}}" @touchmove="handlemove">
+    <view class="mask"
+          @tap="handleOutHide"
+          id="mask"/>
+    <view class="dialog-content">
+      <image
+        class="header"
+        src="{{url}}ml-value-dialog-bg.png"/>
+
+
+      <image src="{{url}}dialog-close-btn.png"
+             @tap="handleClose"
+             class="close-btn"/>
+    </view>
+    <view class="points-wrap">
+      <view>
+        +
+      </view>
+      <view class="points" style="font-size: {{pointsFontSize}}">
+        {{upgradePoints}}
+      </view>
+
+    </view>
+    <view class="tip">
+      解锁下一关，获得“{{upgradeTip}}”徽章
+    </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+
+  export default class MlValueDialog extends wepy.component {
+    components = {}
+
+    data = {
+      url:'./'
+    }
+    methods = {
+      handleOutHide(e) {
+        if (e && e.target && e.target.id === 'mask') {
+          this.visible = false
+        }
+      },
+      handlemove(e) {
+
+      },
+      handleClose(){
+        this.visible = false
+      }
+    }
+    getLevelData(level){
+      let res = {}
+      switch (level) {
+        case 1:
+          res = {points : '50' , tip:'麦小粒'}
+          break
+        case 2:
+          res = {points : '150' , tip:'麦小萌'}
+          break
+        case 3:
+          res = {points : '300' , tip:'麦小芽'}
+          break
+        case 4:
+          res = {points : '500' , tip:'麦小苗'}
+          break
+        case 5:
+          res = {points : '800' , tip:'麦小穗'}
+          break
+        case 6:
+          res = {points : '1200' , tip:'麦小王'}
+          break
+      }
+      return res
+    }
+    computed = {
+      upgradePoints() {
+        const res = this.getLevelData(this.upgradeLevel)
+        return `${res.points}`
+      },
+      upgradeTip() {
+        const res = this.getLevelData(this.upgradeLevel)
+        return res.tip
+      },
+      pointsFontSize() {
+        let base = 26
+        if(this.upgradeLevel > 1 && this.upgradeLevel < 6){
+           base += 10
+        }else if(this.upgradeLevel == 6){
+          base += 2
+        }else if(this.upgradeLevel == 1){
+          base += 12
+        }
+        console.log('base' , base)
+        base *= 2
+
+        return `${base}rpx`
+      }
+    }
+    events = {}
+    props = {
+      visible: {
+        type: Boolean,
+        value: false,
+        twoWay: true
+      },
+      upgradeLevel: {
+        type: Number,
+        value: 0
+      }
+    }
+    onLoad() {
+      // this.$apply(()=>{
+      //   this.url = this.$root.$parent.globalData.url
+      // })
+    }
+  }
+</script>
+
+<style lang="scss">
+  @import "../../../css/variables";
+  $pageHeight: 667;
+  $statusBarHeight:0;
+  .ml-value-dialog {
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+
+    .mask {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background-color: #333333;
+      opacity: 0.9;
+
+    }
+    .dialog-content{
+      z-index: 1;
+      position: absolute;
+      left:50%;
+      transform: translate(-50%,0);
+      top:percentage((132 ) / $pageHeight);
+      /*height: 56.97%;*/
+      height: percentage((483 - 132) / $pageHeight);
+      width: 478rpx;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .header{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+
+      }
+
+
+      .close-btn{
+        position: absolute;
+        bottom: -20rpx;
+        height: 68rpx;
+        width: 68rpx;
+        left:50%;
+        transform: translate(-50% , 100%);
+      }
+
+
+    }
+
+    $points-size:26;
+    .points-wrap{
+      z-index: 1;
+      position: absolute;
+      left:50%;
+      transform: translate(-50%,0);
+      top:percentage((220 ) / $pageHeight);
+      color: white;
+
+      font-weight: bolder;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      font-size: pxTorpx($points-size);
+      .points{
+
+      }
+
+
+    }
+
+    .tip{
+      z-index: 1;
+      position: absolute;
+      left:50%;
+      transform: translate(-50%,0);
+      top:percentage((359 ) / $pageHeight);
+      color: #D7D9DC;
+      font-size: pxTorpx(12);
+      white-space: nowrap;
+    }
+
+  }
+</style>

@@ -1,0 +1,21 @@
+<template>
+    <view>
+
+     </view>
+</template>
+
+<script>
+import wepy from 'wepy';
+export default class Com extends wepy.component {
+    components = {}
+
+    data = {}
+    methods = {}
+    events = {}
+    props = {}
+}
+</script>
+
+<style lang="scss">
+
+</style>
