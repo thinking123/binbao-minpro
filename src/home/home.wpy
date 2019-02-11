@@ -92,7 +92,10 @@
     :visible.sync="showCheckInCookBookDialog"
                    :cookIndex.sync="checkInCookIndex"
   />
-    <!--<cash-pool-dialog/>-->
+    <cash-pool-dialog
+      :total="cashTotal"
+      :bonus="cashBonus"
+      :visible.sync="showCashPoolDialog"/>
   </view>
 </template>
 
@@ -127,12 +130,15 @@
         { key: 'home-nav-btn3', text: '知识挑战' },
         { key: 'home-nav-btn4', text: '幸运挑战' }
       ],
+      cashTotal:'100000',
+      cashBonus:'2.02',
       medalNum: 5,
       currentMlValue: 2700,
       historyMlValue: 288890,
       bonus:100000,
       images:[],
       selected:0,
+      showCashPoolDialog:true,
       showHowToPlayDialog:false,
       showAnswerDialog:false,
       showCheckInDialog:false,
