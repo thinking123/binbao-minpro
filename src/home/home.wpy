@@ -96,6 +96,8 @@
       :total="cashTotal"
       :bonus="cashBonus"
       :visible.sync="showCashPoolDialog"/>
+    <cash-pool-dialog-tip
+      :visible.sync="showCashPoolDialogTip"/>
     <ml-value-dialog
       :upgradeLevel.sync="mlUpgradeLevel"
       :visible.sync="showMlValueDialog"/>
@@ -117,6 +119,7 @@
   import AnswerDialog from '../components/dialog/answer-dialog/answer-dialog'
   import CheckInDialog from '../components/dialog/check-in-dialog/check-in-dialog'
   import CashPoolDialog from '../components/dialog/cash-pool-dialog/cash-pool-dialog'
+  import CashPoolDialogTip from '../components/dialog/cash-pool-dialog/cash-pool-dialog-tip'
   import CheckInDialogCookBook from '../components/dialog/check-in-dialog-cookbook/check-in-dialog-cookbook'
   import MlValueDialog from '../components/dialog/medal-dialog/ml-value-dialog'
   import MedalDialog from '../components/dialog/medal-dialog/medal-dialog'
@@ -131,6 +134,7 @@
       'check-in-dialog':CheckInDialog,
       'check-in-dialog-cookbook':CheckInDialogCookBook,
       'cash-pool-dialog':CashPoolDialog,
+      'cash-pool-dialog-tip':CashPoolDialogTip,
       'ml-value-dialog':MlValueDialog,
       'medal-dialog':MedalDialog,
     }
@@ -156,10 +160,11 @@
 
 
       showMlValueDialog:false,
-      showMedalDialog:true,
+      showMedalDialog:false,
 
 
       showCashPoolDialog:false,
+      showCashPoolDialogTip:true,
       showHowToPlayDialog:false,
       showAnswerDialog:false,
       showCheckInDialog:false,

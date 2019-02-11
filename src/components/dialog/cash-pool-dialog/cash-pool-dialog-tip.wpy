@@ -1,21 +1,171 @@
 <template>
-    <view>
+  <view
+    class="cash-pool-dialog-tip"
+    wx:if="{{visible}}" @touchmove="handlemove">
+    <view class="mask"
+          @tap="handleOutHide"
+          id="mask"/>
+    <view class="dialog-content">
+      <image
+        class="header"
+        src="{{url}}cash-pool-dialog-tip-bg.png"/>
 
-     </view>
+
+      <image src="{{url}}dialog-close-btn.png"
+             @tap="handleClose"
+             class="close-btn"/>
+    </view>
+
+    <view class="tip-wrap">
+      <view class="tip color">
+        亲，您来早啦！
+      </view>
+      <view class="tip">
+        本活动将于
+      </view>
+      <view class="tip">
+        2019年3月31日
+      </view>
+      <view class="tip">
+        开启瓜分现金功能
+      </view>
+      <view class="tip bold">
+        欢迎您到时参与！
+      </view>
+    </view>
+  </view>
 </template>
 
 <script>
-import wepy from 'wepy';
-export default class Com extends wepy.component {
+  import wepy from 'wepy'
+
+  export default class CashPoolDialogTip extends wepy.component {
     components = {}
 
-    data = {}
-    methods = {}
+    data = {
+      url:'./'
+    }
+    methods = {
+      handleOutHide(e) {
+        if (e && e.target && e.target.id === 'mask') {
+          this.visible = false
+        }
+      },
+      handlemove(e) {
+
+      },
+      handleClose(){
+        this.visible = false
+      }
+    }
     events = {}
-    props = {}
-}
+    props = {
+      visible: {
+        type: Boolean,
+        value: false,
+        twoWay: true
+      }
+    }
+    onLoad() {
+      // this.$apply(()=>{
+      //   this.url = this.$root.$parent.globalData.url
+      // })
+    }
+  }
 </script>
 
 <style lang="scss">
+  @import "../../../css/variables";
+  $pageHeight: 667 - $statusBarHeight;
+  .cash-pool-dialog-tip {
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
 
+    .mask {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background-color: #333333;
+      opacity: 0.9;
+
+    }
+    .dialog-content{
+      z-index: 1;
+      position: absolute;
+      left:50%;
+      transform: translate(-50%,-50%);
+      top:50%;
+      /*height: 56.97%;*/
+      height: percentage((489 - 132) / $pageHeight);
+      width: 478rpx;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .header{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+
+      }
+
+
+      .close-btn{
+        position: absolute;
+        bottom: -20rpx;
+        height: 68rpx;
+        width: 68rpx;
+        left:50%;
+        transform: translate(-50% , 100%);
+      }
+
+
+    }
+
+
+
+    .tip-wrap{
+      z-index: 1;
+      position: absolute;
+      left:50%;
+      transform: translate(-50%,-50%);
+      top:50%;
+      font-size: pxTorpx(20);
+      white-space: nowrap;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .tip{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: pxTorpx(5);
+        letter-spacing: pxTorpx(2);
+      }
+
+      .color{
+        color: #C6B694;
+        font-weight: bolder;
+      }
+      .bold{
+        font-weight: bolder;
+      }
+    }
+
+
+
+  }
 </style>
