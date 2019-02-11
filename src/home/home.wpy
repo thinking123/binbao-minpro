@@ -91,6 +91,11 @@
                    :points="checkInPoints"
                    :title="checkInTitle"
   />
+    <check-in-dialog-cookbook
+    :visible.sync="showCheckInCookBookDialog"
+                   :cookIndex="checkInCookIndex"
+  />
+    <!--<cash-pool-dialog/>-->
   </view>
 </template>
 
@@ -102,6 +107,10 @@
   import HowToPlayDialog from '../components/dialog/how-to-play-dialog/HowToPlayDialog'
   import AnswerDialog from '../components/dialog/answer-dialog/answer-dialog'
   import CheckInDialog from '../components/dialog/check-in-dialog/check-in-dialog'
+  import CashPoolDialog from '../components/dialog/cash-pool-dialog/cash-pool-dialog'
+  import CheckInDialogCookBook from '../components/dialog/check-in-dialog-cookbook/check-in-dialog-cookbook'
+
+
   export default class Home extends wepy.page {
     config = {}
     components = {
@@ -109,6 +118,8 @@
       'how-to-play-dialog':HowToPlayDialog,
       'answer-dialog':AnswerDialog,
       'check-in-dialog':CheckInDialog,
+      'check-in-dialog-cookbook':CheckInDialogCookBook,
+      'cash-pool-dialog':CashPoolDialog,
     }
 
     data = {
@@ -127,11 +138,13 @@
       selected:0,
       showHowToPlayDialog:false,
       showAnswerDialog:false,
-      showCheckInDialog:true,
+      showCheckInDialog:false,
+      showCheckInCookBookDialog:true,
       isKnowledge:true,
       checkInText:'全麦谷粒主要分为三层，包括最外层的糠，及内层的胚芽和内胚芽。',
       checkInTitle:'全麦知识',
       checkInPoints:1,
+      checkInCookIndex:1,
       answerTopic:1,
       answer:{
         answerTopicBg:1,
