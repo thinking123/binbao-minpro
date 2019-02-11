@@ -17,3 +17,17 @@ export function isEmpty(str) {
   str = str.trim()
   return str.length === 0
 }
+export function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  const rand =  Math.floor(Math.random() * (max - min + 1)) + min
+  console.log('rand' , rand)
+  return rand
+}
+
+
+export function isMorning() {
+  const hour = (new Date()).getHours()
+  //5 - 7
+  return hour >= 5 && hour <= 7
+}

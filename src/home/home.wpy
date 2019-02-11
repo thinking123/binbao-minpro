@@ -86,14 +86,11 @@
                    :answer="answer"/>
     <check-in-dialog
     :visible.sync="showCheckInDialog"
-    :isKnowledge.sync="isKnowledge"
-                   :text="checkInText"
-                   :points="checkInPoints"
-                   :title="checkInTitle"
+                   :points.sync="checkInPoints"
   />
     <check-in-dialog-cookbook
     :visible.sync="showCheckInCookBookDialog"
-                   :cookIndex="checkInCookIndex"
+                   :cookIndex.sync="checkInCookIndex"
   />
     <!--<cash-pool-dialog/>-->
   </view>
@@ -101,7 +98,7 @@
 
 <script>
   import wepy from 'wepy'
-  import {numberWithCommas} from '../utils/common'
+  import {numberWithCommas ,isMorning,getRandomInt} from '../utils/common'
   //组件引用不能带.wpy后缀
   import CarouselSwiper from '../components/carouse-item/carousel-swiper'
   import HowToPlayDialog from '../components/dialog/how-to-play-dialog/HowToPlayDialog'
@@ -139,12 +136,9 @@
       showHowToPlayDialog:false,
       showAnswerDialog:false,
       showCheckInDialog:false,
-      showCheckInCookBookDialog:true,
-      isKnowledge:true,
-      checkInText:'全麦谷粒主要分为三层，包括最外层的糠，及内层的胚芽和内胚芽。',
-      checkInTitle:'全麦知识',
+      showCheckInCookBookDialog:false,
       checkInPoints:1,
-      checkInCookIndex:5,
+      checkInCookIndex:1,
       answerTopic:1,
       answer:{
         answerTopicBg:1,
@@ -167,7 +161,18 @@
 
         switch (btn.text) {
           case '早起挑战':
-
+            if(this.$parent.globalData.hadCheckIn){
+              this.showCheckInCookBookDialog = true
+              this.checkInCookIndex = getRandomInt(1,5)
+            }else{
+              this.showCheckInDialog = true
+              if(isMorning()){
+                this.checkInPoints = getRandomInt(10,20)
+              }else{
+                this.checkInPoints = getRandomInt(1,5)
+              }
+            }
+            this.$parent.globalData.hadCheckIn = true
             break
           case '麦力值挑战':
             this.$navigate('../new-pages/step-rank/index')

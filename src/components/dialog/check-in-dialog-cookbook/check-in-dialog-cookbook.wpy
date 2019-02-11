@@ -86,7 +86,10 @@
         return str
       } ,
       bgLogo(){
+
         const str = `${this.url}check-in-dialog-cookbook-bg-logo${this.cookIndex}.png`
+
+        console.log('str' , str)
         return str
       },
       cookSteps(){
@@ -111,7 +114,10 @@
       },
       cookIndex:Number
     }
-    onLoad(){
+    onLoad() {
+      this.$apply(()=>{
+        this.url = this.$root.$parent.globalData.url
+      })
     }
   }
 

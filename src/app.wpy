@@ -88,7 +88,9 @@ export default class extends wepy.app {
 
   globalData = {
     ercode_img: 'https://bimbochinaclub.ysmine.com/Public/2018/07/common/bb_ercode.png',
-    url:cdnBaseUrl
+    url:cdnBaseUrl,
+    //是否签过到
+    hadCheckIn:false
     // iphonex_class: 'not'
   }
   onLaunch () {

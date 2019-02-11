@@ -8,3 +8,10 @@ export const cookMenus = [
       ]
   }
 ]
+
+export const checkInKnowledge=[
+  {
+    title:'全麦知识',
+    text:'全麦谷粒主要分为三层，包括最外层的糠，及内层的胚芽和内胚芽。'
+  }
+]

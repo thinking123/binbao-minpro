@@ -17,7 +17,6 @@
       </view>
       <view class="text-wrap">
         <image class="logo"
-               wx:if="{{isKnowledge}}"
                src="{{url}}check-in-dialog-knowledge-icon.png"/>
         <view class="text">
           {{text}}
@@ -34,6 +33,7 @@
 
 <script>
   import wepy from 'wepy'
+import {checkInKnowledge} from '../../../utils/constant'
 
   export default class CheckInDialog extends wepy.component {
     data = {
@@ -65,6 +65,17 @@
       pointsBg(){
         const str = `${this.url}check-in-dialog-points${this.points}.png`
         return str
+      },
+      title(){
+        //todo 全麦知识
+        // const title = checkInKnowledge[this.points - 1].title
+        const title = checkInKnowledge[0].title
+        return title
+      } ,
+      text(){
+        // const text = checkInKnowledge[this.points - 1].text
+        const text = checkInKnowledge[0].text
+        return text
       }
     }
     props = {
@@ -73,27 +84,16 @@
         value: false,
         twoWay: true
       },
-      isKnowledge: {
-        type: Boolean,
-        value: false
-      },
-      text: {
-        type: String,
-        value: '全麦知识'
-      },
-      title: {
-        type: String,
-        value: ''
-      },
       points: {
         type: Number,
         value: 1
       }
 
     }
-    onLoad(){
-      this.title = "全麦知识"
-      this.text = "全麦谷粒主要分为三层，包括最外层的糠，及内层的胚芽和内胚芽。"
+    onLoad() {
+      this.$apply(()=>{
+        this.url = this.$root.$parent.globalData.url
+      })
     }
   }
 
