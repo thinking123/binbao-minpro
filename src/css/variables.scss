@@ -1,2 +1,7 @@
 $statusBarHeight:64;
 $baseCdnUrl:'http://pmdtwfss0.bkt.clouddn.com/';
+
+
+@function pxTorpx($n){
+  @return $n*2rpx
+}

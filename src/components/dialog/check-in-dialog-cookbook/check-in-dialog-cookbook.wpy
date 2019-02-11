@@ -8,19 +8,24 @@
 
     <view class="dialog-content">
 
-      <image class="bg" src="{{bg}}"/>
-      <image class="bg-logo"
-             src="{{bgLogo}}"/>
+      <view class="bg-wrap">
+        <image class="bg" src="{{bg}}"/>
+        <image class="bg-logo"
+               src="{{bgLogo}}"/>
+      </view>
+
 
       <view class="title-wrap">
         <view class="title">
           菜谱
+          <image class="title-icon"
+                 src="{{url}}check-in-dialog-cookbook-title-icon.png"/>
         </view>
-        <image class="title-icon"
-               src="{{url}}check-in-dialog-cookbook-title-icon.png"/>
-      </view>
 
+      </view>
       <view class="text-wrap">
+        <image class="title-tag-icon"
+               src="{{url}}down-icon.svg"/>
        <view class="text-title">
          {{cookTitle}}
        </view>
@@ -76,10 +81,10 @@
         return str
       },
       cookSteps(){
-        return cookMenus[this.cookIndex].cookSteps
+        return cookMenus[this.cookIndex - 1].cookSteps
       },
       cookTitle(){
-        return cookMenus[this.cookIndex].title
+        return cookMenus[this.cookIndex - 1].title
       }
     }
     props = {
@@ -132,61 +137,88 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      .points{
-        z-index: 2;
-        position: absolute;
-        left:50%;
-        top:0;
-        transform: translate(-50%,-50%);
-        height: 142rpx;
-        width: 142rpx;
-      }
 
 
-      .bg{
+      .bg-wrap{
         width: 422rpx;
         height: 402rpx;
         border-radius: 18rpx;
         margin-top: 20rpx;
-        overflow: hidden;
+        position: relative;
+        .bg{
+          width: 100%;
+          height: 100%;
+        }
+
+        .bg-logo{
+          position: absolute;
+          width: pxTorpx(288-238);
+          height: pxTorpx(367 - 286);
+          right: 0;
+          bottom:pxTorpx(356 - 367);
+        }
       }
 
-      .title{
-        margin-top: (367-356)*2rpx;
+
+
+      .title-wrap{
+        margin-top: pxTorpx(367-356);
         font-weight: bold;
         font-size: 32rpx;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        letter-spacing: pxTorpx(5);
+        .title{
+          position: relative;
+          >image{
+            position: absolute;
+            top:50%;
+            right: 0;
+            transform: translate(100%,-50%);
+            width: pxTorpx(228-205);
+            height: pxTorpx(386-359);
+          }
+        }
+
+
       }
+
 
 
 
 
 
       .text-wrap{
-        margin-top: (400-384)*2rpx;
-        margin-bottom:(525-515)*2rpx;
+
+        margin-top: pxTorpx(400-384);
+        margin-bottom:pxTorpx(525-515);
+
         position: relative;
         background-color: #F5EEE3;
         width: 422rpx;
         font-size: 28rpx;
+        position: relative;
+        border-top: 1px solid;
 
-        &::before{
-          content:'';
+        .title-tag-icon{
+          width: pxTorpx(193-178);
+          height: pxTorpx(193-178);
           position: absolute;
-          height: 1px;
-          width: 42%;
-          background-color: lightgray;
           top:0;
-          left:0;
+          left: 50%;
+          transform: translate(-50% , -50%);
         }
-        &::after{
-          content:'';
-          position: absolute;
-          height: 1px;
-          width: 42%;
-          background-color: lightgray;
-          top:0;
-          right:0;
+        $font-size-title:pxTorpx(12);
+        .text-title{
+          font-size: $font-size-title;
+          font-weight: bolder;
+          margin-top: pxTorpx(404-393);
+
+
+          margin: pxTorpx(404-393) pxTorpx(93-81) 0;
         }
+
         .logo{
           position: absolute;
           width: (200-174)*2rpx;
