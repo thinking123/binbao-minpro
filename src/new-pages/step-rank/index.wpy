@@ -62,13 +62,20 @@
                   item="rank"
                   for="{{rankList}}">
             <view class="table-row {{index === 0 ? 'table-first' : ''}}">
-              <view class="rank-column">
+              <view class="rank-column" wx:if="{{index !== 0}}">
                 {{rank.rank}}
+              </view>
+              <view class="rank-column" wx:else>
+                <image class="champion-rank-icon"
+                  src="{{url}}step-rank-champion-rank-icon.png"/>
               </view>
               <view class="name-column">
                 {{rank.name}}
               </view>
               <view class="mlvalue-column">
+                <image wx:if="{{index === 0}}"
+                      class="champion-cup-icon"
+                       src="{{url}}step-rank-champion-cup-icon.png"/>
                 {{rank.mlValue}}
               </view>
             </view>
@@ -386,6 +393,16 @@
             }
           }
 
+          .champion-rank-icon{
+            height: pxTorpx(359-338);
+            width: pxTorpx(78-57);
+          }
+
+          .champion-cup-icon{
+            height: pxTorpx(357-342);
+            width: pxTorpx(275-263);
+            margin-right: pxTorpx(6);
+          }
         }
         $scrollHeight:542 - 317;
         .table-row-wrap{
