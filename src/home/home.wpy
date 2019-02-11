@@ -97,8 +97,11 @@
       :bonus="cashBonus"
       :visible.sync="showCashPoolDialog"/>
     <ml-value-dialog
-      :upgradeLevel.sync="upgradeLevel"
+      :upgradeLevel.sync="mlUpgradeLevel"
       :visible.sync="showMlValueDialog"/>
+    <medal-dialog
+      :upgradeLevel.sync="mediaUpgradeLevel"
+      :visible.sync="showMedalDialog"/>
 
 
 
@@ -116,6 +119,7 @@
   import CashPoolDialog from '../components/dialog/cash-pool-dialog/cash-pool-dialog'
   import CheckInDialogCookBook from '../components/dialog/check-in-dialog-cookbook/check-in-dialog-cookbook'
   import MlValueDialog from '../components/dialog/medal-dialog/ml-value-dialog'
+  import MedalDialog from '../components/dialog/medal-dialog/medal-dialog'
 
 
   export default class Home extends wepy.page {
@@ -128,6 +132,7 @@
       'check-in-dialog-cookbook':CheckInDialogCookBook,
       'cash-pool-dialog':CashPoolDialog,
       'ml-value-dialog':MlValueDialog,
+      'medal-dialog':MedalDialog,
     }
 
     data = {
@@ -146,8 +151,14 @@
       bonus:100000,
       images:[],
       selected:0,
-      upgradeLevel:1,
-      showMlValueDialog:true,
+      mlUpgradeLevel:1,
+      mediaUpgradeLevel:1,
+
+
+      showMlValueDialog:false,
+      showMedalDialog:true,
+
+
       showCashPoolDialog:false,
       showHowToPlayDialog:false,
       showAnswerDialog:false,
