@@ -144,7 +144,7 @@
       checkInText:'全麦谷粒主要分为三层，包括最外层的糠，及内层的胚芽和内胚芽。',
       checkInTitle:'全麦知识',
       checkInPoints:1,
-      checkInCookIndex:1,
+      checkInCookIndex:5,
       answerTopic:1,
       answer:{
         answerTopicBg:1,
