@@ -17,9 +17,10 @@
     <view class="dialog-text">
       {{text}}
     </view>
+    <!-- todo image-->
     <image
       class="dialog-icon"
-      src="{{url}}lottery-get-dialog-icon.png"/>
+      src="{{url}}check-in-dialog-cookbook-bg-logo4.png"/>
   </view>
 </template>
 
@@ -112,7 +113,7 @@
       top:percentage((280) / $pageHeight);
       height:percentage((432 - 280) / $pageHeight);
       width: (230 - 142)*2rpx;
-      border: 1px solid;
+      /*border: 1px solid;*/
     }
     .dialog-content{
       position: absolute;

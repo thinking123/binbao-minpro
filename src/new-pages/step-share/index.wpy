@@ -259,6 +259,10 @@
     }
     async getScreenShot() {
       try {
+        wx.showLoading({
+          title: '正在截图',
+          mask: true
+        })
         const dev = await this.getSystemInfo()
         console.log('dev' , dev)
         const {windowHeight} = dev
@@ -360,8 +364,19 @@
         console.error('getScreenShot', e)
         wx.showToast({
           title:e.message,
-          icon:'none'
+          icon: 'success'
         })
+      }finally {
+        // wx.showToast({
+        //   title:'compelted',
+        //   icon:'none'
+        // })
+
+        wx.showLoading({
+          title: 'compelted',
+          mask: true
+        })
+        wx.hideLoading()
       }
     }
 
@@ -451,6 +466,7 @@
   .bg{
     width: 100%;
     height: 100%;
+    border: 10px solid red;
   }
 
   .canvas{
