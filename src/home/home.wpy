@@ -238,7 +238,7 @@
       this.url = this.$parent.globalData.url
 
       const steps = [5,8,15,40,80,120,160,200,280,240,320,360]
-      this.selected = 5
+      this.selected = 8
       for (let i = 0; i < 12; i++) {
           let m = {
             url:`${this.url}home-level${i+1}.png`,

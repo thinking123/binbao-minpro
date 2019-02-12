@@ -22,7 +22,7 @@
         <view
           class="step-content {{2 !==index ? 'not-current' : ''}} {{image.locked ? 'locked':''}}">
           <view class="step-wrap"
-                style="visibility: {{selected!==index ? 'visible' : 'hidden'}}">
+                style="visibility: {{2 !==index ? 'visible' : 'hidden'}}">
             <view class="step">
               {{image.step}}
             </view>
