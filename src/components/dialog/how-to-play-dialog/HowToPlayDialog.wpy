@@ -1,8 +1,8 @@
 <template>
-  <view class="dialog" wx:if="{{visible}}"  @touchmove="handlemove">
+  <view class="dialog" wx:if="{{visible}}">
     <view class="mask"
           @tap="handleOutHide"
-          id="mask"/>
+          id="mask" />
     <image
       class="bg"
       src="{{url}}how-to-play-dialog-bg.png"/>
@@ -15,7 +15,7 @@
         <view class="line"/>
       </view>
 
-      <scroll-view class="dialog-content" scroll-y>
+      <scroll-view class="dialog-content" scroll-y >
 
         <repeat key="index"
                 index="index"
@@ -182,7 +182,7 @@
     .dialog-content {
       width:100%;
       flex: 1;
-      overflow: hidden;
+      overflow: auto;
 
 
       font-size: pxTorpx(12);

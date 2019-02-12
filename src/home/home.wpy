@@ -165,7 +165,7 @@
 
       showCashPoolDialog:false,
       showCashPoolDialogTip:false,
-      showHowToPlayDialog:true,
+      showHowToPlayDialog:false,
       showCheckInDialog:false,
       showCheckInCookBookDialog:false,
       checkInPoints:1,
