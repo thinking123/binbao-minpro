@@ -6,11 +6,28 @@
     <image
       class="bg"
       src="{{url}}how-to-play-dialog-bg.png"/>
-    <scroll-view class="dialog-content" scroll-y>
-      <view class="content-text">
-        {{text}}
+
+    <view class="dialog-content-wrap">
+      <view class="icon-wrap">
+        <view class="line"/>
+        <image class="down-icon"
+               src="{{url}}how-to-play-dialog-down-icon.png"/>
+        <view class="line"/>
       </view>
-    </scroll-view>
+
+      <scroll-view class="dialog-content" scroll-y>
+        <view class="content-text">
+          {{text}}
+        </view>
+      </scroll-view>
+      <view class="icon-wrap">
+        <view class="line"/>
+        <image class="up-icon"
+               src="{{url}}how-to-play-dialog-up-icon.png"/>
+        <view class="line"/>
+      </view>
+    </view>
+
   </view>
 </template>
 
@@ -84,19 +101,53 @@
       transform: translate(-50% , -50%);
     }
 
-    .dialog-content {
+    .dialog-content-wrap{
       z-index:3;
       position:absolute;
       top:33.33333%;
       height:41.79104%;
       width:420rpx;
-      border-top:1px solid;
-      border-bottom:1px solid;
+      /*border-top:1px solid;*/
+      /*border-bottom:1px solid;*/
       align-self: center;
       left:50%;
       top:33.33333%;
       transform: translateX(-50%);
-      &::before{
+
+      display: flex;
+      flex-direction: column;
+
+      .icon-wrap{
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        .line{
+          height: 1px;
+          background-color: black;
+          flex:1;
+        }
+      }
+      .down-icon{
+        width: 36rpx;
+        height: 36rpx;
+        display: block;
+      }
+      .up-icon{
+        width: 36rpx;
+        height: 36rpx;
+        display: block;
+      }
+    }
+    .dialog-content {
+      width:100%;
+      flex: 1;
+      overflow: hidden;
+
+
+   /*   &::before{
         width: 36rpx;
         height: 36rpx;
         content:"";
@@ -122,7 +173,7 @@
         background: url("http://pmdtwfss0.bkt.clouddn.com/how-to-play-dialog-up-icon.png") no-repeat;
         background-size: 100% 100%;
         z-index: 2;
-      }
+      }*/
       .content-text {
         padding:10rpx;
 

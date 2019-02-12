@@ -58,16 +58,18 @@ import {checkInKnowledge} from '../../../utils/constant'
       }
     }
     getIndex(){
-      let index = 0
-      if(this.points > 5){
-        //1-5积分
-        index =  this.points - 1
-      }else{
-        //10-20积分
-        index =  this.points - 5
-      }
-
-      return index
+      // let index = 0
+      // let p = this.points
+      // if(p < 5){
+      //   //1-5积分
+      //   index =  p - 1
+      // }else{
+      //   //10-20积分
+      //   index =  p - 5
+      // }
+      //
+      // console.log('p , points' , p , this.points)
+      return this.points - 1
     }
     computed = {
       bg(){
