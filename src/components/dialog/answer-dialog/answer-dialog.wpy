@@ -4,7 +4,7 @@
           @tap="handleOutHide"
           id="mask"/>
 
-    <view class="dialog-content" wx:if="{{answer}}">
+    <view class="dialog-content">
       <image
         class="header"
         src="{{url}}answer-dialog-header.png"/>
@@ -12,8 +12,21 @@
       <image class="bg" src="{{bg}}"/>
       <image class="logo" src="{{url}}app-dialog-logo.png"/>
       <view class="title">
-        {{answer.answerTitle}}
+
+
+
+        <repeat key="index"
+                index="index"
+                item="t"
+                for="{{answerTitle}}">
+          <view>
+            {{t}}
+          </view>
+        </repeat>
+
+
       </view>
+
       <repeat key="index"
               index="index"
               item="item"
@@ -33,6 +46,7 @@
 
 <script>
   import wepy from 'wepy'
+  import {answers} from '../../../utils/constant'
 
   export default class AnswerDialog extends wepy.component {
     components = {}
@@ -63,12 +77,34 @@
         this.visible = false
       }
     }
+    getIndex(){
+      if((this.answerIndex - 1) >= answers.length){
+        return 0
+      }else{
+        return this.answerIndex - 1
+      }
+    }
     computed = {
+      answerTitle(){
+        let index = this.getIndex()
+        console.log('index' , index, answers[index] )
+        const res = answers[index]
+
+        const t = res.answerTitle.split('\n')
+
+        return t
+      },
+      answer(){
+        //todo answer content
+        let index = this.getIndex()
+        console.log('index' , index, answers[index] )
+        const res = answers[index]
+
+        return res
+      },
       bg(){
-        if(!this.answer){
-          return ''
-        }
-        const str = `${this.url}answer-dialog-topic${this.answer.answerTopicBg}.png`
+        let index = this.getIndex() + 1
+        const str = `${this.url}answer-dialog-topic${this.answerIndex}.png`
         return str
       }
     }
@@ -86,9 +122,9 @@
         value: false,
         twoWay: true
       },
-      answer:{
-        type:Object,
-        value:null
+      answerIndex:{
+        type:Number,
+        value:1
       }
 
     }
@@ -169,6 +205,15 @@
         margin-top: 56rpx;
         font-weight: bold;
         font-size: 32rpx;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        >view{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
       }
 
 

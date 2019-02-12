@@ -83,7 +83,7 @@
     </view>
     <how-to-play-dialog :visible.sync="showHowToPlayDialog"/>
     <answer-dialog :visible.sync="showAnswerDialog"
-                   :answer="answer"/>
+                   :answerIndex.sync="answerIndex"/>
     <check-in-dialog
     :visible.sync="showCheckInDialog"
                    :points.sync="checkInPoints"
@@ -94,7 +94,7 @@
   />
     <cash-pool-dialog
       :total="cashTotal"
-      :bonus="cashBonus"
+      :bonus.sync="cashBonus"
       :visible.sync="showCashPoolDialog"/>
     <cash-pool-dialog-tip
       :visible.sync="showCashPoolDialogTip"/>
@@ -164,23 +164,14 @@
 
 
       showCashPoolDialog:false,
-      showCashPoolDialogTip:true,
+      showCashPoolDialogTip:false,
       showHowToPlayDialog:false,
-      showAnswerDialog:false,
       showCheckInDialog:false,
       showCheckInCookBookDialog:false,
       checkInPoints:1,
       checkInCookIndex:1,
-      answerTopic:1,
-      answer:{
-        answerTopicBg:1,
-        answerTitle:'以下哪种食物是全麦食品？',
-        questions:[
-          '曼可顿全麦面包',
-          '锅包肉'
-        ],
-        rightIndex:0
-      }
+      showAnswerDialog:false,
+      answerIndex:1
     }
     computed = {
       bonusStr () {
@@ -207,26 +198,32 @@
             this.$parent.globalData.hadCheckIn = true
             break
           case '麦力值挑战':
-            this.$navigate('../new-pages/step-rank/index')
+            this.$navigate('/new-pages/step-rank/index')
             break
           case '知识挑战':
             this.showAnswerDialog = true
+            this.answerIndex = getRandomInt(1,10)
             break
           case '幸运挑战':
-            this.$navigate('../new-pages/lottery/index')
+            this.$navigate('/new-pages/lottery/index')
             break
         }
       },
       handleHowToPlay(){
-        console.log('handleHowToPlay')
         this.showHowToPlayDialog = true
       },
       handleMyStep(){
-        console.log('handleMyStep')
         this.$navigate('../new-pages/step-share/index')
       },
       handleBonus(){
         console.log('handleBonus')
+        const rand = getRandomInt(1,5)
+        if(rand %2 == 1){
+          this.showCashPoolDialog = true
+          this.cashBonus = rand + rand*1.0/100
+        }else{
+          this.showCashPoolDialogTip = true
+        }
       }
     }
 

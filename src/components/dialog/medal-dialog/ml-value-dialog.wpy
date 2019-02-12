@@ -113,9 +113,9 @@
       }
     }
     onLoad() {
-      // this.$apply(()=>{
-      //   this.url = this.$root.$parent.globalData.url
-      // })
+      this.$apply(()=>{
+        this.url = this.$root.$parent.globalData.url
+      })
     }
   }
 </script>
