@@ -448,13 +448,13 @@
       display: flex;
       flex-direction: row;
       align-items: stretch;
-      image{
+      >image{
         position: absolute;
         width: 100%;
         height: 100%;
       }
 
-      view{
+      >view{
         position: relative;
         flex:1;
         height: 100%;

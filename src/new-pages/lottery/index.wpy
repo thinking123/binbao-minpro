@@ -397,26 +397,5 @@
 
 
 
-    .footer{
-      position: absolute;
-      width: 100%;
-      height: percentage(69 / $pageHeight);
-      bottom:0;
-      display: flex;
-      flex-direction: row;
-      align-items: stretch;
-      image{
-        position: absolute;
-        width: 100%;
-        height: 100%;
-      }
-
-      view{
-        position: relative;
-        flex:1;
-        height: 100%;
-        width: 25%;
-      }
-    }
   }
 </style>
