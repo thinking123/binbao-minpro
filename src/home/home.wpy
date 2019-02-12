@@ -37,7 +37,7 @@
       <carouselswiper
         :selected.sync="selected"
         carousel-swiper-external="carousel-swiper"
-        :images.sync="images"/>
+        :images="images"/>
     </view>
     <view class="footer">
       <view class="footer-body">

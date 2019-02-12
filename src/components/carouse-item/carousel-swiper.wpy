@@ -3,23 +3,24 @@
     @touchstart="handleTouchStart"
     @touchend="handleTouchEnd"
     class="carousel-swiper carousel-swiper-external">
-    <repeat key="index"
+    <repeat key="url"
             index="index"
             item="image"
-            for="{{images}}">
+            for="{{loopImages}}">
 
+      <!--0 1 2(current) 3 4 -->
       <view
-        class="image-wrap  {{index > selected + 1 ? 'image-next-hidden' : ''}} {{index < selected - 1 ? 'image-pre-hidden' : ''}} {{index == selected + 1 ? 'image-next' : ''}} {{index == selected - 1 ? 'image-pre' : ''}} {{index == selected ? 'image-current' : ''}} ">
+        class="image-wrap  {{index == 4 ? 'image-next-hidden' : ''}} {{index == 0 ? 'image-pre-hidden' : ''}} {{index == 3 ? 'image-next' : ''}} {{index == 1 ? 'image-pre' : ''}} {{index == 2 ? 'image-current' : ''}} ">
         <image src="{{image.url}}"
 
                class="bg"/>
 
         <image src="{{image.icon}}"
                class="icon"
-               wx:if="{{selected===index && !image.locked}}"/>
+               wx:if="{{2===index && !image.locked}}"/>
 
         <view
-          class="step-content {{selected!==index ? 'not-current' : ''}} {{image.locked ? 'locked':''}}">
+          class="step-content {{2 !==index ? 'not-current' : ''}} {{image.locked ? 'locked':''}}">
           <view class="step-wrap"
                 style="visibility: {{selected!==index ? 'visible' : 'hidden'}}">
             <view class="step">
@@ -62,37 +63,44 @@
     }
 
 
-    getImageClass(index){
-      let cs = ''
-      if(index == this.selected){
-        cs = 'image-current'
-      }else if(index == (this.selected + 1)){
-        cs = 'image-next'
-      }else if(index == (this.selected - 1)){
-        cs = 'image-pre'
-      }else if(index > (this.selected + 1)){
-        cs = 'image-next-hidden'
-      }else if(index < (this.selected - 1)){
-        cs = 'image-pre-hidden'
-      }
+    // getImageClass(index){
+    //   let cs = ''
+    //   if(index == this.selected){
+    //     cs = 'image-current'
+    //   }else if(index == (this.selected + 1)){
+    //     cs = 'image-next'
+    //   }else if(index == (this.selected - 1)){
+    //     cs = 'image-pre'
+    //   }else if(index > (this.selected + 1)){
+    //     cs = 'image-next-hidden'
+    //   }else if(index < (this.selected - 1)){
+    //     cs = 'image-pre-hidden'
+    //   }
+    //
+    //   return cs
+    // }
 
-      return cs
-    }
     methods = {
       hanleLeft(){
-        if (this.selected < (this.images.length - 1)) {
-          // console.log('move left')
+        // if (this.selected < (this.images.length - 1)) {
+        //   // console.log('move left')
+        //
+        //   // this.moveRight();
+        //   this.selected++
+        // }
+        this.selected = (this.selected + 1) % this.images.length
 
-          // this.moveRight();
-          this.selected++
-        }
+
       },
       hanleRight(){
-        if (this.selected > 0) {
-          // console.log('move right')
-          // this.moveLeft();
-          this.selected--
-        }
+        // if (this.selected > 0) {
+        //   // console.log('move right')
+        //   // this.moveLeft();
+        //   this.selected--
+        // }
+
+
+        this.selected = (this.selected - 1 + this.images.length) % this.images.length
       },
       handleTouchStart(e) {
 
@@ -120,37 +128,60 @@
         //计算手指触摸偏移剧距离
         var moveX = this.startX - this.endX
         //向左移动
-        if (moveX > 30 && this.selected < (this.images.length - 1)) {
+        //loop
+        if (moveX > 30 ) {
           // console.log('move left')
 
           // this.moveRight();
-          this.selected++
+          // this.selected++
+          this.selected = (this.selected + 1) % this.images.length
+
+
         }
-        if (moveX < -30 && this.selected > 0) {
+        if (moveX < -30 ) {
           // console.log('move right')
           // this.moveLeft();
-          this.selected--
+          // this.selected--
+          this.selected = (this.selected - 1 + this.images.length) % this.images.length
         }
       }
     }
-
+    watch = {
+      selected(v , ov){
+        // console.log('index' , v , 'old ov ' , ov)
+      }
+    }
     computed = {
-      getImageClass() {
-        let index = this.index
-        let cs = ''
-        if(index == this.selected){
-          cs = 'image-current'
-        }else if(index == (this.selected + 1)){
-          cs = 'image-next'
-        }else if(index == (this.selected - 1)){
-          cs = 'image-pre'
-        }else if(index > (this.selected + 1)){
-          cs = 'image-next-hidden'
-        }else if(index < (this.selected - 1)){
-          cs = 'image-pre-hidden'
-        }
+      // getImageClass() {
+      //   let index = this.index
+      //   let cs = ''
+      //   if(index == this.selected){
+      //     cs = 'image-current'
+      //   }else if(index == (this.selected + 1)){
+      //     cs = 'image-next'
+      //   }else if(index == (this.selected - 1)){
+      //     cs = 'image-pre'
+      //   }else if(index > (this.selected + 1)){
+      //     cs = 'image-next-hidden'
+      //   }else if(index < (this.selected - 1)){
+      //     cs = 'image-pre-hidden'
+      //   }
+      //
+      //   return cs
+      // },
+      loopImages() {
+        let res = []
+        let i = this.selected
+        let l = this.images.length
+        res.push(this.images[(i - 2 + l ) % l])
+        res.push(this.images[(i - 1 + l ) % l])
+        res.push(this.images[(i + l ) % l])
+        res.push(this.images[(i  + 1 + l ) % l])
+        res.push(this.images[(i  + 2 + l ) % l])
 
-        return cs
+
+        console.log('images' , (i - 2 + l ) % l , (i - 1 + l ) % l , (i + l ) % l , (i  + 1 + l ) % l , (i  + 2 + l ) % l)
+        return res
       }
     }
     events = {}
