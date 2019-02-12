@@ -57,6 +57,18 @@ import {checkInKnowledge} from '../../../utils/constant'
         this.visible = false
       }
     }
+    getIndex(){
+      let index = 0
+      if(this.points > 5){
+        //1-5积分
+        index =  this.points - 1
+      }else{
+        //10-20积分
+        index =  this.points - 5
+      }
+
+      return index
+    }
     computed = {
       bg(){
         const str = `${this.url}check-in-dialog-bg${this.points}.png`
@@ -67,14 +79,14 @@ import {checkInKnowledge} from '../../../utils/constant'
         return str
       },
       title(){
-        //todo 全麦知识
-        // const title = checkInKnowledge[this.points - 1].title
-        const title = checkInKnowledge[0].title
+        let index = this.getIndex()
+        const title = checkInKnowledge[index].title
+        // const title = checkInKnowledge[0].title
         return title
       } ,
       text(){
-        // const text = checkInKnowledge[this.points - 1].text
-        const text = checkInKnowledge[0].text
+        let index = this.getIndex()
+        const text = checkInKnowledge[index].text
         return text
       }
     }

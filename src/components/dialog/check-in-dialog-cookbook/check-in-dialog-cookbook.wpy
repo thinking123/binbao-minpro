@@ -94,15 +94,15 @@
       },
       cookSteps(){
 
-        // const steps = cookMenus[this.cookIndex - 1].cookSteps
+        const steps = cookMenus[this.cookIndex - 1].cookSteps
         //todo 菜单内容
-        const steps = cookMenus[0].cookSteps
+        // const steps = cookMenus[0].cookSteps
         console.log('steps' , steps)
         return steps
       },
       cookTitle(){
-        // const title = cookMenus[this.cookIndex - 1].title
-        const title = cookMenus[0].title
+        const title = cookMenus[this.cookIndex - 1].title
+        // const title = cookMenus[0].title
         return title
       }
     }
