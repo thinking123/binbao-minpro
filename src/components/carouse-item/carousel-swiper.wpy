@@ -259,8 +259,8 @@
       }
       .icon{
         position: absolute;
-        height: 106rpx;
-        width: 116rpx;
+        height: 142rpx;
+        width: 122rpx;
         top:22rpx;
         left:50%;
         transform: translateX(-50%);

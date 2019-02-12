@@ -276,6 +276,8 @@
             overflow: hidden;
           }
           .user-nick{
+            flex: 1;
+            white-space: nowrap;
             font-size: 24rpx;
             font-weight: bolder;
           }
