@@ -261,3 +261,8 @@ export const howToPlayContent = [
     tipText:'活动记步数据来源于“微信运动”步数。参与活动用户请开启您的【微信运动步数】授权，“微信运动”步数会被系统记录；为确保运动步数准确性，请务必在比赛当天北京时间24点前进入小程序同步步数，系统将以当天最后一次登录小程序时的微信步数为当天的成绩。'
   }
 ]
+
+
+
+export const baseUrl = 'http://47.100.161.51:9080/'
+// export const baseUrl = 'http://yunxiaodefen.e1.luyouxia.net:27302/'

@@ -1,109 +1,146 @@
 <style lang="less">
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
-}
-page {
-  height: 100%;
-  background: #eee;
-}
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+  }
+
+  page {
+    height: 100%;
+    background: #eee;
+  }
 </style>
 
 <script>
-import wepy from 'wepy'
-import 'wepy-async-function'
-// const cdnBaseUrl = './'
-const cdnBaseUrl = 'http://pmdtwfss0.bkt.clouddn.com/'
-export default class extends wepy.app {
-  config = {
-    pages: [
-      //new pages
-      'home/home'
-    ],
-    subPackages: [
-      {
-        root: 'new-pages/step-share',
-        name: 'new-version-step-share',
-        pages: [
-          'index'
-        ]
-      },
-      {
+  import wepy from 'wepy'
+  import 'wepy-async-function'
+  import {showLoading , hideLoading} from './utils/common'
+  // const cdnBaseUrl = './'
+  // const cdnBaseUrl = 'http://pmdtwfss0.bkt.clouddn.com/'
+  const cdnBaseUrl = 'http://pn3ysdpp4.bkt.clouddn.com/'
+  export default class extends wepy.app {
+    config = {
+      pages: [
+        //new pages
+        'home/home'
+      ],
+      subPackages: [
+        {
+          root: 'new-pages/step-share',
+          name: 'new-version-step-share',
+          pages: [
+            'index'
+          ]
+        },
+        {
 
-        root: 'new-pages/lottery',
-        name: 'new-version-lottery',
-        pages: [
-          'index'
-        ]
-      },
-      {
-        root: 'new-pages/step-rank',
-        name: 'new-version-step-rank',
-        pages: [
-          'index'
-        ]
-      },
-      {
-        root: 'new-pages/step-rank-get-prize',
-        name: 'new-version-step-rank-get-prize',
-        pages: [
-          'index'
-        ]
-      },
-      {
+          root: 'new-pages/lottery',
+          name: 'new-version-lottery',
+          pages: [
+            'index'
+          ]
+        },
+        {
+          root: 'new-pages/step-rank',
+          name: 'new-version-step-rank',
+          pages: [
+            'index'
+          ]
+        },
+        {
+          root: 'new-pages/step-rank-get-prize',
+          name: 'new-version-step-rank-get-prize',
+          pages: [
+            'index'
+          ]
+        },
+        {
 
-        root:"pages",
-        name:"old-version1",
-        pages:[
-          //old version pages
-          'index', // 个人中心
-          'reward/myreward', // 赏金赛我的奖励
-          'reward/index', // 赏金赛主页
-          'reward/rtrank', // 赏金赛实时排行
-          'lottery/index', // 积分抽奖主页
-          'jkp/inquire', // 赛后查询页面
-          'link/jd', // 京东优惠券外部链接
-          'link/photo', // 京东优惠券外部链接
-          'link/fengxiang', // 凤祥优惠券连接
-          'jkp/jkp_apply', // 选手申明，填写信息，信息填全（支付之前）
-          'jkp/apply_pay', // 报名费用，报名成功，参赛选手信息
-          'charity/charity_pay', // 慈善支付
-          'charity/charity', // 慈善
-          'jkp/jkp', // 宾堡环球健康跑
-          'jkp/learn_more', // 了解更多
-          'jkp/poster' // 海报
-        ]
+          root: 'pages',
+          name: 'old-version1',
+          pages: [
+            //old version pages
+            'index', // 个人中心
+            'reward/myreward', // 赏金赛我的奖励
+            'reward/index', // 赏金赛主页
+            'reward/rtrank', // 赏金赛实时排行
+            'lottery/index', // 积分抽奖主页
+            'jkp/inquire', // 赛后查询页面
+            'link/jd', // 京东优惠券外部链接
+            'link/photo', // 京东优惠券外部链接
+            'link/fengxiang', // 凤祥优惠券连接
+            'jkp/jkp_apply', // 选手申明，填写信息，信息填全（支付之前）
+            'jkp/apply_pay', // 报名费用，报名成功，参赛选手信息
+            'charity/charity_pay', // 慈善支付
+            'charity/charity', // 慈善
+            'jkp/jkp', // 宾堡环球健康跑
+            'jkp/learn_more', // 了解更多
+            'jkp/poster' // 海报
+          ]
+        }
+      ],
+      window: {
+        backgroundTextStyle: 'light',
+        navigationBarBackgroundColor: '#fff',
+        navigationBarTitleText: '麦向健康每一天',
+        navigationBarTextStyle: 'black'
       }
-    ],
-    window: {
-      backgroundTextStyle: 'light',
-      navigationBarBackgroundColor: '#fff',
-      navigationBarTitleText: '麦向健康每一天',
-      navigationBarTextStyle: 'black'
+    }
+
+    globalData = {
+      ercode_img: 'https://bimbochinaclub.ysmine.com/Public/2018/07/common/bb_ercode.png',
+      url: cdnBaseUrl,
+      //是否签过到
+      hadCheckIn: false,
+      token:null,
+      userInfo:null,
+      stepInfo:null,
+
+      // iphonex_class: 'not'
+    }
+
+    onLaunch() {
+      // wepy.getSystemInfo().then((data) => {
+      //   console.log('system_info: ', data)
+      //   if (data.windowHeight > 720) {
+      //     this.globalData.iphonex_class = 'iphonex'
+      //   }
+      // })
+    }
+
+    constructor() {
+      super()
+      this.use('promisify')
+      this.intercept('request', this.httpIntercept)
+
+    }
+
+    httpIntercept() {
+      const config = function(p) {
+
+
+        console.log('httpIntercept' , p)
+        console.log('config' , this.globalData.token)
+
+        return p
+      }
+      const success = function(p) {
+        return p
+      }
+      const fail = function(p) {
+        return p
+      }
+      const complete = function(p) {
+        return p
+      }
+      return {
+        config: config,
+        success: success,
+        fail: fail,
+        complete: complete,
+      }
     }
   }
-
-  globalData = {
-    ercode_img: 'https://bimbochinaclub.ysmine.com/Public/2018/07/common/bb_ercode.png',
-    url:cdnBaseUrl,
-    //是否签过到
-    hadCheckIn:false
-    // iphonex_class: 'not'
-  }
-  onLaunch () {
-    // wepy.getSystemInfo().then((data) => {
-    //   console.log('system_info: ', data)
-    //   if (data.windowHeight > 720) {
-    //     this.globalData.iphonex_class = 'iphonex'
-    //   }
-    // })
-  }
-  constructor () {
-    super()
-    this.use('promisify')
-  }
-}
 </script>

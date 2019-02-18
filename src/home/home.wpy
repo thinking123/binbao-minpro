@@ -57,10 +57,10 @@
           </view>
           <view class="ml-wrap">
             <view class="cur-ml-value">
-              当前麦力值：{{currentMlValue}}
+              当前麦力值：{{wheatIntegral}}
             </view>
             <view class="his-ml-value">
-              /历史累计麦力值：{{historyMlValue}}
+              /历史累计麦力值：{{wheatIntegralSum}}
             </view>
           </view>
         </view>
@@ -104,6 +104,10 @@
     <medal-dialog
       :upgradeLevel.sync="mediaUpgradeLevel"
       :visible.sync="showMedalDialog"/>
+    <auth-dialog
+      :visible.sync="showAuthDialog"/>
+    <step-auth-dialog
+      :visible.sync="showStepAuthDialog"/>
 
 
 
@@ -112,7 +116,8 @@
 
 <script>
   import wepy from 'wepy'
-  import {numberWithCommas ,isMorning,getRandomInt} from '../utils/common'
+  import {numberWithCommas ,isMorning,getRandomInt , showMsg} from '../utils/common'
+  import {wxLogin ,nowStep , getStep} from '../http/http-business'
   //组件引用不能带.wpy后缀
   import CarouselSwiper from '../components/carouse-item/carousel-swiper'
   import HowToPlayDialog from '../components/dialog/how-to-play-dialog/HowToPlayDialog'
@@ -123,6 +128,8 @@
   import CheckInDialogCookBook from '../components/dialog/check-in-dialog-cookbook/check-in-dialog-cookbook'
   import MlValueDialog from '../components/dialog/medal-dialog/ml-value-dialog'
   import MedalDialog from '../components/dialog/medal-dialog/medal-dialog'
+  import AuthDialog from '../components/dialog/auth-dialog/auth-dialog'
+  import StepAuthDialog from '../components/dialog/auth-dialog/step-auth-dialog'
 
 
   export default class Home extends wepy.page {
@@ -137,6 +144,8 @@
       'cash-pool-dialog-tip':CashPoolDialogTip,
       'ml-value-dialog':MlValueDialog,
       'medal-dialog':MedalDialog,
+      'auth-dialog':AuthDialog,
+      'step-auth-dialog':StepAuthDialog,
     }
 
     data = {
@@ -150,14 +159,18 @@
       cashTotal:'100000',
       cashBonus:'2.02',
       medalNum: 5,
-      currentMlValue: 2700,
-      historyMlValue: 288890,
+      wheatIntegral: 2700,
+      wheatIntegralSum: 288890,
+      //开通的小麦等级
+      wheatRank:0,
       bonus:100000,
       images:[],
       selected:0,
       mlUpgradeLevel:1,
       mediaUpgradeLevel:1,
 
+      showAuthDialog:false,
+      showStepAuthDialog:false,
 
       showMlValueDialog:false,
       showMedalDialog:false,
@@ -230,11 +243,102 @@
     events = {
       'answer-right':(answer) => {
         console.log('answer right , ' , answer)
+      },
+      'getuserinfo':userInfo => {
+        if(userInfo){
+          this.showAuthDialog = false
+          this.$parent.globalData.userInfo = userInfo
+          this.login()
+        }
+      },
+      'auth-step':stepInfo => {
+        if(stepInfo && stepInfo.encryptedData){
+          this.showStepAuthDialog = false
+          this.$parent.globalData.stepInfo = stepInfo
+          this.getStep()
+        }
+      }
+    }
+    async login(){
+      try {
+        const userInfo =this.$parent.globalData.userInfo
+        const {token} = await wxLogin(this.$parent.globalData.code ,
+          userInfo.avatarUrl,
+          userInfo.nickName,
+          userInfo.gender
+        )
+
+        this.$parent.globalData.token = token
+        console.log('token' , token)
+        await this.authStep()
+      }catch (e) {
+        showMsg(e)
+      }
+
+    }
+    async getStep(){
+      try {
+        const {encryptedData,iv} = this.$parent.globalData.stepInfo
+       await nowStep(encryptedData , iv)
+
+        const {medalNum , wheatIntegral ,wheatIntegralSum ,wheatRank } = await getStep()
+          console.log('get step' , medalNum , wheatIntegral ,wheatIntegralSum ,wheatRank)
+
+        this.medalNum = medalNum
+        this.wheatIntegral = wheatIntegral
+        this.wheatIntegralSum = wheatIntegralSum
+        this.wheatRank = wheatRank
+
+
+      }catch (e) {
+        showMsg(e)
+      }
+    }
+    async authUserInfo(){
+      const {authSetting} = await wepy.getSetting()
+
+
+      if(authSetting['scope.userInfo']){
+        const {userInfo} = await wepy.getUserInfo()
+        this.$parent.globalData.userInfo = userInfo
+        await this.login()
+      }else{
+
+        this.$apply(()=>{
+          this.showAuthDialog = true
+        })
+      }
+    }
+    async authStep(){
+      const {authSetting} = await wepy.getSetting()
+      if(authSetting['scope.werun']){
+        const stepInfo = await wepy.getWeRunData()
+        this.$parent.globalData.stepInfo = stepInfo
+        await this.getStep()
+      }else{
+        this.$apply(()=>{
+          this.showStepAuthDialog = true
+        })
       }
     }
 
-    onLoad() {
+    /***
+     *code->auth userinfo -> wxlogin -> auth wxstep -> get step
+     */
+    async init() {
+      try {
 
+        const { code } = await wepy.login()
+        console.log('code' , code)
+        this.$parent.globalData.code = code
+
+        await this.authUserInfo()
+      } catch (e) {
+        showMsg(e)
+      }
+    }
+    onLoad() {
+      this.init()
       this.url = this.$parent.globalData.url
 
       const steps = [5,8,15,40,80,120,160,200,280,240,320,360]
