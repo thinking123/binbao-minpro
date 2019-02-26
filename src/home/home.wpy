@@ -70,7 +70,7 @@
         <view
           @tap="handleMyStep"
           class="step-wrap">
-          <image src="{{url}}home-footer-my-step.png" wx:if="{{url}}"/>
+          <image src="{{cdnUrl}}home-footer-my-step.png" wx:if="{{url}}"/>
           <view class="step">
             我的步数
           </view>
@@ -119,9 +119,12 @@
 
 <script>
   import wepy from 'wepy'
-  import {numberWithCommas ,isMorning,getRandomInt , showMsg} from '../utils/common'
-  import {wxLogin ,nowStep , getStep , isOpenCarveUp , carveUp , getBanner,sign} from '../http/http-business'
-  import {CURRENT_MEDAL_NUM,CURRENT_RANK} from '../utils/constant'
+  import { connect } from 'wepy-redux'
+  import { WX_LOGIN } from '../store/types/http'
+  import { _wxLogin } from '../store/actions'
+  import { numberWithCommas, isMorning, getRandomInt, showMsg } from '../utils/common'
+  import { wxLogin, nowStep, getStep, isOpenCarveUp, carveUp, getBanner, sign } from '../http/http-business'
+  import { CURRENT_MEDAL_NUM, CURRENT_RANK } from '../utils/constant'
   //组件引用不能带.wpy后缀
   import CarouselSwiper from '../components/carouse-item/carousel-swiper'
   import HowToPlayDialog from '../components/dialog/how-to-play-dialog/HowToPlayDialog'
@@ -134,8 +137,18 @@
   import MedalDialog from '../components/dialog/medal-dialog/medal-dialog'
   import AuthDialog from '../components/dialog/auth-dialog/auth-dialog'
   import StepAuthDialog from '../components/dialog/auth-dialog/step-auth-dialog'
-  import BannerSwiper  from '../components/banner-swiper'
+  import BannerSwiper from '../components/banner-swiper'
 
+  @connect({
+    token(state) {
+      return state.common.token
+    },
+    cdnUrl(state) {
+      return state.common.cdnUrl
+    }
+  }, {
+    _wxLogin
+  })
 
   export default class Home extends wepy.page {
     config = {}
@@ -284,6 +297,12 @@
           userInfo.nickName,
           userInfo.gender
         )
+
+        this._wxLogin(this.$parent.globalData.code ,
+          userInfo.avatarUrl,
+          userInfo.nickName,
+          userInfo.gender)
+
 
         this.$parent.globalData.token = token
         console.log('token' , token)
