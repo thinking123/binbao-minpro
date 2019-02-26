@@ -19,7 +19,8 @@
   import {showLoading , hideLoading} from './utils/common'
   // const cdnBaseUrl = './'
   // const cdnBaseUrl = 'http://pmdtwfss0.bkt.clouddn.com/'
-  const cdnBaseUrl = 'http://pn3ysdpp4.bkt.clouddn.com/'
+  // const cdnBaseUrl = 'http://pn3ysdpp4.bkt.clouddn.com/'
+  const cdnBaseUrl = 'https://cdnmakattan.ysmine.com/'
   export default class extends wepy.app {
     config = {
       pages: [
