@@ -83,6 +83,7 @@
 
 <script>
   import wepy from 'wepy'
+  import {showMsg} from '../../utils/common'
   import GetPrizeDialog from '../../components/dialog/get-prize-dialog/get-prize-dialog'
   import LotteryPointsNotEnoughDialog from '../../components/dialog/lottery-points-not-enough-dialog/lottery-points-not-enough-dialog'
   import NavigateBar from '../../components/navigate-bar'
@@ -179,10 +180,17 @@
         this.time = null
       }
     }
+    async init(){
+      try {
+
+      }catch (e) {
+        showMsg(e)
+      }
+    }
     onLoad() {
       this.url = this.$parent.globalData.url
-
-    };
+      this.init()
+    }
 
     // Other properties
   }

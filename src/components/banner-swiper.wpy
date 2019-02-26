@@ -1,0 +1,41 @@
+<template>
+  <swiper
+    autoplay="{{true}}"
+    interval="{{interval}}"
+    duration="{{duration}}"
+  >
+    <repeat key="id"
+            index="index"
+            item="image"
+            for="{{images}}">
+      <swiper-item>
+        <image src="{{image.url}}" class="slide-image"/>
+      </swiper-item>
+    </repeat>
+  </swiper>
+</template>
+<script>
+  import wepy from 'wepy';
+
+  export default class BannerSwiper extends wepy.component {
+    data = {
+      interval:3000
+    }
+    methods = {
+
+    }
+    props = {
+      images:{
+        type:Array,
+        default:[]
+      }
+    }
+  }
+</script>
+
+<style lang="scss">
+.slide-image{
+  width: 100%;
+  height: 100%;
+}
+</style>

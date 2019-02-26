@@ -38,10 +38,10 @@
     </repeat>
     <image class="prev-btn"
            @tap="hanleLeft"
-           src="{{url}}carousel-swiper-left-btn.png"/>
+           src="{{url}}carousel-swiper-left-btn.png"  wx:if="{{url}}"/>
     <image class="next-btn"
            @tap="hanleRight"
-           src="{{url}}carousel-swiper-right-btn.png"/>
+           src="{{url}}carousel-swiper-right-btn.png"  wx:if="{{url}}"/>
   </view>
 </template>
 

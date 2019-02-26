@@ -1,7 +1,10 @@
 <template>
   <view class="page">
     <view class="banner">
-      <image class="banner-bg" src="{{url}}home-banner.png"/>
+      <!--<image class="banner-bg" src="{{url}}home-banner.png" wx:if="{{url}}"/>-->
+
+      <banner-swiper class="banner-swiper"
+                     :images="bannerImages"/>
       <button
         class="bonus"
         @tap="handleBonus">
@@ -18,7 +21,7 @@
 
         <view class="nav-btn">
           <view class="nav-btn-bg-wrap" @tap="handleNavBtn({{btn}})">
-            <image src="{{url}}{{btn.key}}.png" class="nav-btn-bg"/>
+            <image src="{{url}}{{btn.key}}.png" class="nav-btn-bg" wx:if="{{url}}"/>
           </view>
 
           <view class="nav-btn-text">
@@ -37,12 +40,12 @@
       <carouselswiper
         :selected.sync="selected"
         carousel-swiper-external="carousel-swiper"
-        :images="images"/>
+        :images.sync="images"/>
     </view>
     <view class="footer">
       <view class="footer-body">
         <view class="medal-wrap">
-          <image src="{{url}}home-footer-medal.png"/>
+          <image src="{{url}}home-footer-medal.png" wx:if="{{url}}"/>
           <view class="got-medal">
             已获
             <view class="medal-num">
@@ -67,7 +70,7 @@
         <view
           @tap="handleMyStep"
           class="step-wrap">
-          <image src="{{url}}home-footer-my-step.png"/>
+          <image src="{{url}}home-footer-my-step.png" wx:if="{{url}}"/>
           <view class="step">
             我的步数
           </view>
@@ -117,7 +120,8 @@
 <script>
   import wepy from 'wepy'
   import {numberWithCommas ,isMorning,getRandomInt , showMsg} from '../utils/common'
-  import {wxLogin ,nowStep , getStep} from '../http/http-business'
+  import {wxLogin ,nowStep , getStep , isOpenCarveUp , carveUp , getBanner,sign} from '../http/http-business'
+  import {CURRENT_MEDAL_NUM,CURRENT_RANK} from '../utils/constant'
   //组件引用不能带.wpy后缀
   import CarouselSwiper from '../components/carouse-item/carousel-swiper'
   import HowToPlayDialog from '../components/dialog/how-to-play-dialog/HowToPlayDialog'
@@ -130,6 +134,7 @@
   import MedalDialog from '../components/dialog/medal-dialog/medal-dialog'
   import AuthDialog from '../components/dialog/auth-dialog/auth-dialog'
   import StepAuthDialog from '../components/dialog/auth-dialog/step-auth-dialog'
+  import BannerSwiper  from '../components/banner-swiper'
 
 
   export default class Home extends wepy.page {
@@ -146,6 +151,7 @@
       'medal-dialog':MedalDialog,
       'auth-dialog':AuthDialog,
       'step-auth-dialog':StepAuthDialog,
+      'banner-swiper':BannerSwiper
     }
 
     data = {
@@ -158,16 +164,16 @@
       ],
       cashTotal:'100000',
       cashBonus:'2.02',
-      medalNum: 5,
-      wheatIntegral: 2700,
-      wheatIntegralSum: 288890,
+      medalNum: 0,
+      wheatIntegral: 0,
+      wheatIntegralSum: 0,
       //开通的小麦等级
       wheatRank:0,
       bonus:100000,
       images:[],
       selected:0,
       mlUpgradeLevel:1,
-      mediaUpgradeLevel:1,
+      mediaUpgradeLevel:0,
 
       showAuthDialog:false,
       showStepAuthDialog:false,
@@ -184,7 +190,10 @@
       checkInPoints:1,
       checkInCookIndex:1,
       showAnswerDialog:false,
-      answerIndex:1
+      answerIndex:1,
+
+      isStartBonus:false,
+      bannerImages:[]
     }
     computed = {
       bonusStr () {
@@ -193,34 +202,39 @@
       }
     }
     methods = {
-      handleNavBtn(btn) {
-
-        switch (btn.text) {
-          case '早起挑战':
-            if(this.$parent.globalData.hadCheckIn){
-              this.showCheckInCookBookDialog = true
-              this.checkInCookIndex = getRandomInt(1,5)
-            }else{
-              this.showCheckInDialog = true
-              if(isMorning()){
-                this.checkInPoints = getRandomInt(10,20)
+      async handleNavBtn(btn) {
+        try{
+          switch (btn.text) {
+            case '早起挑战':
+              const hadCheckIn = await sign()
+              if(hadCheckIn){
+                this.showCheckInCookBookDialog = true
+                this.checkInCookIndex = getRandomInt(1,5)
               }else{
-                this.checkInPoints = getRandomInt(1,5)
+                this.showCheckInDialog = true
+                if(isMorning()){
+                  this.checkInPoints = getRandomInt(10,20)
+                }else{
+                  this.checkInPoints = getRandomInt(1,5)
+                }
               }
-            }
-            this.$parent.globalData.hadCheckIn = true
-            break
-          case '麦力值挑战':
-            this.$navigate('/new-pages/step-rank/index')
-            break
-          case '知识挑战':
-            this.showAnswerDialog = true
-            this.answerIndex = getRandomInt(1,10)
-            break
-          case '幸运挑战':
-            this.$navigate('/new-pages/lottery/index')
-            break
+              this.$parent.globalData.hadCheckIn = true
+              break
+            case '麦力值挑战':
+              this.$navigate('/new-pages/step-rank/index')
+              break
+            case '知识挑战':
+              this.showAnswerDialog = true
+              this.answerIndex = getRandomInt(1,10)
+              break
+            case '幸运挑战':
+              this.$navigate('/new-pages/lottery/index')
+              break
+          }
+        }catch (e) {
+          showMsg(e)
         }
+
       },
       handleHowToPlay(){
         this.showHowToPlayDialog = true
@@ -228,15 +242,18 @@
       handleMyStep(){
         this.$navigate('../new-pages/step-share/index')
       },
-      handleBonus(){
-        console.log('handleBonus')
-        const rand = getRandomInt(1,5)
-        if(rand %2 == 1){
-          this.showCashPoolDialog = true
-          this.cashBonus = rand + rand*1.0/100
-        }else{
-          this.showCashPoolDialogTip = true
+      async handleBonus(){
+        try {
+          if(this.isStartBonus){
+            this.cashBonus = await carveUp()
+            this.showCashPoolDialog = true
+          }else{
+            this.showCashPoolDialogTip = true
+          }
+        }catch (e) {
+          showMsg(e)
         }
+
       }
     }
 
@@ -276,23 +293,97 @@
       }
 
     }
-    async getStep(){
-      try {
-        const {encryptedData,iv} = this.$parent.globalData.stepInfo
-       await nowStep(encryptedData , iv)
 
-        const {medalNum , wheatIntegral ,wheatIntegralSum ,wheatRank } = await getStep()
-          console.log('get step' , medalNum , wheatIntegral ,wheatIntegralSum ,wheatRank)
+    isShowMedalDialog(medalNum) {
+      const res = wx.getStorageSync(CURRENT_MEDAL_NUM)
+      if (res) {
+        if (medalNum > res && medalNum != 0) {
+          this.showMedalDialog = true
+          this.mediaUpgradeLevel = medalNum
+          wx.setStorageSync(CURRENT_MEDAL_NUM, medalNum)
+        }
+      } else {
+        if(medalNum > 0){
+          this.showMedalDialog = true
+          this.mediaUpgradeLevel = medalNum
+        }
+        wx.setStorageSync(CURRENT_MEDAL_NUM, medalNum)
+      }
+
+    }
+    isShowWheatNumDialog(wheatRank){
+      const res = wx.getStorageSync(CURRENT_RANK)
+      if (res) {
+        if (wheatRank > res && wheatRank != 0) {
+          this.showMlValueDialog = true
+          this.mlUpgradeLevel = wheatRank
+          wx.setStorageSync(CURRENT_RANK, wheatRank)
+        }
+      } else {
+        if(wheatRank > 0){
+          this.showMlValueDialog = true
+          this.mlUpgradeLevel = wheatRank
+        }
+        wx.setStorageSync(CURRENT_RANK, wheatRank)
+      }
+    }
+    initCarouselSwiperImages(wheatRank){
+      const steps = [5,8,15,40,80,120,160,200,280,240,320,360]
+      // this.selected = wheatRank
+      const images = []
+      for (let i = 0; i < 12; i++) {
+        let m = {
+          url:`${this.url}home-level${i+1}.png`,
+          icon:`${this.url}home-icon${i+1}.png`,
+          locked:(i + 1)> wheatRank,
+          step:`${steps[i]}k`
+        }
+
+        images.push(m)
+      }
+
+      this.images = [...images]
+
+      console.log('init images' , this.images)
+    }
+    //如果用户拒绝了授权步数，不用处理步数
+    async getStep() {
+      try {
+        const { encryptedData, iv } = this.$parent.globalData.stepInfo
+        await nowStep(encryptedData, iv)
+
+        const { medalNum, wheatIntegral, wheatIntegralSum, wheatRank } = await getStep()
+        console.log('get step', medalNum, wheatIntegral, wheatIntegralSum, wheatRank)
 
         this.medalNum = medalNum
         this.wheatIntegral = wheatIntegral
         this.wheatIntegralSum = wheatIntegralSum
         this.wheatRank = wheatRank
+        this.initCarouselSwiperImages(wheatRank)
+        this.isStartBonus = await isOpenCarveUp()
+        this.bannerImages = await getBanner()
+        this.isShowWheatNumDialog(wheatRank)
+        this.isShowMedalDialog(medalNum)
 
 
-      }catch (e) {
+
+        this.$apply()
+
+      } catch (e) {
+        console.log(e)
         showMsg(e)
       }
+    }
+    async _sign(){
+      let signOk = false
+      try {
+        await sign()
+        signOk = true
+      }catch (e) {
+        // showMsg(e)
+      }
+
+      return signOk
     }
     async authUserInfo(){
       const {authSetting} = await wepy.getSetting()
@@ -338,23 +429,9 @@
       }
     }
     onLoad() {
-      this.init()
       this.url = this.$parent.globalData.url
+      this.init()
 
-      const steps = [5,8,15,40,80,120,160,200,280,240,320,360]
-      this.selected = 8
-      for (let i = 0; i < 12; i++) {
-          let m = {
-            url:`${this.url}home-level${i+1}.png`,
-            icon:`${this.url}home-icon${i+1}.png`,
-            locked:i > this.selected,
-            step:`${steps[i]}k`
-          }
-
-          this.images.push(m)
-      }
-
-      console.log('init images' , this.images)
     };
 
     // Other properties
@@ -384,7 +461,7 @@
       position: relative;
       display: flex;
       justify-content: center;
-      >image{
+      >.banner-swiper{
         width: 100%;
         height: 100%;
       }

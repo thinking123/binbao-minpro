@@ -267,3 +267,6 @@ export const howToPlayContent = [
 export const baseUrl = 'https://makattan.ysmine.com/'
 // export const baseUrl = 'http://47.100.161.51:9080/'
 // export const baseUrl = 'http://yunxiaodefen.e1.luyouxia.net:27302/'
+
+export const CURRENT_MEDAL_NUM = 'CURRENT_MEDAL_NUM'
+export const CURRENT_RANK = 'CURRENT_RANK'
