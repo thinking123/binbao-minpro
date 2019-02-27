@@ -42,15 +42,15 @@ export function showModal(content , title = 'tip' ) {
   })
 }
 
-export function urlParams(url , params) {
-  const p =  Object.keys(params).map(function(key) {
-    return [key, params[key]].map(encodeURIComponent).join("=");
-  }).join("&");
-  if(p.length === 0){
-    return url
-  }
-  return `${url}?${p}`
-}
+// export function urlParams(url , params) {
+//   const p =  Object.keys(params).map(function(key) {
+//     return [key, params[key]].map(encodeURIComponent).join("=");
+//   }).join("&");
+//   if(p.length === 0){
+//     return url
+//   }
+//   return `${url}?${p}`
+// }
 
 
 export function showLoading(title , mask = true) {
@@ -91,4 +91,24 @@ export function showMsg(title , showIcon = false) {
   wx.showToast(options)
 
   console.log(title , icon , isError)
+}
+
+
+
+export function urlParams(url, params , noEncode = false) {
+  let p = ''
+  if(noEncode){
+    p = Object.keys(params).map(function (key) {
+      return [key, params[key]].join("=");
+    }).join("&");
+  }else{
+    p = Object.keys(params).map(function (key) {
+      return [key, params[key]].map(encodeURIComponent).join("=");
+    }).join("&");
+  }
+
+  if (p.length === 0) {
+    return url
+  }
+  return `${url}?${p}`
 }

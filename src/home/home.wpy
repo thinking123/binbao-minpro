@@ -3,8 +3,7 @@
     <view class="banner">
       <!--<image class="banner-bg" src="{{url}}home-banner.png" wx:if="{{url}}"/>-->
 
-      <banner-swiper class="banner-swiper"
-                     :images="bannerImages"/>
+      <banner-swiper class="banner-swiper"/>
       <button
         class="bonus"
         @tap="handleBonus">
@@ -120,10 +119,10 @@
 <script>
   import wepy from 'wepy'
   import { connect } from 'wepy-redux'
-  import {WX_LOGIN , STEP , WX_STEP , ISSTARTBONUS , BANNERIMAGES} from '../store/types/http'
+  import {WX_LOGIN , STEP , WX_STEP , ISSTARTBONUS , BANNERIMAGES,ANSWER} from '../store/types/http'
   import { _wxLogin } from '../store/actions'
   import { numberWithCommas, isMorning, getRandomInt, showMsg } from '../utils/common'
-  import { wxLogin, nowStep, getStep, isOpenCarveUp, carveUp, getBanner, sign } from '../http/http-business'
+  import { wxLogin, nowStep, getStep, isOpenCarveUp, carveUp, getBanner, sign ,getAnswer} from '../http/http-business'
   import { CURRENT_MEDAL_NUM, CURRENT_RANK } from '../utils/constant'
   //组件引用不能带.wpy后缀
   import CarouselSwiper from '../components/carouse-item/carousel-swiper'
@@ -162,6 +161,7 @@
     STEP,
     ISSTARTBONUS,
     BANNERIMAGES,
+    ANSWER,
   })
 
   export default class Home extends wepy.page {
@@ -228,6 +228,15 @@
         return numberWithCommas(str)
       }
     }
+    async _getAnswer(){
+      const answer = await getAnswer()
+      console.log('answer' , answer)
+      this.methods.ANSWER(answer)
+      if(answer){
+        this.showAnswerDialog = true
+        this.$apply()
+      }
+    }
     methods = {
       async handleNavBtn(btn) {
         try{
@@ -251,8 +260,9 @@
               this.$navigate('/new-pages/step-rank/index')
               break
             case '知识挑战':
-              this.showAnswerDialog = true
-              this.answerIndex = getRandomInt(1,10)
+              await this._getAnswer()
+              // this.showAnswerDialog = true
+              // this.answerIndex = getRandomInt(1,10)
               break
             case '幸运挑战':
               this.$navigate('/new-pages/lottery/index')
@@ -421,6 +431,8 @@
 
         this.$apply()
 
+        // this.$navigate('/new-pages/step-rank/index')
+
       } catch (e) {
         console.log(e)
         showMsg(e)
@@ -500,6 +512,7 @@
   @import "../css/variables";
 
   $footer-fontsize: 18rpx;
+  $pageHeight:667 - $statusBarHeight;
   .page {
     width: 100%;
     height: 100%;
@@ -513,7 +526,7 @@
 
     background-color: #F3F1EA;
     .banner {
-      height: percentage((187 - $statusBarHeight) / 667);
+      height: percentage((187 - $statusBarHeight) / $pageHeight);
       width: 100%;
       position: relative;
       display: flex;

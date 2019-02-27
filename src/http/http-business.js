@@ -1,5 +1,5 @@
-import {get, post} from "./http";
-import {urlParams} from '../utils/common'
+import { get, post } from './http'
+import { urlParams } from '../utils/common'
 
 function parseRes(res, errMsg, resolveStatus = []) {
   if (!!res && res.status.indexOf('2') > -1) {
@@ -42,7 +42,6 @@ export function nowStep(encryptedData, iv) {
   return post(url, data, loadingText).then(res => parseRes(res, errMsg))
 }
 
-
 //获取微信运动步数
 export function getStep() {
   const url = '/api/login/msg'
@@ -57,16 +56,17 @@ export function isOpenCarveUp() {
   const url = '/api/carveUp/isOpenCarveUp'
   const errMsg = '获取是否开始瓜分现金失败'
   const data = {}
-  return post(url, data, ).then(res => {
+  return post(url, data).then(res => {
     if (res && res.status == '9009') {
       return true
     } else if (res && res.status == '9010') {
       return false
-    }  else {
+    } else {
       throw new Error(res.message ? res.message : errMsg)
     }
   })
 }
+
 //作用: 瓜分现金
 export function carveUp() {
   const url = '/api/carveUp'
@@ -96,7 +96,7 @@ export function sign() {
       return false
     } else if (!!res && res.status.indexOf('2') > -1) {
       return true
-    }  else {
+    } else {
       throw new Error(res.message ? res.message : errMsg)
     }
   })
@@ -127,20 +127,19 @@ export function totalRanking() {
   const data = {}
   return get(url, data, loadingText).then(res => parseRes(res, errMsg))
 }
+
 //总排行榜 领取奖品
-export function totalReceive(prizeAddress , prizeName , prizePhone ) {
+export function totalReceive(prizeAddress, prizeName, prizePhone) {
   const url = '/api/wheatChallenge/totalReceive'
   const loadingText = '领取奖品...'
   const errMsg = '领取奖品失败'
   const data = {
     prizeAddress,
     prizeName,
-    prizePhone,
+    prizePhone
   }
   return post(url, data, loadingText).then(res => parseRes(res, errMsg))
 }
-
-
 
 //作用: 周排名
 export function weekRanking() {
@@ -150,15 +149,50 @@ export function weekRanking() {
   const data = {}
   return get(url, data, loadingText).then(res => parseRes(res, errMsg))
 }
+
 //周排行榜 领取奖品
-export function weekReceive(prizeAddress , prizeName , prizePhone ) {
+export function weekReceive(prizeAddress, prizeName, prizePhone) {
   const url = '/api/wheatChallenge/weekReceive'
   const loadingText = '领取奖品...'
   const errMsg = '领取奖品失败'
   const data = {
     prizeAddress,
     prizeName,
-    prizePhone,
+    prizePhone
   }
   return post(url, data, loadingText).then(res => parseRes(res, errMsg))
+}
+
+//获取题目
+export function getAnswer() {
+  const url = '/api/knowledge/get'
+  const loadingText = '获取题目...'
+  const errMsg = '获取题目失败'
+  const data = {}
+  return post(url, data, loadingText).then(res => {
+    if (res && res.status == '4002') {
+      return false
+    } else {
+      return parseRes(res, errMsg)
+    }
+  })
+}
+
+//答题
+export function answerQuestion(id, userAnswer) {
+  let url = '/api/knowledge/answer'
+  const loadingText = '答题...'
+  const errMsg = '答题失败'
+  const data = { id, userAnswer }
+  url = urlParams(url, data, true)
+  return post(url, {}, loadingText).then(res => {
+    if (res && res.status == '4003') {
+      return true
+    } else if (res && res.status == '4004') {
+      return false
+    } else {
+      res.status = ''
+      return parseRes(res, errMsg)
+    }
+  })
 }

@@ -4,15 +4,14 @@
           @tap="handleOutHide"
           id="mask"/>
 
-    <view class="dialog-content">
+    <view class="dialog-content" wx:if="{{answer}}">
       <image
         class="header"
         src="{{url}}answer-dialog-header.png"/>
 
-      <image class="bg" src="{{bg}}"/>
+      <image class="bg" src="{{answer.knowledgeImg}}"/>
       <image class="logo" src="{{url}}app-dialog-logo.png"/>
       <view class="title">
-
 
 
         <repeat key="index"
@@ -27,16 +26,24 @@
 
       </view>
 
-      <repeat key="index"
-              index="index"
-              item="item"
-              for="{{answer.questions}}">
-        <button class="btn {{selectedIndex === index ? (selectedIndex === answer.rightIndex ? 'selected-right' :'selected-wrong' ) : ''}}"
-                @tap="handleTap({{index}})">
-          {{item}}
-        </button>
-      </repeat>
-
+      <!--<repeat key="index"-->
+      <!--index="index"-->
+      <!--item="item"-->
+      <!--for="{{questions}}">-->
+      <!--<button class="btn {{selectedIndex === index ? (selectedIndex === rightIndex ? 'selected-right' :'selected-wrong' ) : ''}}"-->
+      <!--@tap="handleTap({{index}})">-->
+      <!--{{item}}-->
+      <!--</button>-->
+      <!--</repeat>-->
+      <!--<button class="btn {{selectedIndex == 'a' && isRight ? 'selected-right' :'selected-wrong' }}"-->
+      <button class="btn {{selectedIndex === 'a' ? (isRight ? 'selected-right' :'selected-wrong' ) : ''}}"
+              @tap="handleTap('a')">
+        {{answer.answerA}}
+      </button>
+      <button class="btn {{selectedIndex === 'b' ? (isRight ? 'selected-right' :'selected-wrong' ) : ''}}"
+              @tap="handleTap('b')">
+        {{answer.answerB}}
+      </button>
       <image src="{{url}}dialog-close-btn.png"
              @tap="handleClose"
              class="close-btn"/>
@@ -47,13 +54,23 @@
 <script>
   import wepy from 'wepy'
   import {answers} from '../../../utils/constant'
+  import { connect } from 'wepy-redux'
+  import { answerQuestion} from '../../../http/http-business'
+  import {showMsg} from '../../../utils/common'
+
+  @connect({
+    url:state=>state.common.cdnUrl,
+    answer:state=>state.common.answer,
+  },{})
 
   export default class AnswerDialog extends wepy.component {
     components = {}
 
     data = {
-      url: './',
-      selectedIndex: -1
+      // url: './',
+      selectedIndex: '',
+      rightIndex:-1,
+      isRight:false
     }
     methods = {
       handleOutHide(e) {
@@ -64,51 +81,49 @@
       handlemove(e) {
 
       },
-      handleTap(index){
-          if(this.selectedIndex === -1){
+      async handleTap(index){
+
+        try {
+          if(this.selectedIndex.length == 0){
             this.selectedIndex = index
-            if(index === this.answer.rightIndex){
-              this.$emit('answer-right' , this.answer)
-            }
+            this.isRight = await answerQuestion(this.answer.id ,index)
+
+            this.$apply()
           }
+        }catch (e) {
+          showMsg(e)
+        }
+          // if(this.selectedIndex === -1){
+
+
+
+        /*
+        *
+        * */
+          //   this.selectedIndex = index
+          //   if(index === this.answer.rightIndex){
+          //     this.$emit('answer-right' , this.answer)
+          //   }
+          // }
 
       },
       handleClose(){
         this.visible = false
       }
     }
-    getIndex(){
-      if((this.answerIndex - 1) >= answers.length){
-        return 0
-      }else{
-        return this.answerIndex - 1
-      }
-    }
     computed = {
       answerTitle(){
-        let index = this.getIndex()
-        console.log('index' , index, answers[index] )
-        const res = answers[index]
 
-        const t = res.answerTitle.split('\n')
+        if(this.answer && this.answer.knowledgeQuestion){
+          const t = this.answer.knowledgeQuestion.match(/.{1,10}/g)
 
-        return t
-      },
-      answer(){
-        //todo answer content
-        let index = this.getIndex()
-        console.log('index' , index, answers[index] )
-        const res = answers[index]
+          return t
+        }else{
+          return []
+        }
 
-        return res
-      },
-      bg(){
-        let index = this.getIndex() + 1
-        const str = `${this.url}answer-dialog-topic${this.answerIndex}.png`
-        return str
       }
     }
-
     watch = {
       visible(v){
         if(!v){
@@ -130,9 +145,9 @@
     }
 
     onLoad() {
-      this.$apply(() => {
-        this.url = this.$root.$parent.globalData.url
-      })
+      // this.$apply(() => {
+      //   this.url = this.$root.$parent.globalData.url
+      // })
     }
   }
 </script>

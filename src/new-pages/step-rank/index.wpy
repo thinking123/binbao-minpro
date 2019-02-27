@@ -1,6 +1,9 @@
 <template>
   <view class="page">
-    <image class="banner" src="{{url}}step-rank-banner.png"/>
+    <!--<image class="banner" src="{{url}}step-rank-banner.png"/>-->
+
+
+    <banner-swiper class="banner"/>
     <view class="btn-group">
       <button @tap="handleRank(0)"
               class="rank-btn {{selected == 0? 'selected' : ''}}">
@@ -57,7 +60,7 @@
           </view>
         </view>
         <scroll-view class="table-row-wrap" scroll-y>
-          <repeat key="index"
+          <repeat key="id"
                   index="index"
                   item="rank"
                   for="{{rankList}}">
@@ -69,14 +72,14 @@
                 <image class="champion-rank-icon"
                   src="{{url}}step-rank-champion-rank-icon.png"/>
               </view>
-              <view class="name-column">
-                {{rank.name}}
+              <view class="name-column hidden_ellipsis">
+                {{rank.userName}}
               </view>
               <view class="mlvalue-column">
                 <image wx:if="{{index === 0}}"
                       class="champion-cup-icon"
                        src="{{url}}step-rank-champion-cup-icon.png"/>
-                {{rank.mlValue}}
+                {{rank.wheatIntegralSum}}
               </view>
             </view>
           </repeat>
@@ -104,26 +107,44 @@
 
 <script>
   import wepy from 'wepy'
-  import { numberWithCommas } from '../../utils/common'
+  import { connect } from 'wepy-redux'
+  import {totalRanking , weekRanking} from '../../http/http-business'
+  import { numberWithCommas ,showMsg} from '../../utils/common'
   import NavigateBar from '../../components/navigate-bar'
+  import BannerSwiper from '../../components/banner-swiper'
+
+  @connect({
+    url:state=>state.common.cdnUrl,
+  },{})
+
   export default class StepRank extends wepy.page {
     config = {}
     components = {
-      'navigate-bar':NavigateBar
+      'navigate-bar':NavigateBar,
+      'banner-swiper':BannerSwiper
     }
 
     data = {
-      url: './',
       myTotalRank: '35',
       myHisMLPoints: '12345',
-      rankList: [],
+
       selected: 0,
       navBtns: [
         { key: 'mzl' },
         { key: 'zstz' },
         { key: 'xytz' },
         { key: 'return' }
-      ]
+      ],
+
+      //week
+      isReceive:'',
+      isWinning:'',
+      //total
+      isOpenReceiveAPrize:'',
+
+      myRanking:'',
+      myWheat:'',
+      rankList: [],
     }
     computed = {
       myTotalRankStr() {
@@ -135,14 +156,48 @@
         return numberWithCommas(str, 4)
       }
     }
+
+    async _weekRanking(){
+      const {isReceive   ,isWinning , myRanking ,myWheat ,rankingLimitList } = await weekRanking()
+
+      this.isReceive = isReceive
+      this.isWinning = isWinning
+
+      this.myRanking = myRanking
+      this.myWheat = myWheat
+      this.rankList = rankingLimitList
+      this.$apply()
+    }
+    async _totalRanking(){
+      const {isOpenReceiveAPrize  ,myRanking ,myWheat ,rankingLimitList } = await totalRanking()
+
+      this.isOpenReceiveAPrize = isOpenReceiveAPrize
+
+      this.myRanking = myRanking
+      this.myWheat = myWheat
+      this.rankList = rankingLimitList
+      this.$apply()
+    }
     methods = {
       handleGetPrize(){
         console.log('handleGetPrize')
         this.$navigate('/new-pages/step-rank-get-prize/index')
       },
-      handleRank(index) {
-        this.selected = index
+      async handleRank(index) {
+        try {
+          if(index != this.selected){
+            this.rankList = index == 0 ? await this._totalRanking() : await this._weekRanking()
+            this.selected = index
+          }
+
+        }catch (e) {
+          showMsg(e)
+        }
+
+
       },
+
+
       handleNav(index) {
 
         console.log('handleNav' , index)
@@ -169,19 +224,19 @@
     }
 
     onLoad() {
-      this.url = this.$parent.globalData.url
-
-      const ml = 338325
-      for (let i = 0; i < 20; i++) {
-        //rankList
-        let rank = {
-          rank: (i + 1),
-          name: `userName${i + 1}`,
-          mlValue: numberWithCommas((ml - i * 123), 4)
-        }
-
-        this.rankList.push(rank)
-      }
+      // this.url = this.$parent.globalData.url
+      this._totalRanking()
+      // const ml = 338325
+      // for (let i = 0; i < 20; i++) {
+      //   //rankList
+      //   let rank = {
+      //     rank: (i + 1),
+      //     name: `userName${i + 1}`,
+      //     mlValue: numberWithCommas((ml - i * 123), 4)
+      //   }
+      //
+      //   this.rankList.push(rank)
+      // }
     }
 
     // Other properties
@@ -193,6 +248,14 @@
   @import "../../css/variables";
 
   $pageHeight:667- $statusBarHeight;
+
+
+  .hidden_ellipsis{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display:block !important;
+  }
   .page {
     width: 100%;
     height: 100%;
@@ -393,6 +456,10 @@
             &:last-child{
               flex:4;
             }
+          }
+
+          .name-column{
+            text-align: center;
           }
 
           .champion-rank-icon{

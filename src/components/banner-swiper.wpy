@@ -2,12 +2,11 @@
   <swiper
     autoplay="{{true}}"
     interval="{{interval}}"
-    duration="{{duration}}"
   >
     <repeat key="id"
             index="index"
             item="image"
-            for="{{images}}">
+            for="{{bannerImages}}">
       <swiper-item>
         <image src="{{image.url}}" class="slide-image"/>
       </swiper-item>
@@ -16,7 +15,10 @@
 </template>
 <script>
   import wepy from 'wepy';
-
+  import { connect } from 'wepy-redux'
+  @connect({
+    bannerImages:state=>state.common.bannerImages,
+  },{})
   export default class BannerSwiper extends wepy.component {
     data = {
       interval:3000
@@ -25,10 +27,6 @@
 
     }
     props = {
-      images:{
-        type:Array,
-        default:[]
-      }
     }
   }
 </script>
