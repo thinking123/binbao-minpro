@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions'
-import {WX_LOGIN , STEP , WX_STEP , ISSTARTBONUS , BANNERIMAGES , ANSWER,SIGN} from '../types/http'
+import {WX_LOGIN , STEP , WX_STEP , ISSTARTBONUS , BANNERIMAGES , ANSWER,SIGN ,NAVTYPE} from '../types/http'
 
 const defaultState = {
   token: '',
@@ -11,7 +11,8 @@ const defaultState = {
   wheatRank:'0',
   bannerImages:[],
   isStartBonus:false,
-  answer:null
+  answer:null,
+  navType:'',
 }
 
 
@@ -63,6 +64,13 @@ export default handleActions({
     return {
       ...state,
       sign
+    }
+  },
+  [NAVTYPE](state, action) {
+    console.log('action' , action.payload)
+    return {
+      ...state,
+      navType:action.payload
     }
   },
 }, defaultState)

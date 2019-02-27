@@ -121,7 +121,7 @@
 <script>
   import wepy from 'wepy'
   import { connect } from 'wepy-redux'
-  import {WX_LOGIN , STEP , WX_STEP , ISSTARTBONUS , BANNERIMAGES,ANSWER ,SIGN} from '../store/types/http'
+  import {WX_LOGIN , STEP , WX_STEP , ISSTARTBONUS , BANNERIMAGES,ANSWER ,SIGN ,NAVTYPE} from '../store/types/http'
   import { _wxLogin } from '../store/actions'
   import { numberWithCommas, isMorning, getRandomInt, showMsg } from '../utils/common'
   import { wxLogin, nowStep, getStep, isOpenCarveUp, carveUp, getBanner, sign ,getAnswer} from '../http/http-business'
@@ -165,7 +165,8 @@
     ISSTARTBONUS,
     BANNERIMAGES,
     ANSWER,
-    SIGN
+    SIGN,
+    NAVTYPE
   })
 
   export default class Home extends wepy.page {
@@ -278,6 +279,7 @@
               // this.$parent.globalData.hadCheckIn = true
               break
             case '麦力值挑战':
+              this.methods.NAVTYPE('step-rank')
               this.$navigate('/new-pages/step-rank/index')
               break
             case '知识挑战':
@@ -286,6 +288,7 @@
               // this.answerIndex = getRandomInt(1,10)
               break
             case '幸运挑战':
+              this.methods.NAVTYPE('lottery')
               this.$navigate('/new-pages/lottery/index')
               break
           }

@@ -68,7 +68,7 @@
       <!--</repeat>-->
     <!--</view>-->
 
-    <navigate-bar/>
+    <navigate-bar navType="lottery"/>
 
     <get-prize-dialog
       :text.sync="getPrizeText"

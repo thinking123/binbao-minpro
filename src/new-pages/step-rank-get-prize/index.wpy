@@ -42,9 +42,18 @@
 
 <script>
   import wepy from 'wepy'
+  import { connect } from 'wepy-redux'
+  import {NAVTYPE} from '../../store/types/http'
   import {totalReceive , weekReceive} from '../../http/http-business'
   import {isEmpty , showMsg} from '../../utils/common'
   import StepRankGetPrizeDialog from '../../components/dialog/step-rank-get-prize-dialog/step-rank-get-prize-dialog'
+
+  @connect({
+    url:state=>state.common.cdnUrl
+  },{
+    NAVTYPE
+  })
+
   export default class Title extends wepy.page {
     config = {}
     components = {
@@ -52,7 +61,6 @@
     }
 
     data = {
-      url: './',
       name: '',
       phone: '',
       address: '',
@@ -81,6 +89,7 @@
               showMsg('已经领取')
               break
             case 2:
+              this.methods.NAVTYPE('lottery')
               this.$root.$redirect({url: '/new-pages/step-rank/index'})
               break
             case 3:
@@ -94,6 +103,7 @@
               showMsg('已经领取')
               break
             case 2:
+              this.methods.NAVTYPE('lottery')
               this.$root.$redirect({url: '/new-pages/step-rank/index'})
               break
             case 3:
@@ -133,7 +143,7 @@
       console.log('options' , options)
       this.type = options.type
 
-      this.url = this.$parent.globalData.url
+      // this.url = this.$parent.globalData.url
     };
 
     // Other properties

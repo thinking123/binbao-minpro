@@ -104,7 +104,7 @@
         <!--<view class="footer-btn" @tap="handleNav({{index}})"/>-->
       <!--</repeat>-->
     <!--</view>-->
-    <navigate-bar/>
+    <navigate-bar  navType="step-rank"/>
   </view>
 </template>
 

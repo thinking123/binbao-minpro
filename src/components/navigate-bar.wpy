@@ -1,6 +1,6 @@
 <template>
   <view class="footer navigate-bar-external">
-    <image class="footer-bg" src="{{url}}navigate-bar.png"/>
+    <image class="footer-bg" src="{{url}}navigate-bar-{{navType}}.png"/>
     <repeat key="index"
             index="index"
             item="btn"
@@ -14,20 +14,27 @@
 
 <script>
   import wepy from 'wepy'
+  import { connect } from 'wepy-redux'
+  import {NAVTYPE} from '../store/types/http'
   import AnswerDialog from '../components/dialog/answer-dialog/answer-dialog'
   import {getRandomInt
   } from '../utils/common'
 
+  @connect({
+    url:state=>state.common.cdnUrl,
+    // navType:state=>state.common.navType,
+  },{
+    NAVTYPE
+  })
   export default class NavigateBar extends wepy.component {
     components = {
       'answer-dialog':AnswerDialog,
     }
     externalClasses = ['navigate-bar-external']
     data = {
-      url: '',
+      // url: '',
       navBtns: [
         { key: 'step-rank' },
-        { key: 'zstz' },
         { key: 'lottery' },
         { key: 'return' }
       ],
@@ -43,23 +50,28 @@
       handleNav(route) {
 
 
+
         const pages = getCurrentPages()
         const currentPage = pages[pages.length - 1].route.toString()
         console.log('route' , route , currentPage)
         if(currentPage.indexOf(route) != -1){
           return
         }
+
         switch (route) {
+
           case 'step-rank':
+            // this.methods.NAVTYPE(route)
             this.$parent.$navigate('/new-pages/step-rank/index')
             break
           case 'lottery':
+            // this.methods.NAVTYPE(route)
             this.$parent.$navigate('/new-pages/lottery/index')
             break
-          case 'zstz':
-            this.showAnswerDialog = true
-            this.answerIndex = getRandomInt(1,10)
-            break
+          // case 'zstz':
+          //   this.showAnswerDialog = true
+          //   this.answerIndex = getRandomInt(1,10)
+          //   break
           case 'return':
             wx.navigateBack({
               delta: 1
@@ -69,12 +81,15 @@
       }
     }
     events = {}
-    props = {}
+    props = {
+      navType: String
+
+    }
 
     onLoad() {
-      this.$apply(() => {
-        this.url = this.$root.$parent.globalData.url
-      })
+      // this.$apply(() => {
+      //   this.url = this.$root.$parent.globalData.url
+      // })
     }
   }
 </script>
