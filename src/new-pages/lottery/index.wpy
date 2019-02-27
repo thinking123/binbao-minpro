@@ -152,7 +152,7 @@
     events = {
       'get-prize-dialog-close':()=>{
         console.log('colse dialog')
-        this.$navigate('../step-rank-get-prize')
+        this.$navigate('../step-rank-get-prize?from=lottery')
       },
       'navigate-bar':(index)=>{
         console.log('navigate-bar' , index)

@@ -137,7 +137,7 @@ export function totalRanking() {
 }
 
 //总排行榜 领取奖品
-export function totalReceive(prizeName, prizePhone,prizeAddress,) {
+export function totalReceive(prizeName, prizePhone,prizeAddress) {
   const url = '/api/wheatChallenge/totalReceive'
   const loadingText = '领取奖品...'
   const errMsg = '领取奖品失败'
@@ -203,4 +203,16 @@ export function answerQuestion(id, userAnswer) {
       return parseRes(res, errMsg)
     }
   })
+}
+
+
+
+//麦力值抽奖填写收货信息
+export function setPrizeInfo(id, prizeName, prizePhone,prizeAddress) {
+  const url = '/api/prize/answer'
+  const loadingText = '正在发生数据...'
+  const errMsg = '填写收货信息失败'
+  const data = { id, prizeName, prizePhone,prizeAddress }
+  url = urlParams(url, data, true)
+  return post(url, {}, loadingText).then(res => parseRes)
 }
