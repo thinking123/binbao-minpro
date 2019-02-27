@@ -80,7 +80,7 @@
 
   @connect({
     url:state=>state.common.cdnUrl,
-    wheatIntegralSum:state=>state.common.wheatIntegralSum,
+    totalStep:state=>state.common.totalStep,
   },{})
 
   export default class StepShare extends wepy.page {
@@ -108,7 +108,7 @@
     computed = {
       stepStr() {
         // console.log('wheatIntegralSum' , this)
-        return numberWithCommas(this.computed.wheatIntegralSum(), 4)
+        return numberWithCommas(this.computed.totalStep(), 4)
       }
     }
     events = {

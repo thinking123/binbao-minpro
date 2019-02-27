@@ -124,7 +124,7 @@
   import {WX_LOGIN , STEP , WX_STEP , ISSTARTBONUS , BANNERIMAGES,ANSWER ,SIGN ,NAVTYPE} from '../store/types/http'
   import { _wxLogin } from '../store/actions'
   import { numberWithCommas, isMorning, getRandomInt, showMsg } from '../utils/common'
-  import { wxLogin, nowStep, getStep, isOpenCarveUp, carveUp, getBanner, sign ,getAnswer} from '../http/http-business'
+  import { wxLogin, nowStep, getStep, isOpenCarveUp, carveUp, getBanner, sign ,getAnswer,getWXStep} from '../http/http-business'
   import { CURRENT_MEDAL_NUM, CURRENT_RANK } from '../utils/constant'
   //组件引用不能带.wpy后缀
   import CarouselSwiper from '../components/carouse-item/carousel-swiper'
@@ -246,8 +246,9 @@
     }
 
     async _sign(){
-      const res = await sign()
+      let res = await sign()
       console.log('sign' , res)
+      // res = {...res , ...{type:1 , integral:2}}
       this.methods.SIGN(res)
 
       this.showCheckInDialogEx = true
@@ -430,12 +431,13 @@
 
         const { medalNum, wheatIntegral, wheatIntegralSum, wheatRank } = await getStep()
 
+        const totalStep = await getWXStep()
         // this.medalNum = medalNum
         // this.wheatIntegral = wheatIntegral
         // this.wheatIntegralSum = wheatIntegralSum
         // this.wheatRank = wheatRank
         this.methods.STEP({
-          medalNum, wheatIntegral, wheatIntegralSum, wheatRank
+          medalNum, wheatIntegral, wheatIntegralSum, wheatRank , totalStep
         })
         this.initCarouselSwiperImages(wheatRank)
         const isStartBonus = await isOpenCarveUp()

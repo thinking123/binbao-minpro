@@ -9,6 +9,7 @@ const defaultState = {
   wheatIntegral:'0',
   wheatIntegralSum:'0',
   wheatRank:'0',
+  totalStep:'0',
   bannerImages:[],
   isStartBonus:false,
   answer:null,
@@ -31,13 +32,14 @@ export default handleActions({
       iv
     }
   },
-  [STEP](state, {payload:{medalNum, wheatIntegral, wheatIntegralSum, wheatRank}}) {
+  [STEP](state, {payload:{medalNum, wheatIntegral, wheatIntegralSum, wheatRank , totalStep}}) {
     return {
       ...state,
       medalNum,
       wheatIntegral,
       wheatIntegralSum,
-      wheatRank
+      wheatRank,
+      totalStep
     }
   },
   [ISSTARTBONUS](state, {payload:{isStartBonus}}) {

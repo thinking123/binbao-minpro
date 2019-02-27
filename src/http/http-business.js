@@ -51,6 +51,19 @@ export function getStep() {
   return get(url, data, loadingText).then(res => parseRes(res, errMsg))
 }
 
+
+//获取微信运动步数
+export function getWXStep() {
+  const url = '/api/login/step'
+  const loadingText = '获取运动步数...'
+  const errMsg = '获取运动步数失败'
+  const data = {}
+  return get(url, data, loadingText).then(res => parseRes(res, errMsg))
+}
+
+
+
+
 //是否开始瓜分现金
 export function isOpenCarveUp() {
   const url = '/api/carveUp/isOpenCarveUp'
@@ -209,7 +222,7 @@ export function answerQuestion(id, userAnswer) {
 
 //麦力值抽奖填写收货信息
 export function setPrizeInfo(id, prizeName, prizePhone,prizeAddress) {
-  const url = '/api/prize/answer'
+  let url = '/api/prize/answer'
   const loadingText = '正在发生数据...'
   const errMsg = '填写收货信息失败'
   const data = { id, prizeName, prizePhone,prizeAddress }

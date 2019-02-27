@@ -9,7 +9,8 @@
     <view class="dialog-content" wx:if="{{sign}}">
       <image
         class="points"
-        src="{{pointsBg}}" wx:if="{{sign.type == 1}}"/>
+        src="{{url}}check-in-dialog-points{{sign.integral}}.png" wx:if="{{sign.type == 1}}"/>
+        <!--src="{{pointsBg}}" wx:if="{{sign.type == 1}}"/>-->
 
       <image class="bg" src="{{sign.cookMenuUrl}}"/>
 
@@ -29,6 +30,12 @@ import {checkInKnowledge} from '../../../utils/constant'
   @connect({
     url:state=>state.common.cdnUrl,
     sign:state=>state.common.sign,
+    // sign:state=>{
+    //   return {
+    //     type :1,
+    //     integral:2
+    //   }
+    // },
   },{})
 
   export default class CheckInDialogEx extends wepy.component {
@@ -55,6 +62,7 @@ import {checkInKnowledge} from '../../../utils/constant'
     }
     computed = {
       pointsBg(){
+        console.log('this.sign' , this.sign)
         if(this.sign){
           `${this.url}check-in-dialog-points${this.sign.integral}.png`
         }else {

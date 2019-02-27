@@ -56,7 +56,7 @@
            src="{{url}}lottery-fixed-icon.png"/>
 
     <view class="ml-value">
-      当前麦力值：{{mlValue}}
+      当前麦力值：{{wheatIntegralSum}}
     </view>
     <!--<view class="footer">-->
       <!--<image class="footer-bg" src="{{url}}navigate-bar.png"/>-->
@@ -83,10 +83,17 @@
 
 <script>
   import wepy from 'wepy'
+  import { connect } from 'wepy-redux'
   import {showMsg} from '../../utils/common'
   import GetPrizeDialog from '../../components/dialog/get-prize-dialog/get-prize-dialog'
   import LotteryPointsNotEnoughDialog from '../../components/dialog/lottery-points-not-enough-dialog/lottery-points-not-enough-dialog'
   import NavigateBar from '../../components/navigate-bar'
+
+  @connect({
+    url:state=>state.common.cdnUrl,
+    wheatIntegralSum:state=>state.common.wheatIntegralSum,
+  },{})
+
   export default class Title extends wepy.page {
     config = {}
     components = {
@@ -96,7 +103,7 @@
     }
 
     data = {
-      url:'./',
+      // url:'./',
       navBtns: [
         { key: 'mzl' },
         { key: 'zstz' },
@@ -188,8 +195,8 @@
       }
     }
     onLoad() {
-      this.url = this.$parent.globalData.url
-      this.init()
+      // this.url = this.$parent.globalData.url
+      // this.init()
     }
 
     // Other properties
