@@ -85,9 +85,9 @@
 
         try {
           if(this.selectedIndex.length == 0){
-            this.selectedIndex = index
-            this.isRight = await answerQuestion(this.answer.id ,index)
 
+            this.isRight = await answerQuestion(this.answer.id ,index)
+            this.selectedIndex = index
             this.$apply()
           }
         }catch (e) {
@@ -127,7 +127,7 @@
     watch = {
       visible(v){
         if(!v){
-          this.selectedIndex = -1
+          this.selectedIndex = ''
         }
       }
     }
