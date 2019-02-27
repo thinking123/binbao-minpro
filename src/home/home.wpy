@@ -90,6 +90,8 @@
     :visible.sync="showCheckInDialog"
                    :points.sync="checkInPoints"
   />
+    <check-in-dialog-ex
+    :visible.sync="showCheckInDialogEx"/>
     <check-in-dialog-cookbook
     :visible.sync="showCheckInCookBookDialog"
                    :cookIndex.sync="checkInCookIndex"
@@ -129,6 +131,7 @@
   import HowToPlayDialog from '../components/dialog/how-to-play-dialog/HowToPlayDialog'
   import AnswerDialog from '../components/dialog/answer-dialog/answer-dialog'
   import CheckInDialog from '../components/dialog/check-in-dialog/check-in-dialog'
+  import CheckInDialogEx from '../components/dialog/check-in-dialog-ex/check-in-dialog-ex'
   import CashPoolDialog from '../components/dialog/cash-pool-dialog/cash-pool-dialog'
   import CashPoolDialogTip from '../components/dialog/cash-pool-dialog/cash-pool-dialog-tip'
   import CheckInDialogCookBook from '../components/dialog/check-in-dialog-cookbook/check-in-dialog-cookbook'
@@ -171,6 +174,7 @@
       'carouselswiper':CarouselSwiper,
       'how-to-play-dialog':HowToPlayDialog,
       'answer-dialog':AnswerDialog,
+      'check-in-dialog-ex':CheckInDialogEx,
       'check-in-dialog':CheckInDialog,
       'check-in-dialog-cookbook':CheckInDialogCookBook,
       'cash-pool-dialog':CashPoolDialog,
@@ -214,6 +218,7 @@
       showCashPoolDialogTip:false,
       showHowToPlayDialog:false,
       showCheckInDialog:false,
+      showCheckInDialogEx:false,
       showCheckInCookBookDialog:false,
       checkInPoints:1,
       checkInCookIndex:1,
@@ -240,13 +245,17 @@
     }
 
     async _sign(){
-      const sign = await sign()
-      this.methods.SIGN(sign)
-      if(sign.hadSign){
-        this.showCheckInCookBookDialog = true
-      }else{
-        this.showCheckInDialog = true
-      }
+      const res = await sign()
+      console.log('sign' , res)
+      this.methods.SIGN(res)
+
+      this.showCheckInDialogEx = true
+      this.$apply()
+      // if(res.hadSign){
+      //   this.showCheckInCookBookDialog = true
+      // }else{
+      //   this.showCheckInDialog = true
+      // }
     }
     methods = {
       async handleNavBtn(btn) {
@@ -443,24 +452,14 @@
 
         this.$apply()
 
-        this.$navigate('/new-pages/step-rank/index')
+        // this.$navigate('/new-pages/step-rank/index')
 
       } catch (e) {
         console.log(e)
         showMsg(e)
       }
     }
-    async _sign(){
-      let signOk = false
-      try {
-        await sign()
-        signOk = true
-      }catch (e) {
-        // showMsg(e)
-      }
 
-      return signOk
-    }
     async authUserInfo(){
       const {authSetting} = await wepy.getSetting()
 

@@ -93,8 +93,7 @@ export function sign() {
   const data = {}
   return post(url, data, loadingText).then(res => {
     if (res && res.status == '4001') {
-
-      return [...res.rows , {hadSign:true}]
+      return {...res.rows , ...{hadSign:true}}
     } else {
       return parseRes(res, errMsg)
     }
