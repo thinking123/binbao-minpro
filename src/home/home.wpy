@@ -119,7 +119,7 @@
 <script>
   import wepy from 'wepy'
   import { connect } from 'wepy-redux'
-  import {WX_LOGIN , STEP , WX_STEP , ISSTARTBONUS , BANNERIMAGES,ANSWER} from '../store/types/http'
+  import {WX_LOGIN , STEP , WX_STEP , ISSTARTBONUS , BANNERIMAGES,ANSWER ,SIGN} from '../store/types/http'
   import { _wxLogin } from '../store/actions'
   import { numberWithCommas, isMorning, getRandomInt, showMsg } from '../utils/common'
   import { wxLogin, nowStep, getStep, isOpenCarveUp, carveUp, getBanner, sign ,getAnswer} from '../http/http-business'
@@ -162,6 +162,7 @@
     ISSTARTBONUS,
     BANNERIMAGES,
     ANSWER,
+    SIGN
   })
 
   export default class Home extends wepy.page {
@@ -237,24 +238,35 @@
         this.$apply()
       }
     }
+
+    async _sign(){
+      const sign = await sign()
+      this.methods.SIGN(sign)
+      if(sign.hadSign){
+        this.showCheckInCookBookDialog = true
+      }else{
+        this.showCheckInDialog = true
+      }
+    }
     methods = {
       async handleNavBtn(btn) {
         try{
           switch (btn.text) {
             case '早起挑战':
-              const hadCheckIn = await sign()
-              if(hadCheckIn){
-                this.showCheckInCookBookDialog = true
-                this.checkInCookIndex = getRandomInt(1,5)
-              }else{
-                this.showCheckInDialog = true
-                if(isMorning()){
-                  this.checkInPoints = getRandomInt(10,20)
-                }else{
-                  this.checkInPoints = getRandomInt(1,5)
-                }
-              }
-              this.$parent.globalData.hadCheckIn = true
+              await this._sign()
+              // const hadCheckIn = await sign()
+              // if(hadCheckIn){
+              //   this.showCheckInCookBookDialog = true
+              //   this.checkInCookIndex = getRandomInt(1,5)
+              // }else{
+              //   this.showCheckInDialog = true
+              //   if(isMorning()){
+              //     this.checkInPoints = getRandomInt(10,20)
+              //   }else{
+              //     this.checkInPoints = getRandomInt(1,5)
+              //   }
+              // }
+              // this.$parent.globalData.hadCheckIn = true
               break
             case '麦力值挑战':
               this.$navigate('/new-pages/step-rank/index')
@@ -431,7 +443,7 @@
 
         this.$apply()
 
-        // this.$navigate('/new-pages/step-rank/index')
+        this.$navigate('/new-pages/step-rank/index')
 
       } catch (e) {
         console.log(e)

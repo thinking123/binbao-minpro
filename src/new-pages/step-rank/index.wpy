@@ -16,7 +16,10 @@
     </view>
 
     <view class="content">
-      <view class="header">
+      <view wx:if="{{isFirstWeek}}" class="coming-soon">
+        敬请期待......
+      </view>
+      <view wx:if="{{!isFirstWeek}}" class="header">
         <view class="avatar-wrap">
           <view class="user-avatar">
             <open-data type="userAvatarUrl"></open-data>
@@ -47,7 +50,7 @@
         </view>
 
       </view>
-      <view class="rank-list-table">
+      <view wx:if="{{!isFirstWeek}}" class="rank-list-table">
         <view class="table-header table-row">
           <view class="rank-column table-header-column">
             排行名次
@@ -66,7 +69,7 @@
                   for="{{rankList}}">
             <view class="table-row {{index === 0 ? 'table-first' : ''}}">
               <view class="rank-column" wx:if="{{index !== 0}}">
-                {{rank.rank}}
+                {{rank.rank > 100 ? '100+' :rank.rank}}
               </view>
               <view class="rank-column" wx:else>
                 <image class="champion-rank-icon"
@@ -86,10 +89,10 @@
         </scroll-view>
       </view>
     </view>
-    <view class="content-tip">
+    <view class="content-tip" wx:if="{{!isFirstWeek}}">
       本排名数据截止前一周周日24：00
     </view>
-    <button class="get-prize-btn" @tap="handleGetPrize">
+    <button class="get-prize-btn {{canGetPrize ? '':'not-active'}}" @tap="handleGetPrize" wx:if="{{!isFirstWeek}}">
       领取奖品
     </button>
     <!--<view class="footer">-->
@@ -145,8 +148,17 @@
       myRanking:'',
       myWheat:'',
       rankList: [],
+      isFirstWeek:false
     }
     computed = {
+      canGetPrize(){
+        if(this.selected == 0){
+          //周 ,这周领取上周奖品
+          return this.isWinning  && this.isReceive == 1
+        }else{
+          return this.myRanking == 1 && this.isOpenReceiveAPrize == 1
+        }
+      },
       myTotalRankStr() {
         const str = `NO.${this.myTotalRank}`
         return str
@@ -158,7 +170,13 @@
     }
 
     async _weekRanking(){
-      const {isReceive   ,isWinning , myRanking ,myWheat ,rankingLimitList } = await weekRanking()
+      const res = await weekRanking()
+      // if(!res){
+      //   this.isFirstWeek = true
+      //   this.$apply()
+      // }
+      const {isReceive   ,isWinning , myRanking ,myWheat ,rankingLimitList } = res
+
 
       this.isReceive = isReceive
       this.isWinning = isWinning
@@ -181,13 +199,15 @@
     methods = {
       handleGetPrize(){
         console.log('handleGetPrize')
-        this.$navigate('/new-pages/step-rank-get-prize/index')
+        const url = `/new-pages/step-rank-get-prize/index?type=${this.selected}`
+        this.$navigate(url)
       },
       async handleRank(index) {
         try {
           if(index != this.selected){
-            this.rankList = index == 0 ? await this._totalRanking() : await this._weekRanking()
+            index == 1 ? await this._totalRanking() : await this._weekRanking()
             this.selected = index
+            this.$apply()
           }
 
         }catch (e) {
@@ -225,7 +245,7 @@
 
     onLoad() {
       // this.url = this.$parent.globalData.url
-      this._totalRanking()
+      this._weekRanking()
       // const ml = 338325
       // for (let i = 0; i < 20; i++) {
       //   //rankList
@@ -250,6 +270,15 @@
   $pageHeight:667- $statusBarHeight;
 
 
+  .coming-soon{
+    font-size: pxTorpx(25);
+    font-weight: bolder;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   .hidden_ellipsis{
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -508,6 +537,11 @@
       align-items: center;
       font-size: 30rpx;
       letter-spacing: 8rpx;
+
+
+      &.not-active{
+        background-color: gray;
+      }
     }
     .footer{
       position: absolute;

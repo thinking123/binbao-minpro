@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions'
-import {WX_LOGIN , STEP , WX_STEP , ISSTARTBONUS , BANNERIMAGES , ANSWER} from '../types/http'
+import {WX_LOGIN , STEP , WX_STEP , ISSTARTBONUS , BANNERIMAGES , ANSWER,SIGN} from '../types/http'
 
 const defaultState = {
   token: '',
@@ -53,10 +53,16 @@ export default handleActions({
   },
   [ANSWER](state, action) {
     const answer = action.payload
-    console.log('sset answer' , answer , action)
     return {
       ...state,
       answer
+    }
+  },
+  [SIGN](state, action) {
+    const sign = action.payload
+    return {
+      ...state,
+      sign
     }
   },
 }, defaultState)

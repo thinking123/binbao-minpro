@@ -57,10 +57,16 @@
 <script>
   import wepy from 'wepy'
   import {cookMenus} from '../../../utils/constant'
+  import { connect } from 'wepy-redux'
+  import {showMsg} from '../../../utils/common'
 
+  @connect({
+    url:state=>state.common.cdnUrl,
+    sign:state=>state.common.sign,
+  },{})
   export default class CheckInDialogCookBook extends wepy.component {
     data = {
-      url:'./'
+      // url:'./'
     }
     closeDialog(){
       this.$emit('dialog-close')
@@ -115,9 +121,9 @@
       cookIndex:Number
     }
     onLoad() {
-      this.$apply(()=>{
-        this.url = this.$root.$parent.globalData.url
-      })
+      // this.$apply(()=>{
+      //   this.url = this.$root.$parent.globalData.url
+      // })
     }
   }
 

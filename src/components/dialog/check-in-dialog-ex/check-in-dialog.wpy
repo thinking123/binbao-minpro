@@ -13,7 +13,6 @@
 
       <image class="bg" src="{{sign.cookMenuUrl}}"/>
       <view class="title">
-        <!--{{title}}-->
         全麦知识
       </view>
       <view class="text-wrap">
@@ -43,7 +42,7 @@ import {checkInKnowledge} from '../../../utils/constant'
     sign:state=>state.common.sign,
   },{})
 
-  export default class CheckInDialog extends wepy.component {
+  export default class CheckInDialogEx extends wepy.component {
     data = {
       // url:'./'
     }

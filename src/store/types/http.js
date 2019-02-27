@@ -4,4 +4,5 @@ export const STEP = 'STEP'
 export const ISSTARTBONUS = 'ISSTARTBONUS'
 export const BANNERIMAGES = 'BANNERIMAGES'
 export const ANSWER = 'ANSWER'
+export const SIGN = 'SIGN'
 

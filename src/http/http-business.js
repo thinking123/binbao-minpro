@@ -93,13 +93,22 @@ export function sign() {
   const data = {}
   return post(url, data, loadingText).then(res => {
     if (res && res.status == '4001') {
-      return false
-    } else if (!!res && res.status.indexOf('2') > -1) {
-      return true
+
+      return [...res.rows , {hadSign:true}]
     } else {
-      throw new Error(res.message ? res.message : errMsg)
+      return parseRes(res, errMsg)
     }
   })
+
+
+  // return post(url, data, loadingText).then(res => {
+  //   if (res && res.status == '4001') {
+  //     return false
+  //   } else {
+  //     return parseRes(res, errMsg)
+  //   }
+  // })
+
 }
 
 // //答题
@@ -129,7 +138,7 @@ export function totalRanking() {
 }
 
 //总排行榜 领取奖品
-export function totalReceive(prizeAddress, prizeName, prizePhone) {
+export function totalReceive(prizeName, prizePhone,prizeAddress,) {
   const url = '/api/wheatChallenge/totalReceive'
   const loadingText = '领取奖品...'
   const errMsg = '领取奖品失败'
@@ -151,7 +160,7 @@ export function weekRanking() {
 }
 
 //周排行榜 领取奖品
-export function weekReceive(prizeAddress, prizeName, prizePhone) {
+export function weekReceive( prizeName, prizePhone,prizeAddress) {
   const url = '/api/wheatChallenge/weekReceive'
   const loadingText = '领取奖品...'
   const errMsg = '领取奖品失败'
