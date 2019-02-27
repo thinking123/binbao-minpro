@@ -15,9 +15,10 @@ function http(url, data, loadingText, header, method = 'GET') {
     url = url.substr(1)
   }
 
-  if (app.globalData.token && url != 'api/login/wxlogin') {
+  const token = wepy.$store.getState().common.token
+  if (token && url != 'api/login/wxlogin') {
     //授权token
-    header.token = app.globalData.token
+    header.token = token
   }
 
   // Content-Type: application/json

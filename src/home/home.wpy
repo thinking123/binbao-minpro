@@ -120,7 +120,7 @@
 <script>
   import wepy from 'wepy'
   import { connect } from 'wepy-redux'
-  import { WX_LOGIN } from '../store/types/http'
+  import {WX_LOGIN , STEP , WX_STEP , ISSTARTBONUS , BANNERIMAGES} from '../store/types/http'
   import { _wxLogin } from '../store/actions'
   import { numberWithCommas, isMorning, getRandomInt, showMsg } from '../utils/common'
   import { wxLogin, nowStep, getStep, isOpenCarveUp, carveUp, getBanner, sign } from '../http/http-business'
@@ -140,14 +140,28 @@
   import BannerSwiper from '../components/banner-swiper'
 
   @connect({
-    token(state) {
-      return state.common.token
-    },
-    cdnUrl(state) {
-      return state.common.cdnUrl
-    }
+    // token(state) {
+    //   return state.common.token
+    // },
+    // cdnUrl(state) {
+    //   return state.common.cdnUrl
+    // },
+    token:state=>state.common.token,
+    cdnUrl:state=>state.common.cdnUrl,
+    medalNum:state=>state.common.medalNum,
+    wheatIntegral:state=>state.common.wheatIntegral,
+    wheatIntegralSum:state=>state.common.wheatIntegralSum,
+    wheatRank:state=>state.common.wheatRank,
+    encryptedData:state=>state.common.encryptedData,
+    iv:state=>state.common.iv,
+    bannerImages:state=>state.common.bannerImages,
+    isStartBonus:state=>state.common.isStartBonus,
   }, {
-    _wxLogin
+    WX_LOGIN,
+    WX_STEP,
+    STEP,
+    ISSTARTBONUS,
+    BANNERIMAGES,
   })
 
   export default class Home extends wepy.page {
@@ -170,18 +184,18 @@
     data = {
       url: '',
       navBtns: [
-        { key: 'home-nav-btn1', text: '早起挑战' },
+        { key: 'home-nav-btn1', text: '早起挑战'},
         { key: 'home-nav-btn2', text: '麦力值挑战' },
         { key: 'home-nav-btn3', text: '知识挑战' },
         { key: 'home-nav-btn4', text: '幸运挑战' }
       ],
       cashTotal:'100000',
       cashBonus:'2.02',
-      medalNum: 0,
-      wheatIntegral: 0,
-      wheatIntegralSum: 0,
+      // medalNum: 0,
+      // wheatIntegral: 0,
+      // wheatIntegralSum: 0,
       //开通的小麦等级
-      wheatRank:0,
+      // wheatRank:0,
       bonus:100000,
       images:[],
       selected:0,
@@ -205,8 +219,8 @@
       showAnswerDialog:false,
       answerIndex:1,
 
-      isStartBonus:false,
-      bannerImages:[]
+      // isStartBonus:false,
+      // bannerImages:[]
     }
     computed = {
       bonusStr () {
@@ -284,7 +298,12 @@
       'auth-step':stepInfo => {
         if(stepInfo && stepInfo.encryptedData){
           this.showStepAuthDialog = false
-          this.$parent.globalData.stepInfo = stepInfo
+          // this.$parent.globalData.stepInfo = stepInfo
+
+          const { encryptedData, iv } = stepInfo
+          this.methods.WX_STEP({
+            encryptedData, iv
+          })
           this.getStep()
         }
       }
@@ -298,10 +317,14 @@
           userInfo.gender
         )
 
-        this._wxLogin(this.$parent.globalData.code ,
-          userInfo.avatarUrl,
-          userInfo.nickName,
-          userInfo.gender)
+        this.methods.WX_LOGIN({
+          token
+        })
+
+        // this.methods._wxLogin(this.$parent.globalData.code ,
+        //   userInfo.avatarUrl,
+        //   userInfo.nickName,
+        //   userInfo.gender)
 
 
         this.$parent.globalData.token = token
@@ -368,19 +391,29 @@
     //如果用户拒绝了授权步数，不用处理步数
     async getStep() {
       try {
-        const { encryptedData, iv } = this.$parent.globalData.stepInfo
-        await nowStep(encryptedData, iv)
+        // const { encryptedData, iv } = this.$parent.globalData.stepInfo
+        await nowStep(this.encryptedData, this.iv)
 
         const { medalNum, wheatIntegral, wheatIntegralSum, wheatRank } = await getStep()
-        console.log('get step', medalNum, wheatIntegral, wheatIntegralSum, wheatRank)
 
-        this.medalNum = medalNum
-        this.wheatIntegral = wheatIntegral
-        this.wheatIntegralSum = wheatIntegralSum
-        this.wheatRank = wheatRank
+        // this.medalNum = medalNum
+        // this.wheatIntegral = wheatIntegral
+        // this.wheatIntegralSum = wheatIntegralSum
+        // this.wheatRank = wheatRank
+        this.methods.STEP({
+          medalNum, wheatIntegral, wheatIntegralSum, wheatRank
+        })
         this.initCarouselSwiperImages(wheatRank)
-        this.isStartBonus = await isOpenCarveUp()
-        this.bannerImages = await getBanner()
+        const isStartBonus = await isOpenCarveUp()
+        this.methods.ISSTARTBONUS({
+          isStartBonus
+        })
+
+        const bannerImages = await getBanner()
+
+        this.methods.BANNERIMAGES({
+          bannerImages
+        })
         this.isShowWheatNumDialog(wheatRank)
         this.isShowMedalDialog(medalNum)
 
@@ -423,7 +456,12 @@
       const {authSetting} = await wepy.getSetting()
       if(authSetting['scope.werun']){
         const stepInfo = await wepy.getWeRunData()
-        this.$parent.globalData.stepInfo = stepInfo
+
+        const { encryptedData, iv } =stepInfo
+        this.methods.WX_STEP({
+          encryptedData, iv
+        })
+        // this.$parent.globalData.stepInfo = stepInfo
         await this.getStep()
       }else{
         this.$apply(()=>{
