@@ -160,11 +160,11 @@
         }
       },
       myTotalRankStr() {
-        const str = `NO.${this.myTotalRank}`
+        const str = `NO.${this.myRanking}`
         return str
       },
       myHisMLPointsStr() {
-        const str = `${this.myHisMLPoints}`
+        const str = `${this.myRanking}`
         return numberWithCommas(str, 4)
       }
     }
