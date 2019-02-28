@@ -522,8 +522,11 @@
     };
     onShow(){
       //刷新微信步数
-      console.log('刷新微信步数')
-      this.authStep()
+      if(this.$parent.globalData.code){
+        console.log('刷新微信步数')
+        this.authStep()
+      }
+
     }
     // Other properties
   }

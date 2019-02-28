@@ -43,7 +43,7 @@
             <view class="rank-text-wrap">
               历史累积麦力值：
               <view class="rank-text">
-                {{myHisMLPointsStr}}
+                {{wheatIntegralSum}}
               </view>
             </view>
           </view>
@@ -69,7 +69,7 @@
                   for="{{rankList}}">
             <view class="table-row {{index === 0 ? 'table-first' : ''}}">
               <view class="rank-column" wx:if="{{index !== 0}}">
-                {{rank.rank > 100 ? '100+' :rank.rank}}
+                {{rank.rank}}
               </view>
               <view class="rank-column" wx:else>
                 <image class="champion-rank-icon"
@@ -118,6 +118,7 @@
 
   @connect({
     url:state=>state.common.cdnUrl,
+    wheatIntegralSum:state=>state.common.wheatIntegralSum,
   },{})
 
   export default class StepRank extends wepy.page {
@@ -415,7 +416,7 @@
               display: flex;
               flex-direction: row;
               align-items: flex-end;
-
+              white-space: nowrap;
 
               .rank-text{
                 font-weight: bolder;
