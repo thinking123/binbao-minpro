@@ -14,19 +14,23 @@
       <image src="{{url}}dialog-close-btn.png"
              @tap="handleClose"
              class="close-btn"/>
-    </view>
-    <view class="points-wrap">
-      <view>
-        +
+
+
+      <view class="points-wrap">
+        <view>
+          +
+        </view>
+        <view class="points" style="font-size: {{pointsFontSize}}">
+          {{upgradePoints}}
+        </view>
+
       </view>
-      <view class="points" style="font-size: {{pointsFontSize}}">
-        {{upgradePoints}}
+      <view class="tip">
+        解锁下一关，获得“{{upgradeTip}}”徽章
       </view>
 
     </view>
-    <view class="tip">
-      解锁下一关，获得“{{upgradeTip}}”徽章
-    </view>
+
   </view>
 </template>
 
@@ -153,7 +157,7 @@
       transform: translate(-50%,0);
       top:percentage((132 ) / $pageHeight);
       /*height: 56.97%;*/
-      height: percentage((483 - 132) / $pageHeight);
+      height: pxTorpx(330);
       width: 478rpx;
 
       display: flex;
@@ -185,7 +189,7 @@
       position: absolute;
       left:50%;
       transform: translate(-50%,0);
-      top:percentage((220 ) / $pageHeight);
+      top:pxTorpx(80);
       color: white;
 
       font-weight: bolder;
@@ -206,7 +210,7 @@
       position: absolute;
       left:50%;
       transform: translate(-50%,0);
-      top:percentage((359 ) / $pageHeight);
+      top:pxTorpx(200);
       color: #D7D9DC;
       font-size: pxTorpx(12);
       white-space: nowrap;
