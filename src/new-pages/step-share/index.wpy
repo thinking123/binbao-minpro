@@ -186,7 +186,26 @@
 
     }
 
+    comWidth(ctx , step){
+      ctx.font = 'bold 17px sans-serif'
+      let text = '迈出'
+      let textW = ctx.measureText(text)
 
+      ctx.font = 'bold 32px sans-serif'
+      // ctx.save()
+
+      text = step
+      let textStep = ctx.measureText(text)
+
+      ctx.font = 'bold 17px sans-serif'
+      text = '步'
+
+      let textStepWord = ctx.measureText(text)
+      let t = textW.width + textStep.width + textStepWord.width
+      console.log('textW' , t)
+
+      return t
+    }
     drawStepText(ctx ,
                  screenWidth,screenHeight,
                  x , y,
@@ -195,12 +214,17 @@
                  fontSize = 18,
                  weight = 0.2){
       ctx.save()
+
+      // step = 1232123
+      step = numberWithCommas(parseInt(step) , 4)
+      let t = this.comWidth(ctx , step)
+      x = (screenWidth - t) / 2
       // ctx.setTextAlign('center')
       ctx.setTextBaseline('middle')
       ctx.setFillStyle('black')
       let hRatio = (y + top) / 667
       // x = screenWidth / 2
-      x = 111
+      // x = 111
       y = hRatio * screenHeight
       ctx.translate(x, y)
 
@@ -515,6 +539,7 @@
       left:50%;
       transform: translate(-50% , 10rpx);
       font-weight: bold;
+      white-space: nowrap;
     }
   }
 

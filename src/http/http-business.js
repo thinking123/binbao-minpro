@@ -67,9 +67,10 @@ export function getWXStep() {
 //是否开始瓜分现金
 export function isOpenCarveUp() {
   const url = '/api/carveUp/isOpenCarveUp'
+  const loadingText = '加载数据...'
   const errMsg = '获取是否开始瓜分现金失败'
   const data = {}
-  return post(url, data).then(res => {
+  return post(url, data ,loadingText).then(res => {
     if (res && res.status == '9009') {
       return true
     } else if (res && res.status == '9010') {
@@ -227,5 +228,29 @@ export function setPrizeInfo(id, prizeName, prizePhone,prizeAddress) {
   const errMsg = '填写收货信息失败'
   const data = { id, prizeName, prizePhone,prizeAddress }
   url = urlParams(url, data, true)
-  return post(url, {}, loadingText).then(res => parseRes)
+  return post(url, {}, loadingText).then(res => parseRes(res, errMsg))
+}
+
+//麦力值抽奖 奖品列表
+export function prizelist() {
+  const url = '/api/prize/prizelist'
+  const loadingText = '获取奖品列表...'
+  const errMsg = '获取奖品列表失败'
+
+  return post(url, {}, loadingText).then(res => parseRes(res, errMsg))
+}
+
+//麦力值抽奖 抽奖
+export function getPrize() {
+  const url = '/api/prize/prize'
+  const loadingText = '抽奖...'
+  const errMsg = '抽奖失败'
+
+  return post(url, {}, loadingText).then(res => {
+    if (res && res.status == '4006') {
+      return false
+    }  else {
+      return parseRes(res, errMsg)
+    }
+  })
 }

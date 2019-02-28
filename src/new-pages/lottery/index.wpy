@@ -1,6 +1,8 @@
 <template>
   <view class="page">
-    <image class="banner" src="{{url}}lottery-banner.png"/>
+
+    <banner-swiper class="banner"/>
+    <!--<image class="banner" src="{{url}}lottery-banner.png"/>-->
     <image class="lottery-logo" src="{{url}}lottery-logo.png"/>
 
 
@@ -33,7 +35,7 @@
       </view>
     </view>
 
-    <repeat key="index"
+    <repeat key="id"
             index="index"
             item="prize"
             for="{{prizes}}">
@@ -41,9 +43,9 @@
             data-set-index="{{index}}"
             @tap="handlePrize({{index}})">
         <image class="prize-bg"
-               src="{{url}}lottery-prize.png"/>
+               src="{{prize.prizeImg}}"/>
         <view class="prize-text">
-          {{prize.text}}
+          {{prize.prizeName}}
         </view>
       </view>
     </repeat>
@@ -84,15 +86,20 @@
 <script>
   import wepy from 'wepy'
   import { connect } from 'wepy-redux'
+  import {prizelist , getPrize} from '../../http/http-business'
   import {showMsg} from '../../utils/common'
+  import {PRIZE} from '../../store/types/http'
   import GetPrizeDialog from '../../components/dialog/get-prize-dialog/get-prize-dialog'
   import LotteryPointsNotEnoughDialog from '../../components/dialog/lottery-points-not-enough-dialog/lottery-points-not-enough-dialog'
   import NavigateBar from '../../components/navigate-bar'
-
+  import BannerSwiper from '../../components/banner-swiper'
   @connect({
     url:state=>state.common.cdnUrl,
     wheatIntegralSum:state=>state.common.wheatIntegralSum,
-  },{})
+    prize:state=>state.common.prize,
+  },{
+    PRIZE
+  })
 
   export default class Title extends wepy.page {
     config = {}
@@ -100,6 +107,7 @@
       'get-prize-dialog':GetPrizeDialog,
       'lottery-points-not-enough-dialog':LotteryPointsNotEnoughDialog,
       'navigate-bar':NavigateBar,
+      'banner-swiper':BannerSwiper
     }
 
     data = {
@@ -112,14 +120,7 @@
       ],
       mlValue:123456,
       needMlValue:30,
-      prizes:[
-        {text:'曼可顿多士炉'},
-        {text:'曼可顿多士炉'},
-        {text:'曼可顿多士炉'},
-        {text:'曼可顿多士炉'},
-        {text:'曼可顿多士炉'},
-        {text:'曼可顿多士炉'}
-      ],
+      prizes:[],
       showMl:0,
       showGetPrizeDialog:false,
       showErrorDialog:false,
@@ -142,14 +143,27 @@
             break
         }
       },
-      handlePrize(index){
-        console.log('handlePrize', index)
+      handlePrize(prize){
+
       },
-      handleLottery(){
-        console.log('handleLottery')
-        this.getPrizeText = '曼可顿超醇全麦8片装'
-        this.showGetPrizeDialog = true
-        this.$apply()
+      async handleLottery(){
+        try {
+          const res = await getPrize()
+          if(res){
+            this.methods.PRIZE(res)
+            this.showGetPrizeDialog = true
+          }else{
+            this.showErrorDialog = true
+          }
+          this.$apply()
+        }catch (e) {
+          showMsg(e)
+        }
+
+        // console.log('handleLottery')
+        // this.getPrizeText = '曼可顿超醇全麦8片装'
+        // this.showGetPrizeDialog = true
+        // this.$apply()
       },
       handleRedeemPrize(){
         console.log('handleRedeemPrize')
@@ -159,7 +173,8 @@
     events = {
       'get-prize-dialog-close':()=>{
         console.log('colse dialog')
-        this.$navigate('../step-rank-get-prize?from=lottery')
+        const url = `/new-pages/step-rank-get-prize/index?from=lottery&id=${this.prize.id}`
+        this.$navigate(url)
       },
       'navigate-bar':(index)=>{
         console.log('navigate-bar' , index)
@@ -189,14 +204,18 @@
     }
     async init(){
       try {
+        const res = await prizelist()
+        console.log(' this.prizes' ,  res)
+        this.prizes = res
 
+        this.$apply()
       }catch (e) {
         showMsg(e)
       }
     }
     onLoad() {
       // this.url = this.$parent.globalData.url
-      // this.init()
+      this.init()
     }
 
     // Other properties

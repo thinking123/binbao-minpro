@@ -44,7 +44,7 @@
   import wepy from 'wepy'
   import { connect } from 'wepy-redux'
   import {NAVTYPE} from '../../store/types/http'
-  import {totalReceive , weekReceive} from '../../http/http-business'
+  import {totalReceive , weekReceive , setPrizeInfo} from '../../http/http-business'
   import {isEmpty , showMsg} from '../../utils/common'
   import StepRankGetPrizeDialog from '../../components/dialog/step-rank-get-prize-dialog/step-rank-get-prize-dialog'
 
@@ -67,6 +67,7 @@
       showDialog:false,
       isRight:false,
       type:-1,
+      id:'',
       from:''
     }
     verifySubmit(){
@@ -118,40 +119,8 @@
     }
     async _submitLottery(){
       try {
-        let res
-        if(this.type == 1){
-          //总排名
-          res = await totalReceive(this.name , this.phone , this.address)
-          switch (res) {
-            case 0:
-              showMsg('未开通领奖')
-              break
-            case 1:
-              showMsg('已经领取')
-              break
-            case 2:
-              this.methods.NAVTYPE('lottery')
-              this.$root.$redirect({url: '/new-pages/lottery/index'})
-              break
-            case 3:
-              showMsg('不是第一名不能领取')
-              break
-          }
-        }else  if(this.type == 0){
-          res = await weekReceive(this.name , this.phone , this.address)
-          switch (res) {
-            case 1:
-              showMsg('已经领取')
-              break
-            case 2:
-              this.methods.NAVTYPE('lottery')
-              this.$root.$redirect({url: '/new-pages/lottery/index'})
-              break
-            case 3:
-              showMsg('不是第一名不能领取')
-              break
-          }
-        }
+        let res = await setPrizeInfo(this.id , this.name , this.phone , this.address)
+        this.$root.$redirect({url: '/new-pages/lottery/index'})
       }catch (e) {
         showMsg(e)
       }
@@ -175,7 +144,7 @@
     events = {
       'dialog-close':()=>{
         if(this.isRight){
-          this.from == 'lottery' ? this._submitRank() : this._submitLottery()
+          this.from == 'lottery' ?  this._submitLottery() : this._submitRank()
         }
       }
     }
@@ -184,6 +153,7 @@
       console.log('options' , options)
       this.type = options.type
       this.from = options.from
+      this.id = options.id
 
       // this.url = this.$parent.globalData.url
     };

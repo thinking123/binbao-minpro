@@ -306,12 +306,15 @@
       },
       async handleBonus(){
         try {
-          if(this.isStartBonus){
+          const isStartBonus = await isOpenCarveUp()
+          if(isStartBonus){
             this.cashBonus = await carveUp()
             this.showCashPoolDialog = true
           }else{
             this.showCashPoolDialogTip = true
           }
+
+          this.$apply()
         }catch (e) {
           showMsg(e)
         }
@@ -453,8 +456,7 @@
         this.isShowWheatNumDialog(wheatRank)
         this.isShowMedalDialog(medalNum)
 
-
-
+        // this.$navigate('/new-pages/lottery/index')
         this.$apply()
 
         // this.$navigate('/new-pages/step-rank/index')
@@ -518,7 +520,11 @@
       this.init()
 
     };
-
+    onShow(){
+      //刷新微信步数
+      console.log('刷新微信步数')
+      this.authStep()
+    }
     // Other properties
   }
 </script>

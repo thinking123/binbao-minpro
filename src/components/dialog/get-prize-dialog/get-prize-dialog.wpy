@@ -15,23 +15,32 @@
     </view>
 
     <view class="dialog-text">
-      {{text}}
+      {{prize.prizeName}}
     </view>
     <!-- todo image-->
     <image
       class="dialog-icon"
-      src="{{url}}check-in-dialog-cookbook-bg-logo4.png"/>
+      src="{{prize.prizeImg}}"/>
   </view>
 </template>
 
 <script>
   import wepy from 'wepy'
+  import { connect } from 'wepy-redux'
+  import {PRIZE} from '../../../store/types/http'
+
+  @connect({
+    url:state=>state.common.cdnUrl,
+    prize:state=>state.common.prize,
+  },{
+    PRIZE
+  })
 
   export default class GetPrizeDialog extends wepy.component {
     components = {}
 
     data = {
-      url:'./'
+      // url:'./'
     }
     closeDialog(){
       this.$emit('get-prize-dialog-close')
@@ -59,15 +68,15 @@
         value: false,
         twoWay: true
       },
-      text: {
-        type: String,
-        value: ''
-      }
+      // text: {
+      //   type: String,
+      //   value: ''
+      // }
     }
     onLoad() {
-      this.$apply(()=>{
-        this.url = this.$root.$parent.globalData.url
-      })
+      // this.$apply(()=>{
+      //   this.url = this.$root.$parent.globalData.url
+      // })
     }
   }
 </script>
