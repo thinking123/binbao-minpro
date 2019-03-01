@@ -58,7 +58,7 @@
            src="{{url}}lottery-fixed-icon.png"/>
 
     <view class="ml-value">
-      当前麦力值：{{wheatIntegralSum}}
+      当前麦力值：{{wheatIntegral}}
     </view>
     <!--<view class="footer">-->
       <!--<image class="footer-bg" src="{{url}}navigate-bar.png"/>-->
@@ -95,7 +95,7 @@
   import BannerSwiper from '../../components/banner-swiper'
   @connect({
     url:state=>state.common.cdnUrl,
-    wheatIntegralSum:state=>state.common.wheatIntegralSum,
+    wheatIntegral:state=>state.common.wheatIntegral,
     prize:state=>state.common.prize,
   },{
     PRIZE
@@ -301,8 +301,19 @@
         left: 90rpx;
         /*height: 182rpx;*/
         /*width: 182rpx;*/
+
+        width: pxTorpx(129-29);
+        height:pxTorpx(129-29);
         /*border-radius: 182rpx;*/
-        transform: scale(1.42);
+        /*transform: scale(1.42);*/
+        &>image{
+          width: pxTorpx(120-40);
+          height:pxTorpx(391-343);
+        }
+
+        &> .prize-text{
+          top: pxTorpx(391-330);
+        }
       }
       &[data-set-index='2']{
         top: percentage((429 - $statusBarHeight) / $pageHeight);

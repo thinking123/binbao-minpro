@@ -231,7 +231,7 @@
       ctx.font = 'bold 17px sans-serif'
       let text = '迈出'
       let textW = ctx.measureText(text)
-      textW = textW.width
+      textW = textW.width + 5
       ctx.fillText(text, 0, 0)
 
 
@@ -242,7 +242,7 @@
       console.log('textW' , textW , step)
       let textStep = ctx.measureText(text)
 
-      textStep = textStep.width
+      textStep = textStep.width + 5
       ctx.setFillStyle('#DD0330')
       ctx.fillText(text, textW, 0)
       // ctx.stroke()
@@ -288,7 +288,7 @@
 
       ctx.restore()
     }
-    async getScreenShot() {
+    async getScreenShot1() {
       try {
         wx.showLoading({
           title: '正在截图',
@@ -413,7 +413,132 @@
         wx.hideLoading()
       }
     }
+    async getScreenShot() {
+      try {
+        wx.showLoading({
+          title: '正在截图',
+          mask: true
+        })
+        const dev = await this.getSystemInfo()
+        console.log('dev' , dev)
+        const {windowHeight} = dev
+        const { screenWidth, screenHeight } = dev
+        const statusHeight = 0
 
+        const p = (494 - 64) / 667
+        this.$apply(()=>{
+          this.cHeight = screenHeight * p + 'px'
+          this.cTop = windowHeight - screenHeight + 'px'
+        })
+
+        const ctx = wx.createCanvasContext('canvas')
+        //draw bg
+        /*
+        * statusHeight = 58
+        * bg , H:609 , W:375
+        * */
+        const imageUrl = `${this.url}step-share-share-bg.png`
+
+        console.log('imageUrl ', imageUrl)
+        let bg = await this.downloadFile(imageUrl)
+        ctx.drawImage(bg.tempFilePath, 0, 0, screenWidth, screenHeight* p)
+        //draw avatar
+        ctx.save()
+
+        // let hRatio = 0.2332
+        // let hRatio = (140 - statusHeight)/609
+        let hRatio = 90/667
+        let x = screenWidth / 2
+        let y = hRatio * screenHeight
+        console.log('top',y)
+        // y = 59
+        // let wd = (116/609)*screenHeight
+        let wd = (126/667)*screenHeight
+        ctx.translate(x, y + wd/2)
+
+        //clip circle
+        ctx.beginPath()
+        ctx.arc(0, 0, wd / 2, 0, 2 * Math.PI)
+        ctx.clip()
+
+
+
+        if(this.userInfo && this.userInfo.avatarUrl){
+          let avatarUrl = this.userInfo.avatarUrl
+
+          console.log('avatarUrl ', this.userInfo.avatarUrl)
+          let { tempFilePath } = await this.downloadFile(avatarUrl)
+          ctx.drawImage(tempFilePath, -wd / 2, -wd / 2, wd, wd)
+        }else{
+          console.log('图片正在加载')
+        }
+
+        ctx.restore()
+
+        this.drawText(
+          ctx ,
+          screenWidth , screenHeight ,
+          screenWidth / 2, 239 ,
+          this.userInfo.nickName
+        )
+
+
+        this.drawText(
+          ctx ,
+          screenWidth ,
+          screenHeight ,
+          screenWidth / 2,
+          268 ,
+          '我已在“麦”向健康每一天'
+        )
+
+        this.drawStepText(
+          ctx ,
+          screenWidth ,
+          screenHeight ,
+          screenWidth / 2,
+          298 ,
+          this.stepStr
+        )
+
+
+        this.drawText(
+          ctx ,
+          screenWidth ,
+          screenHeight ,
+          screenWidth / 2,
+          340 ,
+          '跟我一起来“麦”向健康吧！'
+        )
+
+        console.log('start draw')
+        await this.draw(ctx)
+        console.log('end draw')
+        let res = await this.canvasToTempFilePath(screenWidth, screenHeight)
+        let tempFilePath = res.tempFilePath
+        await this.previewImage([tempFilePath])
+        this.isPreviewPage = true
+        console.log('preview image success')
+
+      } catch (e) {
+        console.error('getScreenShot', e)
+        wx.showToast({
+          title:e.message,
+          icon: 'success'
+        })
+      }finally {
+        // wx.showToast({
+        //   title:'compelted',
+        //   icon:'none'
+        // })
+
+        wx.showLoading({
+          title: 'compelted',
+          mask: true
+        })
+        wx.hideLoading()
+      }
+    }
     methods = {
       handleShow() {
 

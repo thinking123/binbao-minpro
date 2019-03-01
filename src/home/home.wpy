@@ -242,6 +242,8 @@
       if(answer){
         this.showAnswerDialog = true
         this.$apply()
+      }else{
+        showMsg('今日知识挑战已完成')
       }
     }
 
@@ -265,6 +267,7 @@
           switch (btn.text) {
             case '早起挑战':
               await this._sign()
+
               // const hadCheckIn = await sign()
               // if(hadCheckIn){
               //   this.showCheckInCookBookDialog = true
@@ -344,6 +347,13 @@
           })
           this.getStep()
         }
+      },
+      'check-in-dialog-close':()=>{
+        if(this.sign && this.sign.type == 1){
+          //第一次签到后刷新数据
+          this.authStep()
+        }
+
       }
     }
     async login(){

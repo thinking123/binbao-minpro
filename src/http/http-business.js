@@ -3,7 +3,8 @@ import { urlParams } from '../utils/common'
 
 function parseRes(res, errMsg, resolveStatus = []) {
   if (!!res && res.status && res.status.indexOf('2') > -1) {
-    return res.rows ? res.rows : res
+    // return res.rows ? res.rows : res
+    return res.rows
   } else {
     const msg = res && res.message ? res.message : errMsg
     throw new Error(msg ? msg : 'error')
@@ -205,7 +206,8 @@ export function answerQuestion(id, userAnswer) {
   let url = '/api/knowledge/answer'
   const loadingText = '答题...'
   const errMsg = '答题失败'
-  const data = { id, userAnswer }
+  const data = { id, userAnswer:userAnswer.toUpperCase() }
+
   url = urlParams(url, data, true)
   return post(url, {}, loadingText).then(res => {
     if (res && res.status == '4003') {

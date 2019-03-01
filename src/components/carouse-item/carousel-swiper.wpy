@@ -22,7 +22,7 @@
         <view
           class="step-content {{2 !==index ? 'not-current' : ''}} {{image.locked ? 'locked':''}}">
           <view class="step-wrap"
-                style="visibility: {{2 !==index ? 'visible' : 'hidden'}}">
+               >
             <view class="step">
               {{image.step}}
             </view>
@@ -47,19 +47,26 @@
 
 <script>
   import wepy from 'wepy'
+  import { connect } from 'wepy-redux'
   const app = getApp()
   // const url = './'
+
+  @connect({
+    url:state=>state.common.cdnUrl,
+    wheatRank:state=>state.common.wheatRank,
+  },{})
   export default class CarouselSwiper extends wepy.component {
     components = {}
     externalClasses= ['carousel-swiper-external']
     onLoad(){
-      this.url = wepy.$instance.globalData.url
+      // this.url = wepy.$instance.globalData.url
     }
 
     data = {
       startX: 0,
       endX: 0,
-      url: ''
+      selected:0
+      // url: ''
     }
 
 
@@ -147,8 +154,15 @@
       }
     }
     watch = {
-      selected(v , ov){
+      wheatRank(v , ov){
         // console.log('index' , v , 'old ov ' , ov)
+        // this.loopImages()
+        // console.log('wheatRank' , v)
+        if(v == 0 || v){
+          console.log('wheatRank' , v)
+          this.selected = v == 0 ? 0 : (v - 1)
+        }
+
       }
     }
     computed = {
@@ -190,11 +204,11 @@
         type: Array,
         default: []
       },
-      selected: {
-        type: Number,
-        default: 0,
-        twoWay: true
-      },
+      // selected: {
+      //   type: Number,
+      //   default: 0,
+      //   twoWay: true
+      // },
       locked:String
 
     }

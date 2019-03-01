@@ -8,7 +8,7 @@ const defaultState = {
   medalNum:'0',
   wheatIntegral:'0',
   wheatIntegralSum:'0',
-  wheatRank:'0',
+  wheatRank:'',
   totalStep:'0',
   bannerImages:[],
   isStartBonus:false,

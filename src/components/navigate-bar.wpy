@@ -17,8 +17,7 @@
   import { connect } from 'wepy-redux'
   import {NAVTYPE} from '../store/types/http'
   import AnswerDialog from '../components/dialog/answer-dialog/answer-dialog'
-  import {getRandomInt
-  } from '../utils/common'
+  import {getRandomInt } from '../utils/common'
 
   @connect({
     url:state=>state.common.cdnUrl,
