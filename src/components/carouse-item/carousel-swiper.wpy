@@ -95,9 +95,9 @@
         //   // this.moveRight();
         //   this.selected++
         // }
-        this.selected = (this.selected + 1) % this.images.length
 
 
+        this.selected = (this.selected - 1 + this.images.length) % this.images.length
       },
       hanleRight(){
         // if (this.selected > 0) {
@@ -106,8 +106,8 @@
         //   this.selected--
         // }
 
+        this.selected = (this.selected + 1) % this.images.length
 
-        this.selected = (this.selected - 1 + this.images.length) % this.images.length
       },
       handleTouchStart(e) {
 
