@@ -61,8 +61,11 @@
             <view class="cur-ml-value">
               当前麦力值：{{wheatIntegral}}
             </view>
+            <view>
+              /
+            </view>
             <view class="his-ml-value">
-              /历史累计麦力值：{{wheatIntegralSum}}
+              历史累计麦力值：{{wheatIntegralSum}}
             </view>
           </view>
         </view>
@@ -722,6 +725,7 @@
         }
 
         .footer-text {
+          font-family:Microsoft YaHei;
           flex: 1;
           display: flex;
           flex-direction: column;

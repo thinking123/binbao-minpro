@@ -184,7 +184,7 @@
       transform: translate(-50%,-50%);
       background-color: white;
       /*height: 56.97%;*/
-      height: 760rpx;
+      height: 780rpx;
       width: 474rpx;
       border-radius: 30rpx;
       display: flex;
