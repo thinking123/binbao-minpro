@@ -149,6 +149,7 @@
       async handleLottery(){
         try {
           const res = await getPrize()
+          this.setTime()
           if(res){
             this.methods.PRIZE(res)
             this.showGetPrizeDialog = true
@@ -186,7 +187,7 @@
         this.time = null
       }
     }
-    onShow(){
+    setTime(){
       this.que = [0 , 1 ,2 , 1]
       this.count = 0
       this.time = setInterval(()=>{
@@ -194,6 +195,9 @@
         this.showMl = this.que[this.count]
         this.$apply()
       } , 1000)
+    }
+    onShow(){
+
     }
 
     onHide(){

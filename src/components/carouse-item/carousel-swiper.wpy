@@ -17,12 +17,12 @@
 
         <image src="{{image.icon}}"
                class="icon"
-               wx:if="{{2===index && !image.locked}}"/>
+               wx:if="{{2===index && !(image.wheatRank > wheatRank)}}"/>
 
         <view
-          class="step-content {{2 !==index ? 'not-current' : ''}} {{image.locked ? 'locked':''}}">
-          <view class="step-wrap"
-               >
+          class="step-content {{2 !==index ? 'not-current' : ''}} {{image.wheatRank > wheatRank ? 'locked':''}}"
+          style="visibility: {{image.wheatRank > wheatRank? 'visible' : 'hidden'}}">
+          <view class="step-wrap">
             <view class="step">
               {{image.step}}
             </view>

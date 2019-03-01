@@ -426,7 +426,8 @@
           url:`${this.url}home-level${i+1}.png`,
           icon:`${this.url}home-icon${i+1}.png`,
           locked:(i + 1)> wheatRank,
-          step:`${steps[i]}k`
+          step:`${steps[i]}k`,
+          wheatRank:(i+1)
         }
 
         images.push(m)
@@ -443,7 +444,6 @@
         await nowStep(this.encryptedData, this.iv)
 
         const { medalNum, wheatIntegral, wheatIntegralSum, wheatRank } = await getStep()
-
         const totalStep = await getWXStep()
         // this.medalNum = medalNum
         // this.wheatIntegral = wheatIntegral
