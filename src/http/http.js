@@ -1,13 +1,13 @@
 import wepy from 'wepy'
 import {baseUrl} from "../utils/constant";
-
+import {LOADINGBAR , LOADINGTEXT} from '../store/types/http'
 
 let queue = []
 
 export function initHttp(globalData) {
   queue = globalData.requestQueue
 }
-
+let time = null
 function http(url, data, loadingText, header, method = 'GET') {
 
   const app = wepy.$instance
@@ -27,10 +27,18 @@ function http(url, data, loadingText, header, method = 'GET') {
   console.log('url', _url)
   queue.push(url)
 
-  !!loadingText && wx.showLoading({
-    title: loadingText,
-    mask: true
-  })
+  if(time){
+    clearTimeout(time)
+    !!loadingText && wx.showLoading({
+      title: loadingText,
+      mask: true
+    })
+  }
+
+
+
+  // wepy.$store.dispatch({ type : 'LOADINGBAR' , payload : true })
+  // wepy.$store.dispatch({ type : 'LOADINGTEXT' , payload : loadingText })
 
   return new Promise((resolve, reject) => {
     wx.request({
@@ -40,13 +48,28 @@ function http(url, data, loadingText, header, method = 'GET') {
       method: method,
       success: res => {
         resolve(res ? res.data : null)
-        queue.pop()
-        !!loadingText && wx.hideLoading()
+        // queue.pop()
+        // wepy.$store.dispatch({ type : 'LOADINGBAR' , payload : false })
+        // wepy.$store.dispatch({ type : 'LOADINGTEXT' , payload : '' })
+
+        time = setTimeout(()=>{
+          !!loadingText && wx.hideLoading()
+          time = null
+          clearTimeout(time)
+        } , 100)
+
+
       },
       fail: err => {
         reject(err)
-        queue.pop()
-        !!loadingText && wx.hideLoading()
+        // queue.pop()
+        // wepy.$store.dispatch({ type : 'LOADINGBAR' , payload : false })
+        // wepy.$store.dispatch({ type : 'LOADINGTEXT' , payload : '' })
+        time = setTimeout(()=>{
+          !!loadingText && wx.hideLoading()
+          time = null
+          clearTimeout(time)
+        } , 100)
       }
     })
   })

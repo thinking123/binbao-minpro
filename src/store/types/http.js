@@ -7,4 +7,6 @@ export const ANSWER = 'ANSWER'
 export const SIGN = 'SIGN'
 export const NAVTYPE = 'NAVTYPE'
 export const PRIZE = 'PRIZE'
+export const LOADINGBAR = 'LOADINGBAR'
+export const LOADINGTEXT = 'LOADINGTEXT'
 

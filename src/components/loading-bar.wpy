@@ -1,0 +1,47 @@
+<template>
+  <view class="loading-bar">
+
+  </view>
+</template>
+<script>
+  import wepy from 'wepy';
+  import { connect } from 'wepy-redux'
+  import {LOADINGTEXT} from '../store/types/http'
+
+  @connect({
+    isLoading:state=>state.common.isLoading,
+    loadingText:state=>state.common.loadingText
+  },{})
+
+  export default class LoadingBar extends wepy.component {
+
+    // watch = {
+    //   isLoading (newValue, oldValue) {
+    //     console.log(' isLoading (newValue, oldValue)' , newValue)
+    //     if (newValue) {
+    //       wx.showLoading({
+    //         title: this.loadingText,
+    //         mask: true
+    //       })
+    //     }else{
+    //       wx.hideLoading()
+    //     }
+    //   }
+    // }
+    data = {
+
+    }
+    methods = {
+
+    }
+    props = {
+
+    }
+  }
+</script>
+
+<style lang="scss">
+  .loading-bar{
+    display: none;
+  }
+</style>

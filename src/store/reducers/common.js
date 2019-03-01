@@ -1,39 +1,77 @@
 import { handleActions } from 'redux-actions'
-import {WX_LOGIN , STEP , WX_STEP , ISSTARTBONUS , BANNERIMAGES , ANSWER,SIGN ,NAVTYPE , PRIZE} from '../types/http'
+import {
+  WX_LOGIN,
+  STEP,
+  WX_STEP,
+  ISSTARTBONUS,
+  BANNERIMAGES,
+  ANSWER,
+  SIGN,
+  NAVTYPE,
+  PRIZE,
+  LOADINGBAR,
+  LOADINGTEXT
+} from '../types/http'
 
 const defaultState = {
   token: '',
   code: '',
   cdnUrl: 'https://cdnmakattan.ysmine.com/',
-  medalNum:'0',
-  wheatIntegral:'0',
-  wheatIntegralSum:'0',
-  wheatRank:'',
-  totalStep:'0',
-  bannerImages:[],
-  isStartBonus:false,
-  answer:null,
-  prize:null,
-  navType:'',
+  medalNum: '0',
+  wheatIntegral: '0',
+  wheatIntegralSum: '0',
+  wheatRank: '',
+  totalStep: '0',
+  bannerImages: [],
+  isStartBonus: false,
+  answer: null,
+  prize: null,
+  navType: '',
+  isLoading: false,
+  loadingText: '正在加载...'
 }
 
+const loadQueue = []
 
 export default handleActions({
-  [WX_LOGIN](state, {payload:{token}}) {
-    console.log('token _wxLogin toekn' , token )
+  [LOADINGBAR](state, { payload: loading }) {
+
+    if (loading) {
+      loadQueue.push({})
+    } else {
+      loadQueue.pop()
+    }
+
+    console.log('loading leng', loadQueue.length)
+    return {
+      ...state,
+      isLoading: loadQueue.length > 0
+    }
+  },
+  [WX_LOGIN](state, { payload: { token } }) {
+    console.log('token _wxLogin toekn', token)
     return {
       ...state,
       token
     }
   },
-  [WX_STEP](state, {payload:{encryptedData,iv}}) {
+  [LOADINGTEXT](state, { payload: loadingText }) {
+    console.log('loading text', loadingText)
+    loadingText = loadingText ? loadingText : '正在加载...'
+
+    return {
+      ...state,
+      loadingText
+    }
+  },
+  [WX_STEP](state, { payload: { encryptedData, iv } }) {
     return {
       ...state,
       encryptedData,
       iv
     }
   },
-  [STEP](state, {payload:{medalNum, wheatIntegral, wheatIntegralSum, wheatRank , totalStep}}) {
+  [STEP](state, { payload: { medalNum, wheatIntegral, wheatIntegralSum, wheatRank, totalStep } }) {
     return {
       ...state,
       medalNum,
@@ -43,13 +81,13 @@ export default handleActions({
       totalStep
     }
   },
-  [ISSTARTBONUS](state, {payload:{isStartBonus}}) {
+  [ISSTARTBONUS](state, { payload: { isStartBonus } }) {
     return {
       ...state,
       isStartBonus
     }
   },
-  [BANNERIMAGES](state, {payload:{bannerImages}}) {
+  [BANNERIMAGES](state, { payload: { bannerImages } }) {
     return {
       ...state,
       bannerImages
@@ -77,10 +115,10 @@ export default handleActions({
     }
   },
   [NAVTYPE](state, action) {
-    console.log('action' , action.payload)
+    console.log('action', action.payload)
     return {
       ...state,
-      navType:action.payload
+      navType: action.payload
     }
-  },
+  }
 }, defaultState)

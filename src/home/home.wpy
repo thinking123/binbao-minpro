@@ -140,6 +140,7 @@
   import AuthDialog from '../components/dialog/auth-dialog/auth-dialog'
   import StepAuthDialog from '../components/dialog/auth-dialog/step-auth-dialog'
   import BannerSwiper from '../components/banner-swiper'
+  import LoadingBar from '../components/loading-bar'
 
   @connect({
     // token(state) {
@@ -184,7 +185,8 @@
       'medal-dialog':MedalDialog,
       'auth-dialog':AuthDialog,
       'step-auth-dialog':StepAuthDialog,
-      'banner-swiper':BannerSwiper
+      'banner-swiper':BannerSwiper,
+      'loading-bar':LoadingBar,
     }
 
     data = {
