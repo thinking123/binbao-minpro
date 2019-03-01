@@ -4,9 +4,31 @@
           @tap="handleOutHide"
           id="mask"/>
     <view class="dialog-content">
-      <image
-        class="header"
-        src="{{bg}}"/>
+      <view class="dialog-content-body">
+        <image
+          class="header"
+          src="{{bg}}"/>
+
+        <view class="dialog-content-wrap">
+          <view wx:if="{{isRight}}" class="row-wrap">
+            <view class="row row1">
+              信息填写正确
+            </view>
+            <view class="row row2-right">
+              奖品将在30天内寄出
+            </view>
+          </view>
+          <view wx:else class="row-wrap">
+            <view class="row row1">
+              信息填写不全
+            </view>
+            <view class="row row1">
+              请返回重新填写
+            </view>
+          </view>
+        </view>
+      </view>
+
 
 
       <image src="{{url}}dialog-close-btn.png"
@@ -14,24 +36,7 @@
              class="close-btn"/>
     </view>
 
-    <view class="dialog-content-wrap">
-      <view wx:if="{{isRight}}" class="row-wrap">
-        <view class="row row1">
-          信息填写正确
-        </view>
-        <view class="row row2-right">
-          奖品将在30天内寄出
-        </view>
-      </view>
-      <view wx:else class="row-wrap">
-        <view class="row row1">
-          信息填写不全
-        </view>
-        <view class="row row1">
-          请返回重新填写
-        </view>
-      </view>
-    </view>
+
 
   </view>
 </template>
@@ -123,71 +128,79 @@
       z-index: 1;
       position: absolute;
       left:50%;
-      transform: translate(-50%,0);
-      top:percentage((132 - $statusBarHeight) / $pageHeight);
+      transform: translate(-50%,-50%);
+      top:50%;
       /*height: 56.97%;*/
-      height: pxTorpx(446 - 132);
+
       width: 474rpx;
       border-radius: 30rpx;
       display: flex;
       flex-direction: column;
       align-items: center;
-      .header{
+
+      .dialog-content-body{
+        height: pxTorpx(446 - 132);
         width: 100%;
-        height: 100%;
-        position: absolute;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        /*justify-content: center;*/
+        .header{
+          width: 100%;
+          height: 100%;
+          position: absolute;
+
+        }
+
+        $contentHeight:446 - 132;
+        $font-size-text:32rpx;
+
+        .dialog-content-wrap{
+          position: relative;
+          margin-top: pxTorpx(319-131);
+        }
+        .row-wrap{
+
+          color: #009844;
+
+
+          white-space: nowrap;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+
+          .row1{
+            font-weight: bolder;
+            letter-spacing: 8rpx;
+            font-size: $font-size-text;
+          }
+          .row2-right{
+            color: black;
+            font-size: $font-size-text - 8;
+            letter-spacing: 4rpx;
+          }
+          .row{
+            &:last-child{
+              margin-top: 20rpx;
+            }
+          }
+        }
 
       }
+
 
 
       .close-btn{
-        position: absolute;
-        bottom: -20rpx;
         height: 68rpx;
         width: 68rpx;
-        left:50%;
-        transform: translate(-50% , 100%);
+        margin-top: 20rpx;
       }
 
 
     }
 
-    $contentHeight:446 - 132;
-    $font-size-text:32rpx;
 
-    .dialog-content-wrap{
-      z-index:2;
-      top: percentage((314 - $statusBarHeight) / $pageHeight);
-      position: absolute;
-      left:50%;
-      transform: translate(-50%,0);
-    }
-    .row-wrap{
-
-      color: #009844;
-
-
-      white-space: nowrap;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-
-      .row1{
-        font-weight: bolder;
-        letter-spacing: 8rpx;
-        font-size: $font-size-text;
-      }
-      .row2-right{
-        color: black;
-        font-size: $font-size-text - 8;
-        letter-spacing: 4rpx;
-      }
-      .row{
-        &:last-child{
-          margin-top: 20rpx;
-        }
-      }
-    }
   }
 </style>

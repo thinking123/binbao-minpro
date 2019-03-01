@@ -39,7 +39,7 @@
             </view>
           </view>
           <view class="rank-row">
-            <image class="rank-row-icon" src="{{url}}step-rank-his-ml-icon1.jpg"/>
+            <image class="rank-row-icon" src="{{url}}step-rank-his-ml-icon1.png"/>
             <view class="rank-text-wrap">
               历史累积麦力值：
               <view class="rank-text">
@@ -176,7 +176,9 @@
       //   this.isFirstWeek = true
       //   this.$apply()
       // }
-      const {isReceive   ,isWinning , myRanking ,myWheat ,rankingLimitList } = res
+      const {isReceive   ,isWinning , myRanking ,myWheat ,rankingLimitList ,size } = res
+      this.isFirstWeek = size == 0
+
 
 
       this.isReceive = isReceive
@@ -188,8 +190,9 @@
       this.$apply()
     }
     async _totalRanking(){
-      const {isOpenReceiveAPrize  ,myRanking ,myWheat ,rankingLimitList } = await totalRanking()
+      const {isOpenReceiveAPrize  ,myRanking ,myWheat ,rankingLimitList ,size } = await totalRanking()
 
+      this.isFirstWeek = size == 0
       this.isOpenReceiveAPrize = isOpenReceiveAPrize
 
       this.myRanking = myRanking
@@ -199,6 +202,9 @@
     }
     methods = {
       handleGetPrize(){
+        if(!this.canGetPrize){
+          return
+        }
         console.log('handleGetPrize')
         const url = `/new-pages/step-rank-get-prize/index?type=${this.selected}`
         this.$navigate(url)

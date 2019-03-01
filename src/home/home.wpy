@@ -43,7 +43,7 @@
     </view>
     <view class="footer">
       <view class="footer-body">
-        <view class="medal-wrap">
+        <view class="medal-wrap" @tap="handleShowMedal">
           <image src="{{url}}home-footer-medal.png" wx:if="{{url}}"/>
           <view class="got-medal">
             已获
@@ -302,7 +302,14 @@
 
       },
       handleHowToPlay(){
+        // if(th)
         this.showHowToPlayDialog = true
+      },
+      handleShowMedal(){
+        if(this.medalNum > 0){
+          this.showMedalDialog = true
+        }
+
       },
       handleMyStep(){
         this.$navigate('../new-pages/step-share/index')
@@ -466,10 +473,10 @@
         this.isShowWheatNumDialog(wheatRank)
         this.isShowMedalDialog(medalNum)
 
-        this.$navigate('/new-pages/lottery/index')
+        // this.$navigate('/new-pages/lottery/index')
         this.$apply()
 
-        // this.$navigate('/new-pages/step-rank/index')
+        // this.$navigate('/new-pages/step-rank-get-prize/index')
 
       } catch (e) {
         console.log(e)
