@@ -42,8 +42,11 @@
       <view class="prize"
             data-set-index="{{index}}"
             @tap="handlePrize({{index}})">
-        <image class="prize-bg"
-               src="{{prize.prizeImg}}"/>
+        <!--<image class="prize-bg"-->
+               <!--src="{{prize.prizeImg}}"/>-->
+        <view class="prize-bg"  style="background-image:url('{{prize.prizeImg}}');">
+
+        </view>
         <view class="prize-text">
           {{prize.prizeName}}
         </view>
@@ -57,7 +60,7 @@
            @tap="handleRedeemPrize"
            src="{{url}}lottery-fixed-icon.png"/>
 
-    <view class="ml-value">
+    <view class="ml-value {{}}">
       当前麦力值：{{wheatIntegral}}
     </view>
     <!--<view class="footer">-->
@@ -70,6 +73,13 @@
       <!--</repeat>-->
     <!--</view>-->
 
+    <view class="get-prize-wrap" wx:if="{{isLotterying}}">
+
+      <image class="get-prize-bg"
+             src="{{url}}lottery-prize-bg1.png"/>
+      <image class="ml {{isLotterying ? 'active' : ''}}"
+             src="{{url}}lottery-prize-ml.png"/>
+    </view>
     <navigate-bar navType="lottery"/>
 
     <get-prize-dialog
@@ -124,6 +134,7 @@
       showMl:0,
       showGetPrizeDialog:false,
       showErrorDialog:false,
+      isLotterying:false,
       getPrizeText:''
     }
     methods = {
@@ -152,7 +163,12 @@
           this.setTime()
           if(res){
             this.methods.PRIZE(res)
-            this.showGetPrizeDialog = true
+            this.isLotterying = true
+            this.lotteryTime = setTimeout(()=>{
+              this.showGetPrizeDialog = true
+              this.$apply()
+            } , 1200)
+            // this.showGetPrizeDialog = true
           }else{
             this.showErrorDialog = true
           }
@@ -172,19 +188,25 @@
     }
 
     events = {
-      'get-prize-dialog-close':()=>{
-        console.log('colse dialog')
+      'goto':()=>{
+        console.log('goto dialog')
         const url = `/new-pages/step-rank-get-prize/index?from=lottery&id=${this.prize.id}`
         this.$navigate(url)
       },
       'navigate-bar':(index)=>{
         console.log('navigate-bar' , index)
-      }
+      },
+
     }
     onUnload(){
       if(this.time){
         clearInterval(this.time)
         this.time = null
+      }
+
+      if(this.lotteryTime){
+        clearTimeout(this.lotteryTime)
+        this.lotteryTime = null
       }
     }
     setTime(){
@@ -194,16 +216,22 @@
         this.count = (++this.count % 4)
         this.showMl = this.que[this.count]
         this.$apply()
-      } , 1000)
+      } , 500)
     }
     onShow(){
-
+      this.isLotterying = false
+      this.showGetPrizeDialog = false
+      this.showErrorDialog = false
     }
 
     onHide(){
       if(this.time){
         clearInterval(this.time)
         this.time = null
+      }
+      if(this.lotteryTime){
+        clearTimeout(this.lotteryTime)
+        this.lotteryTime = null
       }
     }
     async init(){
@@ -231,6 +259,7 @@
   @import "../../css/variables";
 
   $pageHeight: 667- $statusBarHeight;
+
   .page {
     width: 100%;
     height: 100%;
@@ -242,6 +271,39 @@
     flex-direction: column;
     justify-content: stretch;
     background-color: white;
+
+    .get-prize-wrap{
+      z-index: 100;
+      position: absolute;
+      width: 100%;
+      height: percentage((598 - 197) / $pageHeight);
+      top: percentage((197- $statusBarHeight) / $pageHeight);
+      >image{
+        width: 100%;
+        height: 100%;
+      }
+      .ml{
+        position: absolute;
+        transition: transform 1s ease-in;
+        /*transform: scale(0);*/
+        height: pxTorpx(441 - 312);
+        width: pxTorpx(225-149);
+        left:50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        animation: ml 1s linear 1;
+      }
+
+      @keyframes ml {
+        from{
+          transform: translate(-50%,-50%) scale(0);
+        }
+        to{
+          transform: translate(-50%,-50%) scale(1);
+        }
+      }
+
+    }
 
     .banner {
       height: percentage((187 - $statusBarHeight) / $pageHeight);
@@ -281,16 +343,17 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      >image{
+      justify-content: center;
+      >view{
         width: 108rpx;
         height: 62rpx;
         margin-top: 20rpx;
+        object-fit: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
       }
       .prize-text{
-        position: absolute;
-        top: 84rpx;
-        left:50%;
-        transform: translateX(-50%);
+
         font-size: 18rpx;
         white-space: nowrap;
       }
@@ -310,7 +373,7 @@
         height:pxTorpx(129-29);
         /*border-radius: 182rpx;*/
         /*transform: scale(1.42);*/
-        &>image{
+        &>view{
           width: pxTorpx(120-40);
           height:pxTorpx(391-343);
         }
@@ -417,6 +480,7 @@
         }
       }
     }
+
 
 
 

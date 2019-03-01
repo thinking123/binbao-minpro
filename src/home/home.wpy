@@ -466,7 +466,7 @@
         this.isShowWheatNumDialog(wheatRank)
         this.isShowMedalDialog(medalNum)
 
-        // this.$navigate('/new-pages/lottery/index')
+        this.$navigate('/new-pages/lottery/index')
         this.$apply()
 
         // this.$navigate('/new-pages/step-rank/index')

@@ -39,7 +39,7 @@
             </view>
           </view>
           <view class="rank-row">
-            <image class="rank-row-icon" src="{{url}}step-rank-his-ml-icon.jpg"/>
+            <image class="rank-row-icon" src="{{url}}step-rank-his-ml-icon1.jpg"/>
             <view class="rank-text-wrap">
               历史累积麦力值：
               <view class="rank-text">
