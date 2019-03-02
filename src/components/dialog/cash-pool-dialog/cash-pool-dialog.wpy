@@ -54,11 +54,11 @@
       },
       bonus: {
         type: String,
-        value: '2.05'
+        value: ''
       },
       total: {
         type: String,
-        value: '10000'
+        value: ''
       }
     }
     onLoad() {

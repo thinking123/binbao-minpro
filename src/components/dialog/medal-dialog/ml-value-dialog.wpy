@@ -36,12 +36,17 @@
 
 <script>
   import wepy from 'wepy'
-
+  import { connect } from 'wepy-redux'
+  @connect({
+    url:state=>state.common.cdnUrl,
+    medalNum:state=>state.common.medalNum,
+    wheatRank:state=>state.common.wheatRank
+  },{})
   export default class MlValueDialog extends wepy.component {
     components = {}
 
     data = {
-      url:'./'
+      // url:'./'
     }
     methods = {
       handleOutHide(e) {
@@ -63,39 +68,57 @@
           res = {points : '50' , tip:'麦小粒'}
           break
         case 2:
-          res = {points : '150' , tip:'麦小萌'}
+          res = {points : '100' , tip:'麦小粒'}
           break
         case 3:
-          res = {points : '300' , tip:'麦小芽'}
+          res = {points : '150' , tip:'麦小萌'}
           break
         case 4:
-          res = {points : '500' , tip:'麦小苗'}
+          res = {points : '200' , tip:'麦小萌'}
           break
         case 5:
-          res = {points : '800' , tip:'麦小穗'}
+          res = {points : '300' , tip:'麦小芽'}
           break
         case 6:
-          res = {points : '1200' , tip:'麦小王'}
+          res = {points : '400' , tip:'麦小芽'}
+          break
+        case 7:
+          res = {points : '500' , tip:'麦小苗'}
+          break
+        case 8:
+          res = {points : '600' , tip:'麦小苗'}
+          break
+        case 9:
+          res = {points : '800' , tip:'麦小穗'}
+          break
+        case 10:
+          res = {points : '1000' , tip:'麦小穗'}
+          break
+        case 11:
+          res = {points : '1200' , tip:'全麦王'}
+          break
+        case 12:
+          res = {points : '1500' , tip:'全麦王'}
           break
       }
       return res
     }
     computed = {
       upgradePoints() {
-        const res = this.getLevelData(this.upgradeLevel)
-        return `${res.points}`
+        const res = this.getLevelData(this.wheatRank)
+        return res.points
       },
       upgradeTip() {
-        const res = this.getLevelData(this.upgradeLevel)
+        const res = this.getLevelData(this.wheatRank)
         return res.tip
       },
       pointsFontSize() {
         let base = 26
-        if(this.upgradeLevel > 1 && this.upgradeLevel < 6){
+        if(this.medalNum > 1 && this.medalNum < 6){
            base += 10
-        }else if(this.upgradeLevel == 6){
+        }else if(this.medalNum == 6){
           base += 2
-        }else if(this.upgradeLevel == 1){
+        }else if(this.medalNum == 1){
           base += 12
         }
         console.log('base' , base)
@@ -111,15 +134,15 @@
         value: false,
         twoWay: true
       },
-      upgradeLevel: {
-        type: Number,
-        value: 0
-      }
+      // upgradeLevel: {
+      //   type: Number,
+      //   value: 0
+      // }
     }
     onLoad() {
-      this.$apply(()=>{
-        this.url = this.$root.$parent.globalData.url
-      })
+      // this.$apply(()=>{
+      //   this.url = this.$root.$parent.globalData.url
+      // })
     }
   }
 </script>
@@ -129,7 +152,7 @@
   $pageHeight: 667;
   $statusBarHeight:0;
   .ml-value-dialog {
-    z-index: 2;
+    z-index: 22;
     width: 100%;
     height: 100%;
     position: fixed;
@@ -189,7 +212,7 @@
       position: absolute;
       left:50%;
       transform: translate(-50%,0);
-      top:pxTorpx(80);
+      top:pxTorpx(85);
       color: white;
 
       font-weight: bolder;

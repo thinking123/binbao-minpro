@@ -5,7 +5,7 @@
 
       <banner-swiper class="banner-swiper" :bannerImages.sync="bannerImages"/>
       <button
-        class="bonus"
+        class="bonus {{isBonusEnable ? 'active' : ''}}"
         @tap="handleBonus">
         瓜分{{bonusStr}} 奖金
       </button>
@@ -100,7 +100,7 @@
                    :cookIndex.sync="checkInCookIndex"
   />
     <cash-pool-dialog
-      :total="cashTotal"
+      :total.sync="cashTotal"
       :bonus.sync="cashBonus"
       :visible.sync="showCashPoolDialog"/>
     <cash-pool-dialog-tip
@@ -160,8 +160,6 @@
     wheatRank:state=>state.common.wheatRank,
     encryptedData:state=>state.common.encryptedData,
     iv:state=>state.common.iv,
-    // bannerImages:state=>state.common.bannerImages,
-    isStartBonus:state=>state.common.isStartBonus,
     sign:state=>state.common.sign,
   }, {
     WX_LOGIN,
@@ -202,8 +200,8 @@
         { key: 'home-nav-btn3', text: '知识挑战' },
         { key: 'home-nav-btn4', text: '幸运挑战' }
       ],
-      cashTotal:'100000',
-      cashBonus:'2.02',
+      cashTotal:'',
+      cashBonus:'0',
       // medalNum: 0,
       // wheatIntegral: 0,
       // wheatIntegralSum: 0,
@@ -212,7 +210,7 @@
       bonus:100000,
       images:[],
       selected:0,
-      mlUpgradeLevel:1,
+      mlUpgradeLevel:0,
       mediaUpgradeLevel:0,
 
       showAuthDialog:false,
@@ -233,7 +231,6 @@
       showAnswerDialog:false,
       answerIndex:1,
 
-      // isStartBonus:false,
       // bannerImages:[]
       bannerImages:[]
     }
@@ -241,6 +238,10 @@
       bonusStr () {
         const str = `${this.bonus}`
         return numberWithCommas(str)
+      },
+      isBonusEnable(){
+        console.log('isBonusEnable' , this.medalNum , this.wheatRank )
+        return this.medalNum == 6 && this.wheatRank == 12
       }
     }
     async _getAnswer(){
@@ -324,15 +325,24 @@
       },
       async handleBonus(){
         try {
-          const isStartBonus = await isOpenCarveUp()
-          if(isStartBonus){
-            this.cashBonus = await carveUp()
-            this.showCashPoolDialog = true
-          }else{
-            this.showCashPoolDialogTip = true
+
+
+          console.log('handleBonus' , this.isBonusEnable)
+          if(this.isBonusEnable){
+            const isStartBonus = await isOpenCarveUp()
+
+            if(isStartBonus){
+              const {money , peopleNum} = await carveUp()
+              this.cashBonus = money
+              this.cashTotal = peopleNum
+              this.showCashPoolDialog = true
+            }else{
+              this.showCashPoolDialogTip = true
+            }
+            this.$apply()
           }
 
-          this.$apply()
+
         }catch (e) {
           showMsg(e)
         }
@@ -436,7 +446,7 @@
       }
     }
     initCarouselSwiperImages(wheatRank){
-      const steps = [5,8,15,40,80,120,160,200,280,240,320,360]
+      const steps = [5,8,15,40,80,120,160,200,240,280,320,360]
       // this.selected = wheatRank
       const images = []
       for (let i = 0; i < 12; i++) {
@@ -486,14 +496,14 @@
         })
         await nowStep(this.encryptedData, this.iv)
 
-        const { medalNum, wheatIntegral, wheatIntegralSum, wheatRank } = await getStep()
-
+        let { medalNum, wheatIntegral, wheatIntegralSum, wheatRank } = await getStep()
         this.methods.STEP({
           medalNum, wheatIntegral, wheatIntegralSum, wheatRank
         })
         this.initCarouselSwiperImages(wheatRank)
-        this.isShowWheatNumDialog(wheatRank)
         this.isShowMedalDialog(medalNum)
+        this.isShowWheatNumDialog(wheatRank)
+
 
 
 
@@ -550,11 +560,6 @@
       await this.getStep()
 
       await this._getTotalStep()
-
-      const isStartBonus = await isOpenCarveUp()
-      this.methods.ISSTARTBONUS({
-        isStartBonus
-      })
 
       const bannerImages = await getBanner(1)
       this.bannerImages = bannerImages
@@ -636,16 +641,21 @@
         bottom: 26rpx;
         left:50%;
         transform: translateX(-50%);
-        background-color: #F5B020;
+
         color:white;
         font-weight: bold;
         display: flex;
         justify-content: center;
         align-items: center;
         font-size: 32rpx;
-
+        background-color: #C2C2C2;
         box-shadow:  0 10rpx 30rpx black;
+        &.active{
+          background-color: #F5B020;
+        }
       }
+
+
 
     }
 

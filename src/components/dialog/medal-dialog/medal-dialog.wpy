@@ -36,12 +36,17 @@
 
 <script>
   import wepy from 'wepy'
-
+  import { connect } from 'wepy-redux'
+  @connect({
+    url:state=>state.common.cdnUrl,
+    medalNum:state=>state.common.medalNum,
+    wheatRank:state=>state.common.wheatRank
+  },{})
   export default class MedalDialog extends wepy.component {
     components = {}
 
     data = {
-      url:'./'
+      // url:'./'
     }
     methods = {
       handleOutHide(e) {
@@ -60,33 +65,33 @@
       let res = {}
       switch (level) {
         case 1:
-          res = {points : '50' , tip:'麦小粒'}
+          res = { tip:'麦小粒'}
           break
         case 2:
-          res = {points : '150' , tip:'麦小萌'}
+          res = { tip:'麦小萌'}
           break
         case 3:
-          res = {points : '300' , tip:'麦小芽'}
+          res = { tip:'麦小芽'}
           break
         case 4:
-          res = {points : '500' , tip:'麦小苗'}
+          res = {tip:'麦小苗'}
           break
         case 5:
-          res = {points : '800' , tip:'麦小穗'}
+          res = { tip:'麦小穗'}
           break
         case 6:
-          res = {points : '1200' , tip:'麦小王'}
+          res = { tip:'全麦王'}
           break
       }
       return res
     }
     computed = {
       medalIcon() {
-        const res = `${this.url}medal-dialog--icon-level${this.upgradeLevel}.png`
+        const res = `${this.url}medal-dialog--icon-level${this.medalNum}.png`
         return res
       },
       upgradeTip() {
-        const res = this.getLevelData(this.upgradeLevel)
+        const res = this.getLevelData(this.medalNum)
         return res.tip
       }
     }
@@ -97,21 +102,21 @@
         value: false,
         twoWay: true
       },
-      upgradeLevel: {
-        type: Number,
-        value: 0
-      }
+      // upgradeLevel: {
+      //   type: Number,
+      //   value: 0
+      // }
     }
     onShareAppMessage(obj) {
       console.log('onShareAppMessage', obj)
 
       return obj
     }
-    onLoad() {
-      this.$apply(()=>{
-        this.url = this.$root.$parent.globalData.url
-      })
-    }
+    // onLoad() {
+    //   this.$apply(()=>{
+    //     this.url = this.$root.$parent.globalData.url
+    //   })
+    // }
   }
 </script>
 
@@ -189,7 +194,7 @@
       position: absolute;
       left:50%;
       transform: translate(-50%,0);
-      top:percentage((342 ) / $pageHeight);
+      top:percentage((352 ) / $pageHeight);
       font-size: pxTorpx(12);
       white-space: nowrap;
       display: flex;
