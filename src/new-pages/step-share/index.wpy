@@ -97,7 +97,8 @@
       cHeight: 0,
       showDialog: false,
       userInfo: null,
-      isPreviewPage: false
+      isPreviewPage: false,
+      px2rpx:''
     }
     //
     // handleUserInfo(userInfo) {
@@ -187,17 +188,17 @@
     }
 
     comWidth(ctx , step){
-      ctx.font = 'bold 17px sans-serif'
+      ctx.font = 'normal bold 17px sans-serif'
       let text = '迈出'
       let textW = ctx.measureText(text)
 
-      ctx.font = 'bold 32px sans-serif'
+      ctx.font = 'normal bold 32px sans-serif'
       // ctx.save()
 
       text = step
       let textStep = ctx.measureText(text)
 
-      ctx.font = 'bold 17px sans-serif'
+      ctx.font = 'normal bold 17px sans-serif'
       text = '步'
 
       let textStepWord = ctx.measureText(text)
@@ -225,17 +226,18 @@
       let hRatio = (y + top) / 667
       // x = screenWidth / 2
       // x = 111
-      y = hRatio * screenHeight
+      // y = hRatio * screenHeight
+      y = (y-64)/(667-64) * (screenHeight)
       ctx.translate(x, y)
 
-      ctx.font = 'bold 17px sans-serif'
+      ctx.font = 'normal bold 17px sans-serif'
       let text = '迈出'
       let textW = ctx.measureText(text)
       textW = textW.width + 5
       ctx.fillText(text, 0, 0)
 
 
-      ctx.font = 'bold 32px sans-serif'
+      ctx.font = 'normal bold 32px sans-serif'
       // ctx.save()
 
       text = step
@@ -249,7 +251,7 @@
       // ctx.restore()
 
       ctx.setFillStyle('black')
-      ctx.font = 'bold 17px sans-serif'
+      ctx.font = 'normal bold 17px sans-serif'
       text = '步'
       ctx.fillText(text, textW + textStep, 0)
 
@@ -276,9 +278,12 @@
       //260 - 58 / 609
       let hRatio = (y + top) / 667
       x = screenWidth / 2
-      y = hRatio * screenHeight
+      // y = hRatio * screenHeight
+
+      y = (y-64)/(667-64) * (screenHeight)
+      console.log('y' , y)
       ctx.translate(x, y)
-      ctx.font = 'bold 17px sans-serif'
+      ctx.font = 'normal bold 17px sans-serif'
       // ctx.setFontSize(fontSize)
       // ctx.fillText(text, 0, -weight)
       // ctx.fillText(text, -weight, 0)
@@ -428,7 +433,7 @@
         const p = (494 - 64) / 667
         this.$apply(()=>{
           this.cHeight = screenHeight * p + 'px'
-          this.cTop = windowHeight - screenHeight + 'px'
+          this.cTop = 0 + 'px'
         })
 
         const ctx = wx.createCanvasContext('canvas')
@@ -447,13 +452,16 @@
 
         // let hRatio = 0.2332
         // let hRatio = (140 - statusHeight)/609
-        let hRatio = 90/667
+        let hRatio = 0.1332
         let x = screenWidth / 2
-        let y = hRatio * screenHeight
+        let y = hRatio * (screenHeight-64)
+        // let y = 90* 2 / this.px2rpx
         console.log('top',y)
         // y = 59
-        // let wd = (116/609)*screenHeight
-        let wd = (126/667)*screenHeight
+        // let wd = (126/609)*(screenHeight-64)
+        // let wd = (126/667)*screenHeight
+        let wd = 116* 2 / this.px2rpx
+        // let wd = 126
         ctx.translate(x, y + wd/2)
 
         //clip circle
@@ -478,7 +486,7 @@
         this.drawText(
           ctx ,
           screenWidth , screenHeight ,
-          screenWidth / 2, 239 ,
+          screenWidth / 2, 261 ,
           this.userInfo.nickName
         )
 
@@ -488,7 +496,7 @@
           screenWidth ,
           screenHeight ,
           screenWidth / 2,
-          266 ,
+          287 ,
           '我已在“麦”向健康每一天'
         )
 
@@ -497,7 +505,7 @@
           screenWidth ,
           screenHeight ,
           screenWidth / 2,
-          285 ,
+          309 ,
           this.stepStr
         )
 
@@ -507,7 +515,7 @@
           screenWidth ,
           screenHeight ,
           screenWidth / 2,
-          318 ,
+          343 ,
           '跟我一起来“麦”向健康吧！'
         )
 
@@ -581,6 +589,9 @@
       //   this.url = this.$parent.globalData.url
       //
       // })
+      const res = wx.getSystemInfoSync()
+
+      this.px2rpx = 750 / res.windowWidth;
 
       this.getUserInfo()
     }
