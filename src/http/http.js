@@ -27,14 +27,18 @@ function http(url, data, loadingText, header, method = 'GET') {
   console.log('url', _url)
   queue.push(url)
 
-  if(time){
-    clearTimeout(time)
-    !!loadingText && wx.showLoading({
-      title: loadingText,
-      mask: true
-    })
-  }
+  // if(time){
+  //   clearTimeout(time)
+  //   !!loadingText && wx.showLoading({
+  //     title: loadingText,
+  //     mask: true
+  //   })
+  // }
 
+  !!loadingText && wx.showLoading({
+    title: loadingText,
+    mask: true
+  })
 
 
   // wepy.$store.dispatch({ type : 'LOADINGBAR' , payload : true })
@@ -52,12 +56,12 @@ function http(url, data, loadingText, header, method = 'GET') {
         // wepy.$store.dispatch({ type : 'LOADINGBAR' , payload : false })
         // wepy.$store.dispatch({ type : 'LOADINGTEXT' , payload : '' })
 
-        time = setTimeout(()=>{
-          !!loadingText && wx.hideLoading()
-          time = null
-          clearTimeout(time)
-        } , 100)
-
+        // time = setTimeout(()=>{
+        //   !!loadingText && wx.hideLoading()
+        //   time = null
+        //   clearTimeout(time)
+        // } , 100)
+        !!loadingText && wx.hideLoading()
 
       },
       fail: err => {
@@ -65,11 +69,13 @@ function http(url, data, loadingText, header, method = 'GET') {
         // queue.pop()
         // wepy.$store.dispatch({ type : 'LOADINGBAR' , payload : false })
         // wepy.$store.dispatch({ type : 'LOADINGTEXT' , payload : '' })
-        time = setTimeout(()=>{
-          !!loadingText && wx.hideLoading()
-          time = null
-          clearTimeout(time)
-        } , 100)
+        // time = setTimeout(()=>{
+        //   !!loadingText && wx.hideLoading()
+        //   time = null
+        //   clearTimeout(time)
+        // } , 100)
+
+        !!loadingText && wx.hideLoading()
       }
     })
   })

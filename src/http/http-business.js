@@ -71,7 +71,7 @@ export function isOpenCarveUp() {
   const loadingText = '加载数据...'
   const errMsg = '获取是否开始瓜分现金失败'
   const data = {}
-  return post(url, data ,loadingText).then(res => {
+  return post(url, data ).then(res => {
     if (res && res.status == '9009') {
       return true
     } else if (res && res.status == '9010') {
@@ -100,7 +100,7 @@ export function getBanner(bannerType) {
     bannerType
   }
   url = urlParams(url , data)
-  return post(url, {}, loadingText).then(res => parseRes(res, errMsg))
+  return post(url, {}).then(res => parseRes(res, errMsg))
 }
 
 //签到
