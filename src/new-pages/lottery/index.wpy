@@ -346,7 +346,7 @@
         const res = await prizelist()
         console.log(' this.prizes' ,  res)
         this.prizes = res
-        this.bannerImages = await getBanner(2)
+        this.bannerImages = await getBanner(3)
 
       }catch (e) {
         showMsg(e)

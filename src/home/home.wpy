@@ -124,7 +124,7 @@
 <script>
   import wepy from 'wepy'
   import { connect } from 'wepy-redux'
-  import {WX_LOGIN , STEP , WX_STEP , ISSTARTBONUS , BANNERIMAGES,ANSWER ,SIGN ,NAVTYPE} from '../store/types/http'
+  import {WX_LOGIN , STEP , WX_STEP , ISSTARTBONUS , BANNERIMAGES,ANSWER ,SIGN ,NAVTYPE , TOTALSTEP} from '../store/types/http'
   import { _wxLogin } from '../store/actions'
   import { numberWithCommas, isMorning, getRandomInt, showMsg } from '../utils/common'
   import { wxLogin, nowStep, getStep, isOpenCarveUp, carveUp, getBanner, sign ,getAnswer,getWXStep} from '../http/http-business'
@@ -170,7 +170,8 @@
     BANNERIMAGES,
     ANSWER,
     SIGN,
-    NAVTYPE
+    NAVTYPE,
+    TOTALSTEP
   })
 
   export default class Home extends wepy.page {
@@ -341,7 +342,7 @@
     events = {
       'answer-right':(answer) => {
         console.log('answer right , ' , answer)
-
+        this.getStep()
       },
       'getuserinfo':userInfo => {
         if(userInfo){
@@ -365,7 +366,7 @@
       'check-in-dialog-close':()=>{
         if(this.sign && this.sign.type == 1){
           //第一次签到后刷新数据
-          this.authStep()
+          this.getStep()
         }
 
       }
@@ -389,11 +390,13 @@
         //   userInfo.gender)
 
 
-        this.$parent.globalData.token = token
-        console.log('token' , token)
+        // this.$parent.globalData.token = token
+        // console.log('token' , token)
         await this.authStep()
       }catch (e) {
         showMsg(e)
+      }finally {
+        this.$apply()
       }
 
     }
@@ -451,16 +454,41 @@
 
       console.log('init images' , this.images)
     }
+
+
+    async _getTotalStep(){
+      try {
+        const totalStep = await getWXStep()
+        this.methods.TOTALSTEP({
+          totalStep
+        })
+      }catch (e) {
+        showMsg(e)
+      }
+    }
+    async _getWheatInfo(){
+      try {
+
+      }catch (e) {
+        showMsg(e)
+      }
+    }
     //如果用户拒绝了授权步数，不用处理步数
     async getStep() {
       try {
         // const { encryptedData, iv } = this.$parent.globalData.stepInfo
+        const stepInfo = await wepy.getWeRunData()
+
+        const { encryptedData, iv } = stepInfo
+        this.methods.WX_STEP({
+          encryptedData, iv
+        })
         await nowStep(this.encryptedData, this.iv)
 
         const { medalNum, wheatIntegral, wheatIntegralSum, wheatRank } = await getStep()
-        const totalStep = await getWXStep()
+
         this.methods.STEP({
-          medalNum, wheatIntegral, wheatIntegralSum, wheatRank , totalStep
+          medalNum, wheatIntegral, wheatIntegralSum, wheatRank
         })
         this.initCarouselSwiperImages(wheatRank)
         this.isShowWheatNumDialog(wheatRank)
@@ -468,16 +496,6 @@
 
 
 
-        const isStartBonus = await isOpenCarveUp()
-        this.methods.ISSTARTBONUS({
-          isStartBonus
-        })
-
-        const bannerImages = await getBanner(1)
-        this.bannerImages = bannerImages
-        this.methods.BANNERIMAGES({
-          bannerImages
-        })
 
 
 
@@ -510,21 +528,39 @@
       }
     }
     async authStep(){
-      const {authSetting} = await wepy.getSetting()
-      if(authSetting['scope.werun']){
-        const stepInfo = await wepy.getWeRunData()
+      // const {authSetting} = await wepy.getSetting()
+      // if(authSetting['scope.werun']){
+      //   const stepInfo = await wepy.getWeRunData()
+      //
+      //   const { encryptedData, iv } = stepInfo
+      //   this.methods.WX_STEP({
+      //     encryptedData, iv
+      //   })
+      //   await this.getStep()
+      // }else{
+      //   this.$apply(()=>{
+      //     this.showStepAuthDialog = true
+      //   })
+      // }
 
-        const { encryptedData, iv } =stepInfo
-        this.methods.WX_STEP({
-          encryptedData, iv
-        })
-        // this.$parent.globalData.stepInfo = stepInfo
-        await this.getStep()
-      }else{
-        this.$apply(()=>{
-          this.showStepAuthDialog = true
-        })
-      }
+
+
+
+      await this.getStep()
+
+      await this._getTotalStep()
+
+      const isStartBonus = await isOpenCarveUp()
+      this.methods.ISSTARTBONUS({
+        isStartBonus
+      })
+
+      const bannerImages = await getBanner(1)
+      this.bannerImages = bannerImages
+      this.methods.BANNERIMAGES({
+        bannerImages
+      })
+
     }
 
     /***
@@ -551,7 +587,7 @@
       //刷新微信步数
       if(this.$parent.globalData.code){
         console.log('刷新微信步数')
-        this.authStep()
+        this.getStep()
       }
 
     }

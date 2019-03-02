@@ -10,7 +10,8 @@ import {
   NAVTYPE,
   PRIZE,
   LOADINGBAR,
-  LOADINGTEXT
+  LOADINGTEXT,
+  TOTALSTEP
 } from '../types/http'
 
 const defaultState = {
@@ -71,14 +72,13 @@ export default handleActions({
       iv
     }
   },
-  [STEP](state, { payload: { medalNum, wheatIntegral, wheatIntegralSum, wheatRank, totalStep } }) {
+  [STEP](state, { payload: { medalNum, wheatIntegral, wheatIntegralSum, wheatRank } }) {
     return {
       ...state,
       medalNum,
       wheatIntegral,
       wheatIntegralSum,
-      wheatRank,
-      totalStep
+      wheatRank
     }
   },
   [ISSTARTBONUS](state, { payload: { isStartBonus } }) {
@@ -119,6 +119,13 @@ export default handleActions({
     return {
       ...state,
       navType: action.payload
+    }
+  },
+  [TOTALSTEP](state, action) {
+    console.log('totalStep', action.payload)
+    return {
+      ...state,
+      totalStep: action.payload
     }
   }
 }, defaultState)
