@@ -488,7 +488,7 @@
           screenWidth ,
           screenHeight ,
           screenWidth / 2,
-          268 ,
+          266 ,
           '我已在“麦”向健康每一天'
         )
 
@@ -497,7 +497,7 @@
           screenWidth ,
           screenHeight ,
           screenWidth / 2,
-          298 ,
+          285 ,
           this.stepStr
         )
 
@@ -507,7 +507,7 @@
           screenWidth ,
           screenHeight ,
           screenWidth / 2,
-          340 ,
+          318 ,
           '跟我一起来“麦”向健康吧！'
         )
 
