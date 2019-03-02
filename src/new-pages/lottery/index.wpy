@@ -366,6 +366,9 @@
         clearTimeout(this.resTime)
         this.resTime = null
       }
+      this.showGetPrizeDialog = false
+      this.showErrorDialog = false
+      this.isLotterying = false
     }
     async init(){
       try {
