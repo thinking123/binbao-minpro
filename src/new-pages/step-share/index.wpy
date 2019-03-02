@@ -547,9 +547,11 @@
         // this.getScreenShot()
         // return
         console.log('this.wheatIntegralSum' , this.wheatIntegralSum)
-        wx.navigateBack({
-          delta: 1
-        })
+        // wx.navigateBack({
+        //   delta: 1
+        // })
+
+        this.$root.$redirect({url: '/home/home'})
       },
       handleSaveImage() {
         console.log('you press')
