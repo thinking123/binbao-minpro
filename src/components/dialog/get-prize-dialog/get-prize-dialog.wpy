@@ -133,7 +133,7 @@
       handleOutHide(e) {
         if (e && e.target && e.target.id === 'mask') {
           this.closeDialog()
-          // this.visible = false
+          this.visible = false
         }
       },
       handlemove(e) {
@@ -141,7 +141,7 @@
       },
       handleClose(){
         this.closeDialog()
-        // this.visible = false
+        this.visible = false
       }
     }
 

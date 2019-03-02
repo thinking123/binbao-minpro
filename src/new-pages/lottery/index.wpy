@@ -266,9 +266,9 @@
       async handleLottery(){
         try {
           const res = await getPrize()
-
+          await this.setTime()
           if(res){
-            this.setTime()
+
             this.methods.PRIZE(res)
             this.isLotterying = true
             this.lotteryTime = setTimeout(()=>{
@@ -295,6 +295,14 @@
     }
 
     events = {
+      'get-prize-dialog-close':()=>{
+        this.isLotterying = false
+        this.showMl = 1
+        if(this.time){
+          clearInterval(this.time)
+          this.time = null
+        }
+      },
       'goto':()=>{
         console.log('goto dialog')
         const url = `/new-pages/step-rank-get-prize/index?from=lottery&id=${this.prize.id}`
@@ -315,15 +323,29 @@
         clearTimeout(this.lotteryTime)
         this.lotteryTime = null
       }
+      if(this.resTime){
+        clearTimeout(this.resTime)
+        this.resTime = null
+      }
     }
-    setTime(){
-      this.que = [0 , 1 ,2 , 1]
-      this.count = 0
-      this.time = setInterval(()=>{
-        this.count = (++this.count % 4)
-        this.showMl = this.que[this.count]
-        this.$apply()
-      } , 500)
+    async setTime(){
+      return new Promise((res , rej)=>{
+        this.que = [0 , 1 ,2 , 1 ]
+        this.count = 0
+        this.time = setInterval(()=>{
+          this.count = (++this.count % 4)
+          this.showMl = this.que[this.count]
+          this.$apply()
+        } , 300)
+
+        this.resTime = setTimeout(()=>{
+
+
+          clearTimeout(this.resTime)
+          res()
+        } , 1000)
+      })
+
     }
     onShow(){
       this.isLotterying = false
@@ -339,6 +361,10 @@
       if(this.lotteryTime){
         clearTimeout(this.lotteryTime)
         this.lotteryTime = null
+      }
+      if(this.resTime){
+        clearTimeout(this.resTime)
+        this.resTime = null
       }
     }
     async init(){
