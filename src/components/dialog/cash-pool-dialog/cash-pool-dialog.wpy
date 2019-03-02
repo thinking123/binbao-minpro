@@ -3,11 +3,14 @@
   <view
     class="cash-pool-dialog"
     wx:if="{{visible}}"
-    @tap="handleOutHide"
     @touchmove="handlemove">
+    <view class="cash-pool-dialog-mask"
+          @tap="handleHide">
+
+    </view>
     <image
       class="bg"
-      src="{{url}}cash-pool-dialog-bg.png"/>
+      src="{{url}}cash-pool-dialog-bg2.png"/>
     <view class="title">
       您与{{totalStr}}位全麦王共享奖励
     </view>
@@ -19,6 +22,10 @@
         元
       </view>
     </view>
+
+    <image src="{{url}}dialog-close-btn.png"
+           @tap="handleHide"
+           class="close-btn"/>
 
   </view>
 </template>
@@ -34,6 +41,9 @@
       url:'./'
     }
     methods = {
+      handleHide(){
+        this.visible = false
+      },
       handleOutHide(e) {
         this.visible = false
       },
@@ -72,7 +82,7 @@
 <style lang="scss">
   @import "../../../css/variables";
   $pageHeight: 667;
-  $statusBarHeight:0;
+  $statusBarHeight:64;
   .cash-pool-dialog {
     z-index: 1000;
     width: 100%;
@@ -83,22 +93,40 @@
     bottom: 0;
     right: 0;
 
-    .bg {
+    .cash-pool-dialog-mask{
       position: absolute;
       width: 100%;
       height: 100%;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background-color: #333333;
+      opacity: 0.9;
+
+    }
+    .bg {
+      position: absolute;
+      width: pxTorpx(350-21);
+      top:0;
+      height: pxTorpx(529-$statusBarHeight);
+      z-index: 1;
+      left:50%;
+      transform: translateX(-50%);
     }
     .title{
       position: absolute;
-      top:percentage((318 - $statusBarHeight) / $pageHeight);
+      top:pxTorpx(318 - $statusBarHeight);
       left:50%;
       transform: translate(-50%,0);
       font-size: pxTorpx(9);
+      z-index: 1;
     }
 
     .bonus-wrap{
+      z-index: 1;
       position: absolute;
-      top:percentage((342 - $statusBarHeight) / $pageHeight);
+      top:pxTorpx(335 - $statusBarHeight);
       left:50%;
       transform: translate(-50%,0);
       font-size: pxTorpx(12);
@@ -111,6 +139,17 @@
         font-weight: bolder;
         font-size: pxTorpx(35);
       }
+    }
+
+
+    .close-btn{
+      z-index: 2;
+      position: absolute;
+      height: 68rpx;
+      width: 68rpx;
+      left:50%;
+      transform: translate(-50% , 0);
+      top:pxTorpx((539 - $statusBarHeight));
     }
 
 
