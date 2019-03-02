@@ -44,9 +44,14 @@
             @tap="handlePrize({{index}})">
         <!--<image class="prize-bg"-->
                <!--src="{{prize.prizeImg}}"/>-->
-        <view class="prize-bg"  style="background-image:url('{{prize.prizeImg}}');">
+        <!--<view class="prize-bg"  style="background-image:url('{{prize.prizeImg}}');">-->
 
-        </view>
+        <!--</view>-->
+        <image class="prize-bg"
+               data-index="{{index}}"
+               style="width:{{imageSize[index].width}}rpx; height:{{imageSize[index].height}}rpx;"
+               bindload="handleBindload"
+               src="{{prize.prizeImg}}"/>
         <view class="prize-text">
           {{prize.prizeName}}
         </view>
@@ -136,9 +141,109 @@
       showErrorDialog:false,
       isLotterying:false,
       getPrizeText:'',
-      bannerImages:[]
+      bannerImages:[],
+      imageSize:[{},{},{},{},{},{}],
+      px2rpx:''
     }
     methods = {
+      handleBindload(e) {
+
+
+        const originWidth = e.detail.width * this.px2rpx,
+          originHeight = e.detail.height * this.px2rpx,
+          ratio = originWidth / originHeight,
+          index = e.target.dataset.index
+          let viewWidth  = 108, viewHeight = 62,viewRatio = viewWidth/viewHeight
+
+
+        if(index == 1){
+          viewWidth = 154, viewHeight = 94 , viewRatio = viewWidth/viewHeight
+
+          console.log(index)
+        }
+
+        // if(ratio>=viewRatio){
+        //   if(originWidth>=viewWidth){
+        //     viewHeight = viewWidth/ratio;
+        //   }else{
+        //     viewWidth = originWidth;
+        //     viewHeight = originHeight
+        //   }
+        // }else{
+        //   if(originWidth>=viewWidth){
+        //     viewWidth = viewRatio*originHeight
+        //   }else{
+        //     viewWidth = viewRatio*originWidth;
+        //     viewHeight = viewRatio*originHeight;
+        //   }
+        // }
+        //
+        if(originWidth > viewWidth && originHeight > viewHeight){
+          if(originWidth > originHeight){
+
+            if(viewWidth/ratio > viewHeight){
+              viewWidth = viewHeight*ratio;
+            }else{
+              viewHeight = viewWidth/ratio;
+            }
+          }else{
+            if(viewHeight*ratio > viewWidth){
+              viewHeight = viewWidth/ratio;
+            }else{
+              viewWidth = viewHeight*ratio;
+            }
+
+          }
+        }else{
+          if(originWidth > originHeight){
+
+            if(viewWidth/ratio > viewHeight){
+              viewWidth = viewHeight*ratio;
+            }else{
+              viewHeight = viewWidth/ratio;
+            }
+
+            // viewWidth = viewHeight*ratio;
+
+          }else{
+            if(viewHeight*ratio > viewWidth){
+              viewHeight = viewWidth/ratio;
+            }else{
+              viewWidth = viewHeight*ratio;
+            }
+            // viewHeight = viewWidth/ratio;
+          }
+        }
+
+
+        // if(ratio>=viewRatio){
+        //   if(originWidth>=viewWidth){
+        //
+        //     viewHeight = viewWidth/ratio;
+        //   }else{
+        //     viewWidth = originWidth;
+        //     viewHeight = originHeight
+        //   }
+        // }else{
+        //   if(originWidth>=viewWidth){
+        //     viewWidth = viewRatio*originHeight
+        //   }else{
+        //     viewWidth = viewRatio*originWidth;
+        //     viewHeight = viewRatio*originHeight;
+        //   }
+        // }
+        viewWidth = viewWidth
+        viewHeight = viewHeight
+
+        console.log(viewWidth , viewHeight  , ratio , viewWidth/viewHeight)
+        this.imageSize[index]={
+          width:viewWidth,
+          height:viewHeight
+        }
+
+        this.imageSize = [...this.imageSize]
+
+      },
       handleNav(index) {
 
         switch (index) {
@@ -251,6 +356,10 @@
     }
     onLoad() {
       // this.url = this.$parent.globalData.url
+      const res = wx.getSystemInfoSync()
+
+      this.px2rpx = 750 / res.windowWidth;
+
       this.init()
     }
 
@@ -347,14 +456,12 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      >view{
+      /*justify-content: center;*/
+      >image{
         width: 108rpx;
         height: 62rpx;
         margin-top: 20rpx;
-        object-fit: contain;
-        background-repeat: no-repeat;
-        background-position: center center;
+
       }
       .prize-text{
 
@@ -377,9 +484,10 @@
         height:pxTorpx(129-29);
         /*border-radius: 182rpx;*/
         /*transform: scale(1.42);*/
-        &>view{
+        &>image{
           width: pxTorpx(120-40);
           height:pxTorpx(391-343);
+          margin-top: 28rpx;
         }
 
         &> .prize-text{
