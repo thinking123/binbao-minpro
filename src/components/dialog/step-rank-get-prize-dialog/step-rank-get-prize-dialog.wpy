@@ -139,7 +139,7 @@
       align-items: center;
 
       .dialog-content-body{
-        height: pxTorpx(446 - 132);
+        height: pxTorpx(333);
         width: 100%;
         position: relative;
         display: flex;
