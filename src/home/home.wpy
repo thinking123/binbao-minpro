@@ -3,7 +3,7 @@
     <view class="banner">
       <!--<image class="banner-bg" src="{{url}}home-banner.png" wx:if="{{url}}"/>-->
 
-      <banner-swiper class="banner-swiper"/>
+      <banner-swiper class="banner-swiper" :bannerImages.sync="bannerImages"/>
       <button
         class="bonus"
         @tap="handleBonus">
@@ -160,7 +160,7 @@
     wheatRank:state=>state.common.wheatRank,
     encryptedData:state=>state.common.encryptedData,
     iv:state=>state.common.iv,
-    bannerImages:state=>state.common.bannerImages,
+    // bannerImages:state=>state.common.bannerImages,
     isStartBonus:state=>state.common.isStartBonus,
   }, {
     WX_LOGIN,
@@ -233,6 +233,7 @@
 
       // isStartBonus:false,
       // bannerImages:[]
+      bannerImages:[]
     }
     computed = {
       bonusStr () {
@@ -470,8 +471,8 @@
           isStartBonus
         })
 
-        const bannerImages = await getBanner()
-
+        const bannerImages = await getBanner(1)
+        this.bannerImages = bannerImages
         this.methods.BANNERIMAGES({
           bannerImages
         })
@@ -479,13 +480,15 @@
         this.isShowMedalDialog(medalNum)
 
         // this.$navigate('/new-pages/lottery/index')
-        this.$apply()
+
 
         // this.$navigate('/new-pages/step-rank-get-prize/index')
 
       } catch (e) {
         console.log(e)
         showMsg(e)
+      }finally {
+        this.$apply()
       }
     }
 

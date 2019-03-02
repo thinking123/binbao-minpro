@@ -92,12 +92,15 @@ export function carveUp() {
 }
 
 //获取轮播图
-export function getBanner() {
-  const url = '/api/banner/getBanner'
+export function getBanner(bannerType) {
+  let url = '/api/banner/getBanner'
   const loadingText = '获取轮播图...'
   const errMsg = '获取轮播图失败'
-  const data = {}
-  return post(url, data, loadingText).then(res => parseRes(res, errMsg))
+  const data = {
+    bannerType
+  }
+  url = urlParams(url , data)
+  return post(url, {}, loadingText).then(res => parseRes(res, errMsg))
 }
 
 //签到

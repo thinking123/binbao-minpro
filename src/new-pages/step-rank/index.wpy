@@ -3,7 +3,7 @@
     <!--<image class="banner" src="{{url}}step-rank-banner.png"/>-->
 
 
-    <banner-swiper class="banner"/>
+    <banner-swiper class="banner" :bannerImages.sync="bannerImages"/>
     <view class="btn-group">
       <button @tap="handleRank(0)"
               class="rank-btn {{selected == 0? 'selected' : ''}}">
@@ -111,7 +111,7 @@
 <script>
   import wepy from 'wepy'
   import { connect } from 'wepy-redux'
-  import {totalRanking , weekRanking} from '../../http/http-business'
+  import {totalRanking , weekRanking , getBanner} from '../../http/http-business'
   import { numberWithCommas ,showMsg} from '../../utils/common'
   import NavigateBar from '../../components/navigate-bar'
   import BannerSwiper from '../../components/banner-swiper'
@@ -149,7 +149,9 @@
       myRanking:'',
       myWheat:'',
       rankList: [],
-      isFirstWeek:false
+      isFirstWeek:false,
+      bannerImages:[]
+
     }
     computed = {
       canGetPrize(){
@@ -250,9 +252,20 @@
       }
     }
 
+    async init(){
+      try {
+        this.bannerImages = await getBanner(2)
+        await this._weekRanking()
+      }catch (e) {
+        showMsg(e)
+      }finally {
+        this.$apply()
+      }
+    }
     onLoad() {
+      this.init()
       // this.url = this.$parent.globalData.url
-      this._weekRanking()
+
       // const ml = 338325
       // for (let i = 0; i < 20; i++) {
       //   //rankList

@@ -16,9 +16,10 @@
 <script>
   import wepy from 'wepy';
   import { connect } from 'wepy-redux'
-  @connect({
-    bannerImages:state=>state.common.bannerImages,
-  },{})
+  // @connect({
+  //   bannerImages:state=>state.common.bannerImages,
+  //   rankBannerImages:state=>state.common.rankBannerImages,
+  // },{})
   export default class BannerSwiper extends wepy.component {
     data = {
       interval:3000
@@ -27,6 +28,10 @@
 
     }
     props = {
+      bannerImages:{
+        type:Array,
+        value:[]
+      }
     }
   }
 </script>
