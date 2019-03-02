@@ -356,6 +356,11 @@
       this.isLotterying = false
       this.showGetPrizeDialog = false
       this.showErrorDialog = false
+      if(this.time){
+        clearInterval(this.time)
+        this.time = null
+      }
+      this.showMl = 1
     }
 
     onHide(){
@@ -374,6 +379,7 @@
       this.showGetPrizeDialog = false
       this.showErrorDialog = false
       this.isLotterying = false
+      this.showMl = 1
     }
     async init(){
       try {
