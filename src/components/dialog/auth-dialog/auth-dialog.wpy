@@ -15,7 +15,7 @@
       </view>
 
       <view class="dialog-bg-wrap">
-        <image src="{{url}}bg.png" class="dialog-bg"/>
+        <image src="{{url}}auth-dialog-bg.png" class="dialog-bg"/>
         <view class="circle-wrap">
           允许
         </view>
