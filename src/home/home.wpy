@@ -162,6 +162,7 @@
     iv:state=>state.common.iv,
     // bannerImages:state=>state.common.bannerImages,
     isStartBonus:state=>state.common.isStartBonus,
+    sign:state=>state.common.sign,
   }, {
     WX_LOGIN,
     WX_STEP,
@@ -587,7 +588,7 @@
       //刷新微信步数
       if(this.$parent.globalData.code){
         console.log('刷新微信步数')
-        this.getStep()
+        // this.getStep()
       }
 
     }

@@ -29,7 +29,8 @@ const defaultState = {
   prize: null,
   navType: '',
   isLoading: false,
-  loadingText: '正在加载...'
+  loadingText: '正在加载...',
+  sign:null
 }
 
 const loadQueue = []
