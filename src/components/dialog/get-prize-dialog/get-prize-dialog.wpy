@@ -9,11 +9,14 @@
           class="header"
           src="{{url}}lottery-get-dialog-bg.png"/>
 
-        <image
-          class="dialog-icon"
-          style="width:{{imageSize.width}}rpx; height:{{imageSize.height}}rpx;"
-          bindload="handleBindload"
-          src="{{prize.prizeImg}}"/>
+        <view     class="dialog-icon-wrap">
+          <image
+            class="dialog-icon"
+            style="width:{{imageSize.width}}rpx; height:{{imageSize.height}}rpx;"
+            bindload="handleBindload"
+            src="{{prize.prizeImg}}"/>
+        </view>
+
         <!--<view  class="dialog-icon"-->
                <!--style="background-image:url('{{prize.prizeImg}}');">-->
 
@@ -21,11 +24,19 @@
         <view class="dialog-text">
           {{prize.prizeName}}
         </view>
-        <button class="btn" @tap="handleGoto">
+        <button class="btn" @tap="handleGoto" wx:if="{{prize.prizeType == 1}}">
           填写收货地址
         </button>
-        <view class="dialog-tip">
+        <view class="dialog-tip" wx:if="{{prize.prizeType == 1}}">
           图片仅供参考，奖品以实物为准
+        </view>
+        <view class="dialog-tip-virtual-tip" wx:else>
+          <view>
+            至曼可顿微信服务号
+          </view>
+          <view>
+          回复 【quanmai】 即可领取
+          </view>
         </view>
         <!-- todo image-->
 
@@ -223,7 +234,10 @@
           width: 100%;
           height: 100%;
           position: absolute;
-
+          left: 0;
+          top: 0;
+          bottom: 0;
+          right: 0;
         }
 
         .dialog-text{
@@ -231,7 +245,7 @@
           font-size: 24rpx;
           letter-spacing: 2rpx;
           white-space: nowrap;
-          margin-top: 4rpx;
+          margin-top: 10rpx;
         }
         .dialog-tip{
           position: relative;
@@ -239,15 +253,26 @@
           font-size: 18rpx;
           margin-top: 10rpx;
         }
-        .dialog-icon{
+
+
+        .dialog-tip-virtual-tip{
+          position: relative;
+          font-weight: bolder;
+          color: #B67550;
+          font-size: 28rpx;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+        }
+        .dialog-icon-wrap{
           position: relative;
           margin-top: pxTorpx(270-79);
           height:pxTorpx(421-300);
           width: pxTorpx(235-137);
-          /*border: 1px solid yellow;*/
-          object-fit: cover;
-          background-repeat: no-repeat;
-          background-position: center center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
         .btn{
           position: relative;

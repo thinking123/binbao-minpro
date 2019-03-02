@@ -122,11 +122,11 @@ export default handleActions({
       navType: action.payload
     }
   },
-  [TOTALSTEP](state, action) {
-    console.log('totalStep', action.payload)
+  [TOTALSTEP](state, {payload:{totalStep}}) {
+    console.log('totalStep', totalStep)
     return {
       ...state,
-      totalStep: action.payload
+      totalStep: totalStep
     }
   }
 }, defaultState)

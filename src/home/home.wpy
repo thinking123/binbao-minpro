@@ -500,6 +500,7 @@
         this.methods.STEP({
           medalNum, wheatIntegral, wheatIntegralSum, wheatRank
         })
+        this.selected = wheatRank - 1
         this.initCarouselSwiperImages(wheatRank)
         this.isShowMedalDialog(medalNum)
         this.isShowWheatNumDialog(wheatRank)
@@ -593,7 +594,7 @@
       //刷新微信步数
       if(this.$parent.globalData.code){
         console.log('刷新微信步数')
-        // this.getStep()
+        this.getStep()
       }
 
     }

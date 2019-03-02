@@ -101,9 +101,9 @@
 <script>
   import wepy from 'wepy'
   import { connect } from 'wepy-redux'
-  import {prizelist , getPrize, getBanner} from '../../http/http-business'
+  import {prizelist , getPrize, getBanner,getStep} from '../../http/http-business'
   import {showMsg} from '../../utils/common'
-  import {PRIZE} from '../../store/types/http'
+  import {PRIZE,STEP} from '../../store/types/http'
   import GetPrizeDialog from '../../components/dialog/get-prize-dialog/get-prize-dialog'
   import LotteryPointsNotEnoughDialog from '../../components/dialog/lottery-points-not-enough-dialog/lottery-points-not-enough-dialog'
   import NavigateBar from '../../components/navigate-bar'
@@ -113,7 +113,8 @@
     wheatIntegral:state=>state.common.wheatIntegral,
     prize:state=>state.common.prize,
   },{
-    PRIZE
+    PRIZE,
+    STEP
   })
 
   export default class Title extends wepy.page {
@@ -266,6 +267,10 @@
       async handleLottery(){
         try {
           const res = await getPrize()
+          let { medalNum, wheatIntegral, wheatIntegralSum, wheatRank } = await getStep()
+          this.methods.STEP({
+            medalNum, wheatIntegral, wheatIntegralSum, wheatRank
+          })
           await this.setTime()
           if(res){
 
@@ -504,8 +509,8 @@
         left: 60rpx;
       }
       &[data-set-index='1']{
-        top: percentage((340 - $statusBarHeight) / $pageHeight);
-        left: 90rpx;
+        top: percentage((329 - $statusBarHeight) / $pageHeight);
+        left: pxTorpx(29);
         /*height: 182rpx;*/
         /*width: 182rpx;*/
 

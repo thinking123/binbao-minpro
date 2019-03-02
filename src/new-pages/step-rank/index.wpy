@@ -5,15 +5,35 @@
 
     <banner-swiper class="banner" :bannerImages.sync="bannerImages"/>
     <view class="btn-group">
-      <button @tap="handleRank(0)"
-              class="rank-btn {{selected == 0? 'selected' : ''}}">
-        上周排名
-      </button>
-      <button @tap="handleRank(1)"
-              class="rank-btn {{selected == 1? 'selected' : ''}}">
-        总排名
-      </button>
+      <!--<button @tap="handleRank(0)"-->
+              <!--class="rank-btn {{selected == 0? 'selected' : ''}}">-->
+        <!--上周排名-->
+      <!--</button>-->
+
+      <!--<button @tap="handleRank(1)"-->
+              <!--class="rank-btn {{selected == 1? 'selected' : ''}}">-->
+        <!--总排名-->
+      <!--</button>-->
+
+      <block wx:if="{{selected == 0}}">
+        <image class="rank-btn"
+               @tap="handleRank(0)"
+               src="{{url}}rank-list-week-active.jpg"/>
+        <image class="rank-btn"
+               @tap="handleRank(1)"
+               src="{{url}}rank-list-total.png"/>
+      </block>
+      <block wx:else>
+        <image class="rank-btn"
+               @tap="handleRank(0)"
+               src="{{url}}rank-list-week.jpg"/>
+        <image class="rank-btn"
+               @tap="handleRank(1)"
+               src="{{url}}rank-list-total-active.png"/>
+      </block>
+
     </view>
+
 
     <view class="content">
       <view wx:if="{{isFirstWeek}}" class="coming-soon">
@@ -332,21 +352,22 @@
       flex-direction: row;
 
       .rank-btn {
-        background-color: #F3D09E;
-        color: white;
-        font-weight: bolder;
-        border-radius: 0;
-        border: none;
+        /*background-color: #F3D09E;*/
+        /*color: white;*/
+        /*font-weight: bolder;*/
+        /*border-radius: 0;*/
+        /*border: none;*/
+        height: 100%;
         width: 326rpx;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 46rpx;
+        /*display: flex;*/
+        /*justify-content: center;*/
+        /*align-items: center;*/
+        /*font-size: 46rpx;*/
         margin: 0 28rpx;
         letter-spacing: 6rpx;
-        &.selected {
-          background-color: #BF8247;
-        }
+        /*&.selected {*/
+          /*background-color: #BF8247;*/
+        /*}*/
       }
     }
 

@@ -156,18 +156,18 @@
         }
       }
     }
-    watch = {
-      wheatRank(v , ov){
-        // console.log('index' , v , 'old ov ' , ov)
-        // this.loopImages()
-        // console.log('wheatRank' , v)
-        if(v == 0 || v){
-          console.log('wheatRank' , v)
-          this.selected = v == 0 ? 0 : (v - 1)
-        }
-
-      }
-    }
+    // watch = {
+    //   wheatRank(v , ov){
+    //     // console.log('index' , v , 'old ov ' , ov)
+    //     // this.loopImages()
+    //     // console.log('wheatRank' , v)
+    //     if(v == 0 || v){
+    //       console.log('wheatRank' , v)
+    //       this.selected = v == 0 ? 0 : (v - 1)
+    //     }
+    //
+    //   }
+    // }
     computed = {
       // getImageClass() {
       //   let index = this.index
@@ -207,11 +207,11 @@
         type: Array,
         default: []
       },
-      // selected: {
-      //   type: Number,
-      //   default: 0,
-      //   twoWay: true
-      // },
+      selected: {
+        type: Number,
+        default: 0,
+        twoWay: true
+      },
       locked:String
 
     }

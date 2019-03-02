@@ -216,7 +216,7 @@
       ctx.save()
 
       // step = 1232123
-      step = numberWithCommas(parseInt(step) , 4)
+      // step = numberWithCommas(parseInt(step) , 4)
       let t = this.comWidth(ctx , step)
       x = (screenWidth - t) / 2
       // ctx.setTextAlign('center')
