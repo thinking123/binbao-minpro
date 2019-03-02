@@ -1,8 +1,8 @@
 <template>
   <view class="page">
 
-    <banner-swiper class="banner"/>
-    <!--<image class="banner" src="{{url}}lottery-banner.png"/>-->
+    <!--<banner-swiper class="banner"/>-->
+    <image class="banner" src="{{url}}lottery-banner.png"/>
     <image class="lottery-logo" src="{{url}}lottery-logo.png"/>
 
 
@@ -160,8 +160,9 @@
       async handleLottery(){
         try {
           const res = await getPrize()
-          this.setTime()
+
           if(res){
+            this.setTime()
             this.methods.PRIZE(res)
             this.isLotterying = true
             this.lotteryTime = setTimeout(()=>{
