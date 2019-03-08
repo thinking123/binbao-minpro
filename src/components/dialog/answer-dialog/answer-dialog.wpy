@@ -5,6 +5,7 @@
           id="mask"/>
 
     <view class="dialog-content" wx:if="{{answer}}">
+      <image src="{{rightInt}}" class="right-int"/>
       <image
         class="header"
         src="{{url}}answer-dialog-header.png"/>
@@ -13,7 +14,7 @@
       <image class="logo" src="{{url}}app-dialog-logo.png"/>
       <view class="title">
 
-
+yu
         <repeat key="index"
                 index="index"
                 item="t"

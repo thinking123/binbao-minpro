@@ -310,10 +310,18 @@
       },
       'goto':()=>{
         console.log('goto dialog')
-        const url = `/new-pages/step-rank-get-prize/index?from=lottery&id=${this.prize.id}`
+        if(this.time){
+          clearInterval(this.time)
+          this.time = null
+        }
+        const url = `/new-pages/step-rank-get-prize/index?from=lottery&id=${this.prize.recordId}`
         this.$navigate(url)
       },
       'navigate-bar':(index)=>{
+        if(this.time){
+          clearInterval(this.time)
+          this.time = null
+        }
         console.log('navigate-bar' , index)
       },
 
@@ -359,6 +367,15 @@
       if(this.time){
         clearInterval(this.time)
         this.time = null
+      }
+
+      if(this.lotteryTime){
+        clearTimeout(this.lotteryTime)
+        this.lotteryTime = null
+      }
+      if(this.resTime){
+        clearTimeout(this.resTime)
+        this.resTime = null
       }
       this.showMl = 1
     }
