@@ -5,16 +5,22 @@
           id="mask"/>
 
     <view class="dialog-content" wx:if="{{answer}}">
-      <image src="{{rightInt}}" class="right-int"/>
+      <!--<image src="{{rightInt}}" class="right-int"/>-->
       <image
         class="header"
         src="{{url}}answer-dialog-header.png"/>
 
       <image class="bg" src="{{answer.knowledgeImg}}"/>
       <image class="logo" src="{{url}}app-dialog-logo.png"/>
+
+
+      <image  class="points"
+              src="{{url}}answer-dialog-get-icon.png"
+            />
+
       <view class="title">
 
-yu
+
         <repeat key="index"
                 index="index"
                 item="t"
@@ -165,6 +171,14 @@ yu
     bottom: 0;
     right: 0;
 
+    .points{
+      z-index: 2;
+      position: absolute;
+      right: 30rpx;
+      top:30rpx;
+      height: 142rpx;
+      width: 142rpx;
+    }
     .mask {
       position: absolute;
       width: 100%;
