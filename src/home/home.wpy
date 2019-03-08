@@ -5,7 +5,7 @@
 
       <banner-swiper class="banner-swiper" :bannerImages.sync="bannerImages"/>
       <button
-        class="bonus {{isBonusEnable ? 'active' : ''}}"
+        class="bonus active"
         @tap="handleBonus">
         瓜分{{bonusStr}} 奖金
       </button>
@@ -104,7 +104,9 @@
       :bonus.sync="cashBonus"
       :visible.sync="showCashPoolDialog"/>
     <cash-pool-dialog-tip
-      :visible.sync="showCashPoolDialogTip"/>
+      :visible.sync="showCashPoolDialogTip"
+      :isStart.sync="isStartCashPool"
+    />
     <ml-value-dialog
       :upgradeLevel.sync="mlUpgradeLevel"
       :visible.sync="showMlValueDialog"/>
@@ -222,6 +224,7 @@
 
       showCashPoolDialog:false,
       showCashPoolDialogTip:false,
+      isStartCashPool:false,
       showHowToPlayDialog:false,
       showCheckInDialog:false,
       showCheckInDialogEx:false,
@@ -338,8 +341,12 @@
               this.showCashPoolDialog = true
             }else{
               this.showCashPoolDialogTip = true
+              this.isStartCashPool = false
             }
             this.$apply()
+          }else{
+            this.showCashPoolDialogTip = true
+            this.isStartCashPool = true
           }
 
 

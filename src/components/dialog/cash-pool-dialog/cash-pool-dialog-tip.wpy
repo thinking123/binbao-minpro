@@ -15,8 +15,28 @@
              @tap="handleClose"
              class="close-btn"/>
     </view>
+    <view class="tip-wrap" wx:if="isStart">
+      <view class="tip color start">
+        您还没有获得全麦王勋章
+      </view>
+      <view class="tip">
+        无法瓜分现金
+      </view>
+      <view class="tip">
+        活动将于
+      </view>
+      <view class="tip">
+        2019年6月10日
+      </view>
+      <view class="tip">
+        开启瓜分现金功能
+      </view>
 
-    <view class="tip-wrap">
+      <view class="tip bold">
+        请再接再厉哦！
+      </view>
+    </view>
+    <view class="tip-wrap" wx:else>
       <view class="tip color">
         亲，您来早啦！
       </view>
@@ -24,7 +44,7 @@
         本活动将于
       </view>
       <view class="tip">
-        2019年3月31日
+        2019年6月10日
       </view>
       <view class="tip">
         开启瓜分现金功能
@@ -64,6 +84,10 @@
         type: Boolean,
         value: false,
         twoWay: true
+      } ,
+      isStart: {
+        type: Boolean,
+        value: false
       }
     }
     onLoad() {
@@ -162,6 +186,10 @@
       .color{
         color: #C6B694;
         font-weight: bolder;
+      }
+
+      .start{
+        font-size: pxTorpx(18);
       }
       .bold{
         font-weight: bolder;
