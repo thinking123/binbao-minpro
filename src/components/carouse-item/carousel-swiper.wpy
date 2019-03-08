@@ -11,31 +11,31 @@
       <!--0 1 2(current) 3 4 -->
       <view
         class="image-wrap  {{index == 4 ? 'image-next-hidden' : ''}} {{index == 0 ? 'image-pre-hidden' : ''}} {{index == 3 ? 'image-next' : ''}} {{index == 1 ? 'image-pre' : ''}} {{index == 2 ? 'image-current' : ''}} ">
-        <image src="{{image.url}}"
+        <view class="image-content-wrap">
+          <image src="{{image.url}}"
 
-               class="bg"/>
+                 class="bg"/>
+          <image src="{{image.icon}}"
+                 class="icon"
+                 wx:if="{{2===index && !(image.wheatRank > wheatRank)}}"/>
 
-        <!--<view class="bg" style="background-image:url('{{image.url}}');">-->
+          <view
+            class="step-content {{2 !==index ? 'not-current' : ''}} {{image.wheatRank > wheatRank ? 'locked':''}}"
+            style="visibility: {{image.wheatRank > wheatRank? 'visible' : 'hidden'}}">
+            <view class="step-wrap">
+              <view class="step">
+                {{image.step}}
+              </view>
+              <view>
+                步
+              </view>
 
-        <!--</view>-->
-        <image src="{{image.icon}}"
-               class="icon"
-               wx:if="{{2===index && !(image.wheatRank > wheatRank)}}"/>
-
-        <view
-          class="step-content {{2 !==index ? 'not-current' : ''}} {{image.wheatRank > wheatRank ? 'locked':''}}"
-          style="visibility: {{image.wheatRank > wheatRank? 'visible' : 'hidden'}}">
-          <view class="step-wrap">
-            <view class="step">
-              {{image.step}}
             </view>
-            <view>
-              步
-            </view>
-
+            <image wx:if="{{image.locked}}" src="{{url}}home-locked.png" class="lock"/>
           </view>
-          <image wx:if="{{image.locked}}" src="{{url}}home-locked.png" class="lock"/>
+
         </view>
+
 
       </view>
     </repeat>
@@ -302,11 +302,22 @@
         }
       }
 
-      .bg{
+      .image-content-wrap{
         position: absolute;
         left: 50%;
-        transform: translateX(-50%);
+        top:50%;
+        transform: translate(-50% , -50%);
+        height: 598rpx;
+        width: 100%;
+        border-radius: 20rpx;
+        overflow: hidden;
+      }
+      .bg{
+
+
+
         flex:1;
+
         height: 100%;
         width: pxTorpx(294-79);
         /*object-fit: fill;*/
@@ -328,7 +339,7 @@
     }
     .image-current{
       width:59.5%;
-      left:19.73%;
+      left:20.5%;
     }
 
     .image-pre{
