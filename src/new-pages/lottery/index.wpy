@@ -3,7 +3,8 @@
 
     <banner-swiper class="banner"  :bannerImages.sync="bannerImages"/>
     <!--<image class="banner" src="{{url}}lottery-banner.png"/>-->
-    <image class="lottery-logo" src="{{url}}lottery-logo.png"/>
+    <!--<image class="lottery-logo" src="{{url}}lottery-logo.png"/>-->
+    <image class="lottery-logo" src="https://cdnmakattan.ysmine.com/lottery-logo.png"/>
 
 
     <view class="content">

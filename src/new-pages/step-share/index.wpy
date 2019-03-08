@@ -14,7 +14,8 @@
       </canvas>
       <image
         @longpress="handleSaveImage"
-        src="{{url}}step-share-bg.png" class="bg"/>
+        src="https://cdnmakattan.ysmine.com/step-share-bg.png"
+        class="bg"/>
 
       <view class="avatar-wrap">
         <view class="user-avatar">
@@ -98,7 +99,8 @@
       showDialog: false,
       userInfo: null,
       isPreviewPage: false,
-      px2rpx:''
+      px2rpx:'',
+      bg:''
     }
     //
     // handleUserInfo(userInfo) {
@@ -584,7 +586,23 @@
         console.log('showDialog' , this.showDialog)
       }
     }
+
+    async init(){
+      try {
+        const imageUrl = `${this.url}step-share-bg.png`
+
+        console.log('imageUrl ', imageUrl)
+        let bg = await this.downloadFile(imageUrl)
+
+        this.bg = bg.tempFilePath
+        this.$apply()
+
+      }catch (e) {
+
+      }
+    }
     onLoad() {
+      // this.init()
       // this.$apply(()=>{
       //   this.url = this.$parent.globalData.url
       //
@@ -594,6 +612,9 @@
       this.px2rpx = 750 / res.windowWidth;
 
       this.getUserInfo()
+
+
+
     }
 
     onShow() {

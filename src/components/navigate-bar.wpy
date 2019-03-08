@@ -1,6 +1,11 @@
 <template>
   <view class="footer navigate-bar-external">
-    <image class="footer-bg" src="{{url}}navigate-bar-{{navType}}.png"/>
+    <!--<image class="footer-bg" src="{{url}}navigate-bar-{{navType}}.png"/>-->
+    <image class="footer-bg"
+           wx:if="{{navType == 'lottery'}}"
+           src="https://cdnmakattan.ysmine.com/navigate-bar-lottery.png"/>
+    <image class="footer-bg"
+           src="https://cdnmakattan.ysmine.com/navigate-bar-step.png"/>
     <repeat key="index"
             index="index"
             item="btn"

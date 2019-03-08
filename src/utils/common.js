@@ -112,3 +112,14 @@ export function urlParams(url, params , noEncode = false) {
   }
   return `${url}?${p}`
 }
+
+
+export async function downloadFile(url) {
+  return new Promise((resolve, rej) => {
+    wx.downloadFile({
+      url: url,
+      success: resolve,
+      fail: rej
+    })
+  })
+}
