@@ -15,6 +15,7 @@
 
 
       <image  class="points"
+              wx:if="{{isRight}}"
               src="{{url}}answer-dialog-get-icon.png"
             />
 

@@ -518,10 +518,12 @@
 
 
 
-        // this.$navigate('/new-pages/lottery/index')
+        // this.$navigate('/new-pages/step-share/index')
 
 
         // this.$navigate('/new-pages/step-rank-get-prize/index')
+
+
 
       } catch (e) {
         console.log(e)

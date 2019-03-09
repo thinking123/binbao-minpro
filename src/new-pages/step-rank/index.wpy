@@ -177,7 +177,7 @@
       canGetPrize(){
         if(this.selected == 0){
           //周 ,这周领取上周奖品
-          return this.isWinning  && this.isReceive == 1
+          return this.isWinning  && this.isReceive == 0
         }else{
           return this.myRanking == 1 && this.isOpenReceiveAPrize == 1
         }
@@ -282,8 +282,12 @@
         this.$apply()
       }
     }
-    onLoad() {
+    onShow(){
+      this.selected = 0
       this.init()
+    }
+    onLoad() {
+
       // this.url = this.$parent.globalData.url
 
       // const ml = 338325

@@ -1,5 +1,5 @@
 <template>
-    <view class="page" id="page">
+    <view class="page" id="page"    @longpress="handleSaveImage">
       <auth-dialog
         :visible.sync="showDialog"/>
       <!--
@@ -13,8 +13,7 @@
 
       </canvas>
       <image
-        @longpress="handleSaveImage"
-        src="https://cdnmakattan.ysmine.com/step-share-bg.png"
+        src="https://cdnmakattan.ysmine.com/step-share-bg1.png"
         class="bg"/>
 
       <view class="avatar-wrap">
@@ -40,9 +39,7 @@
           跟我一起来“麦”向健康吧！
         </view>
       </view>
-      <view class="save-link">
-        长按保持图片
-      </view>
+
       <!--<view class="btn-group">-->
         <!--<cover-view>-->
           <!--<button class="btn"-->
@@ -58,18 +55,24 @@
 
       <!--</view>-->
 
-      <view class="btn-group">
-        <button class="btn"
-                open-type="share">
-          show给好友看
-        </button>
-        <button class="btn" @tap="handleReturn">
-          返回
-        </button>
+      <view class="btn-group" >
+        <view class="btn-group-wrap" >
+          <button class="btn"
+                  open-type="share">
+            show给好友看
+          </button>
+          <button class="btn" @tap="handleReturn">
+            返回
+          </button>
+
+        </view>
 
       </view>
 
 
+      <view class="save-link">
+        长按保存图片
+      </view>
     </view>
 </template>
 
@@ -100,7 +103,8 @@
       userInfo: null,
       isPreviewPage: false,
       px2rpx:'',
-      bg:''
+      bg:'',
+      top:''
     }
     //
     // handleUserInfo(userInfo) {
@@ -221,6 +225,8 @@
       // step = 1232123
       // step = numberWithCommas(parseInt(step) , 4)
       let t = this.comWidth(ctx , step)
+      ctx.restore()
+      ctx.save()
       x = (screenWidth - t) / 2
       // ctx.setTextAlign('center')
       ctx.setTextBaseline('middle')
@@ -229,7 +235,7 @@
       // x = screenWidth / 2
       // x = 111
       // y = hRatio * screenHeight
-      y = (y-64)/(667-64) * (screenHeight)
+      // y = (y-64)/(667-64) * (screenHeight)
       ctx.translate(x, y)
 
       ctx.font = 'normal bold 17px sans-serif'
@@ -238,24 +244,32 @@
       textW = textW.width + 5
       ctx.fillText(text, 0, 0)
 
-
+      ctx.restore()
+      ctx.save()
+      ctx.translate(x + textW, y)
       ctx.font = 'normal bold 32px sans-serif'
       // ctx.save()
 
       text = step
-      console.log('textW' , textW , step)
+      console.log('textW' , 0 , step)
       let textStep = ctx.measureText(text)
 
       textStep = textStep.width + 5
+      ctx.setTextBaseline('middle')
+        ctx.setTextAlign('left')
       ctx.setFillStyle('#DD0330')
-      ctx.fillText(text, textW, 0)
+      ctx.fillText(text, 0, 0)
+      ctx.restore()
+      ctx.save()
+      ctx.translate(x + textW + textStep, y)
       // ctx.stroke()
       // ctx.restore()
 
       ctx.setFillStyle('black')
+      ctx.setTextBaseline('middle')
       ctx.font = 'normal bold 17px sans-serif'
       text = '步'
-      ctx.fillText(text, textW + textStep, 0)
+      ctx.fillText(text, 0, 0)
 
 
       ctx.restore()
@@ -282,7 +296,7 @@
       x = screenWidth / 2
       // y = hRatio * screenHeight
 
-      y = (y-64)/(667-64) * (screenHeight)
+      // y = (y-64)/(667-64) * (screenHeight)
       console.log('y' , y)
       ctx.translate(x, y)
       ctx.font = 'normal bold 17px sans-serif'
@@ -426,15 +440,21 @@
           title: '正在截图',
           mask: true
         })
+
         const dev = await this.getSystemInfo()
         console.log('dev' , dev)
         const {windowHeight} = dev
         const { screenWidth, screenHeight } = dev
-        const statusHeight = 0
+        const statusHeight = 64
+
+
+        function rpxTopx(px) {
+            return (px-statusHeight) *2 / 750*screenWidth
+        }
 
         const p = (494 - 64) / 667
         this.$apply(()=>{
-          this.cHeight = screenHeight * p + 'px'
+          this.cHeight = rpxTopx(495) + 'px'
           this.cTop = 0 + 'px'
         })
 
@@ -446,9 +466,10 @@
         * */
         const imageUrl = `${this.url}step-share-share-bg.png`
 
+        console.log('pxtorpx' , rpxTopx(495))
         console.log('imageUrl ', imageUrl)
         let bg = await this.downloadFile(imageUrl)
-        ctx.drawImage(bg.tempFilePath, 0, 0, screenWidth, screenHeight* p)
+        ctx.drawImage(bg.tempFilePath, 0, 0, screenWidth, rpxTopx(495))
         //draw avatar
         ctx.save()
 
@@ -456,7 +477,7 @@
         // let hRatio = (140 - statusHeight)/609
         let hRatio = 0.1332
         let x = screenWidth / 2
-        let y = hRatio * (screenHeight-64)
+        let y = rpxTopx(143)
         // let y = 90* 2 / this.px2rpx
         console.log('top',y)
         // y = 59
@@ -488,7 +509,7 @@
         this.drawText(
           ctx ,
           screenWidth , screenHeight ,
-          screenWidth / 2, 261 ,
+          screenWidth / 2, rpxTopx(275) ,
           this.userInfo.nickName
         )
 
@@ -498,7 +519,7 @@
           screenWidth ,
           screenHeight ,
           screenWidth / 2,
-          287 ,
+          rpxTopx(300) ,
           '我已在“麦”向健康每一天'
         )
 
@@ -507,7 +528,7 @@
           screenWidth ,
           screenHeight ,
           screenWidth / 2,
-          309 ,
+          rpxTopx(327) ,
           this.stepStr
         )
 
@@ -517,7 +538,7 @@
           screenWidth ,
           screenHeight ,
           screenWidth / 2,
-          343 ,
+          rpxTopx(365) ,
           '跟我一起来“麦”向健康吧！'
         )
 
@@ -557,9 +578,9 @@
         // this.getScreenShot()
         // return
         console.log('this.wheatIntegralSum' , this.wheatIntegralSum)
-        // wx.navigateBack({
-        //   delta: 1
-        // })
+        wx.navigateBack({
+          delta: 1
+        })
 
         this.$root.$redirect({url: '/home/home'})
       },
@@ -619,6 +640,8 @@
 
     onShow() {
       console.log('onShow page')
+      // const { screenWidth, screenHeight } = await wx.getSystemInfoSync()
+      // this.top = (screenHeight-)//
       if (this.isPreviewPage) {
         this.clearCanvas()
         this.isPreviewPage = false
@@ -657,9 +680,11 @@
   display: flex;
   flex-direction: column;
   justify-content: stretch;
+  background-color: #37AE56;
   .bg{
     width: 100%;
-    height: 100%;
+    /*height: 100%;*/
+    height: pxTorpx(495-$statusBarHeight);
   }
 
   .canvas{
@@ -680,7 +705,8 @@
         top:percentage((140 -$statusBarHeight)/(667-$statusBarHeight));
     */
 
-    top:13.32%;
+    /*top:13.32%;*/
+    top:pxTorpx(143-$statusBarHeight);
     left:50%;
     transform: translateX(-50%);
     height: 232rpx;
@@ -701,10 +727,12 @@
       white-space: nowrap;
     }
   }
-
+/*
+    top:percentage((286 - $statusBarHeight)/$pageHeight);
+*/
   .page-content {
     position: absolute;
-    top:percentage((286 - $statusBarHeight)/$pageHeight);
+top:pxTorpx(290 - $statusBarHeight);
     left:50%;
     transform: translateX(-50%);
     white-space: nowrap;
@@ -731,7 +759,7 @@
 
   .save-link {
     position: absolute;
-    top:percentage((508 - $statusBarHeight)/$pageHeight);
+    top:pxTorpx(506-$statusBarHeight);
     left:50%;
     transform: translateX(-50%);
     color:white;
@@ -739,81 +767,95 @@
     text-decoration: underline;
     word-spacing: 20rpx;
     text-align: center;
+    /*margin-top: 30rpx;*/
   }
 
   .btn-group {
-    position: absolute;
-    top:percentage((572 - $statusBarHeight)/$pageHeight);
+    flex:1;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     width: 100%;
+    align-items: center;
+    justify-content: center;
 
-    justify-content: space-around;
+    position: relative;
 
-    >cover-view{
+    .btn-group-wrap{
+      position: relative;
+
+      flex-direction: row;
       width: 100%;
-      padding:0;
-      margin: 0;
-      height: 100%;
-      &:first-child{
-        width: 308rpx;
-      }
-      &:last-child{
-        width: 214rpx;
-      }
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
 
-      cover-view{
+
+      >cover-view{
         width: 100%;
         padding:0;
         margin: 0;
         height: 100%;
+        &:first-child{
+          width: 308rpx;
+        }
+        &:last-child{
+          width: 214rpx;
+        }
+
+        cover-view{
+          width: 100%;
+          padding:0;
+          margin: 0;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content:center;
+
+          border-radius: 74rpx;
+          font-size: 36rpx;
+          font-weight: bolder;
+          color: #009844;
+        }
+      }
+
+      .wx-button-cover-view-wrapper{
+        position: relative;
+        .wx-button-cover-view-inner{
+          position: absolute;
+          left:50%;
+          top:50%;
+          transform: translate(-50% , -50%);
+        }
+      }
+
+      button{
+        margin: 0;
+        padding: 0;
+
+        height: 74rpx;
         display: flex;
         align-items: center;
         justify-content:center;
-
         border-radius: 74rpx;
+
+
         font-size: 36rpx;
         font-weight: bolder;
         color: #009844;
+        border:none;
+        &:first-child{
+          width: 308rpx;
+        }
+        &:last-child{
+          width: 214rpx;
+        }
+
+        &::after{
+          border: none;
+        }
       }
     }
 
-    .wx-button-cover-view-wrapper{
-      position: relative;
-      .wx-button-cover-view-inner{
-        position: absolute;
-        left:50%;
-        top:50%;
-        transform: translate(-50% , -50%);
-      }
-    }
-
-    button{
-      margin: 0;
-      padding: 0;
-
-      height: 74rpx;
-      display: flex;
-      align-items: center;
-      justify-content:center;
-      border-radius: 74rpx;
-
-
-      font-size: 36rpx;
-      font-weight: bolder;
-      color: #009844;
-      border:none;
-      &:first-child{
-        width: 308rpx;
-      }
-      &:last-child{
-        width: 214rpx;
-      }
-
-      &::after{
-        border: none;
-      }
-    }
   }
 
 }
