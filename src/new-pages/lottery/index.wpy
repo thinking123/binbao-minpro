@@ -297,6 +297,7 @@
       },
       handleRedeemPrize(){
         console.log('handleRedeemPrize')
+        showMsg('兑奖活动尚未开始，敬请期待')
       }
     }
 
