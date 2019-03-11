@@ -8,7 +8,7 @@
 
 
     <view class="content">
-      <image class="bg" src="{{url}}lottery-bg1.png"/>
+      <image class="bg" src="https://cdnmakattan.ysmine.com/lottery-bg1.png"/>
     </view>
 
     <image class="lottery-ml ml-left"
@@ -64,7 +64,7 @@
 
     <image class="lottery-fixed-icon"
            @tap="handleRedeemPrize"
-           src="{{url}}lottery-fixed-icon.png"/>
+           src="https://cdnmakattan.ysmine.com/lottery-fixed-icon.png"/>
 
     <view class="ml-value {{}}">
       当前麦力值：{{wheatIntegral}}

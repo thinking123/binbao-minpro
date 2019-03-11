@@ -4,8 +4,8 @@
     <image class="footer-bg"
            wx:if="{{navType == 'lottery'}}"
            src="https://cdnmakattan.ysmine.com/navigate-bar-lottery.png"/>
-    <image class="footer-bg"
-           src="https://cdnmakattan.ysmine.com/navigate-bar-step.png"/>
+    <image wx:else class="footer-bg"
+           src="https://cdnmakattan.ysmine.com/navigate-bar-step-rank.png"/>
     <repeat key="index"
             index="index"
             item="btn"
