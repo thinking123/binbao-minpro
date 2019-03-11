@@ -341,12 +341,12 @@
               this.showCashPoolDialog = true
             }else{
               this.showCashPoolDialogTip = true
-              this.isStartCashPool = false
+              this.isStartCashPool = true
             }
             this.$apply()
           }else{
             this.showCashPoolDialogTip = true
-            this.isStartCashPool = true
+            this.isStartCashPool = false
           }
 
 
@@ -601,10 +601,10 @@
     };
     onShow(){
       //刷新微信步数
-      if(this.$parent.globalData.code){
-        console.log('刷新微信步数')
-        this.getStep()
-      }
+      // if(this.$parent.globalData.code){
+      //   console.log('刷新微信步数')
+      //   this.getStep()
+      // }
 
     }
     // Other properties
