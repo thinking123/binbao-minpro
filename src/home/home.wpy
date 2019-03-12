@@ -163,6 +163,7 @@
     encryptedData:state=>state.common.encryptedData,
     iv:state=>state.common.iv,
     sign:state=>state.common.sign,
+    loading:state=>state.common.loading,
   }, {
     WX_LOGIN,
     WX_STEP,
@@ -328,7 +329,10 @@
       },
       async handleBonus(){
         try {
-
+          if(this.loading){
+            console.log('数据还在请求...')
+            return
+          }
 
           console.log('handleBonus' , this.isBonusEnable)
           if(this.isBonusEnable){

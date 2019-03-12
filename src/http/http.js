@@ -41,7 +41,7 @@ function http(url, data, loadingText, header, method = 'GET') {
   })
 
 
-  // wepy.$store.dispatch({ type : 'LOADINGBAR' , payload : true })
+  wepy.$store.dispatch({ type : 'LOADINGBAR' , payload : true })
   // wepy.$store.dispatch({ type : 'LOADINGTEXT' , payload : loadingText })
 
   return new Promise((resolve, reject) => {
@@ -53,7 +53,7 @@ function http(url, data, loadingText, header, method = 'GET') {
       success: res => {
         resolve(res ? res.data : null)
         // queue.pop()
-        // wepy.$store.dispatch({ type : 'LOADINGBAR' , payload : false })
+        wepy.$store.dispatch({ type : 'LOADINGBAR' , payload : false })
         // wepy.$store.dispatch({ type : 'LOADINGTEXT' , payload : '' })
 
         // time = setTimeout(()=>{
@@ -67,7 +67,7 @@ function http(url, data, loadingText, header, method = 'GET') {
       fail: err => {
         reject(err)
         // queue.pop()
-        // wepy.$store.dispatch({ type : 'LOADINGBAR' , payload : false })
+        wepy.$store.dispatch({ type : 'LOADINGBAR' , payload : false })
         // wepy.$store.dispatch({ type : 'LOADINGTEXT' , payload : '' })
         // time = setTimeout(()=>{
         //   !!loadingText && wx.hideLoading()
