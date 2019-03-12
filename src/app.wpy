@@ -16,7 +16,7 @@
 <script>
   import wepy from 'wepy'
   import 'wepy-async-function'
-  import {showLoading , hideLoading} from './utils/common'
+  import {showLoading , hideLoading , showMsg} from './utils/common'
   // const cdnBaseUrl = './'
   // const cdnBaseUrl = 'http://pmdtwfss0.bkt.clouddn.com/'
   // const cdnBaseUrl = 'http://pn3ysdpp4.bkt.clouddn.com/'
@@ -112,7 +112,17 @@
       // iphonex_class: 'not'
     }
 
-    onLaunch() {
+    onShow(options){
+
+    }
+    onLaunch(options) {
+      console.log('options' , options)
+      // const {scene} = options || {}
+      // showMsg('scene' + scene)
+      // if(scene  == 1007 || scene  == 1008 || scene == 1036){
+      //   // this.$store.dispatch()
+      //   this.$store.dispatch({ type : 'ISFROMSHARE' , payload : {isFromShare:true} })
+      // }
       // wepy.getSystemInfo().then((data) => {
       //   console.log('system_info: ', data)
       //   if (data.windowHeight > 720) {

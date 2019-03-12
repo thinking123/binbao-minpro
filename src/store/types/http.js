@@ -10,4 +10,5 @@ export const PRIZE = 'PRIZE'
 export const LOADINGBAR = 'LOADINGBAR'
 export const LOADINGTEXT = 'LOADINGTEXT'
 export const TOTALSTEP = 'TOTALSTEP'
+export const ISFROMSHARE = 'ISFROMSHARE'
 

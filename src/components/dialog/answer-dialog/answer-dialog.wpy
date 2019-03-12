@@ -84,6 +84,9 @@
       handleOutHide(e) {
         if (e && e.target && e.target.id === 'mask') {
           this.visible = false
+          if(this.isRight){
+            this.$emit('answer-right' , this.answer)
+          }
         }
       },
       handlemove(e) {
@@ -96,6 +99,7 @@
 
             this.isRight = await answerQuestion(this.answer.id ,index)
             this.selectedIndex = index
+
             this.$apply()
           }
         }catch (e) {
@@ -117,6 +121,9 @@
       },
       handleClose(){
         this.visible = false
+        if(this.isRight){
+          this.$emit('answer-right' , this.answer)
+        }
       }
     }
     computed = {

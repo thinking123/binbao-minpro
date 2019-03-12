@@ -495,12 +495,12 @@
     async getStep() {
       try {
         // const { encryptedData, iv } = this.$parent.globalData.stepInfo
-        const stepInfo = await wepy.getWeRunData()
-
-        const { encryptedData, iv } = stepInfo
-        this.methods.WX_STEP({
-          encryptedData, iv
-        })
+        // const stepInfo = await wepy.getWeRunData()
+        //
+        // const { encryptedData, iv } = stepInfo
+        // this.methods.WX_STEP({
+        //   encryptedData, iv
+        // })
         await nowStep(this.encryptedData, this.iv)
 
         let { medalNum, wheatIntegral, wheatIntegralSum, wheatRank } = await getStep()
@@ -564,7 +564,12 @@
       //   })
       // }
 
+      const stepInfo = await wepy.getWeRunData()
 
+      const { encryptedData, iv } = stepInfo
+      this.methods.WX_STEP({
+        encryptedData, iv
+      })
 
 
       await this.getStep()
@@ -597,6 +602,7 @@
     onLoad() {
       this.url = this.$parent.globalData.url
       this.init()
+
 
     };
     onShow(){

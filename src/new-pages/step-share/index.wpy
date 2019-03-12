@@ -79,11 +79,12 @@
 <script>
   import wepy from 'wepy'
   import { connect } from 'wepy-redux'
-  import { numberWithCommas } from '../../utils/common'
+  import { numberWithCommas ,showMsg} from '../../utils/common'
   import AuthDialog from '../../components/dialog/auth-dialog/auth-dialog'
 
   @connect({
     url:state=>state.common.cdnUrl,
+    isFromShare:state=>state.common.isFromShare,
     totalStep:state=>state.common.totalStep,
   },{})
 
@@ -578,11 +579,28 @@
         // this.getScreenShot()
         // return
         console.log('this.wheatIntegralSum' , this.wheatIntegralSum)
+        // wx.navigateBack({
+        //   delta: 1
+        // })
         wx.navigateBack({
           delta: 1
         })
 
-        this.$root.$redirect({url: '/home/home'})
+return
+        const {scene} = wx.getLaunchOptionsSync()
+        // showMsg(scene)
+        // return
+
+        showMsg('test :' + scene)
+        if(scene  == 1007 || scene  == 1008 || scene == 1036){
+          this.$root.$redirect({url: '/home/home'})
+        }else{
+          wx.navigateBack({
+            delta: 1
+          })
+        }
+
+        // this.$root.$navigate({url: '/home/home?from=share'})
       },
       handleSaveImage() {
         console.log('you press')
@@ -628,6 +646,9 @@
       //   this.url = this.$parent.globalData.url
       //
       // })
+      wx.showShareMenu({
+        withShareTicket:true
+      })
       const res = wx.getSystemInfoSync()
 
       this.px2rpx = 750 / res.windowWidth;
@@ -654,9 +675,12 @@
     }
 
     onShareAppMessage(obj) {
-      console.log('onShareAppMessage', obj)
+      const data = {
+        path:'/home/home'
+      }
+      console.log('onShareAppMessage', data)
 
-      return obj
+      return data
     }
 
     // Other properties

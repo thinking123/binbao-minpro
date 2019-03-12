@@ -11,7 +11,8 @@ import {
   PRIZE,
   LOADINGBAR,
   LOADINGTEXT,
-  TOTALSTEP
+  TOTALSTEP,
+  ISFROMSHARE
 } from '../types/http'
 
 const defaultState = {
@@ -30,7 +31,8 @@ const defaultState = {
   navType: '',
   isLoading: false,
   loadingText: '正在加载...',
-  sign:null
+  sign:null,
+  isFromShare:false
 }
 
 const loadQueue = []
@@ -55,6 +57,13 @@ export default handleActions({
     return {
       ...state,
       token
+    }
+  },
+  [ISFROMSHARE](state, { payload: { isFromShare } }) {
+    console.log("isFromShare" , isFromShare)
+    return {
+      ...state,
+      isFromShare
     }
   },
   [LOADINGTEXT](state, { payload: loadingText }) {

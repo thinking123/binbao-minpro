@@ -2,7 +2,7 @@ import { get, post } from './http'
 import { urlParams } from '../utils/common'
 
 function parseRes(res, errMsg, resolveStatus = []) {
-  if (!!res && res.status && res.status.indexOf('2') > -1) {
+  if (!!res && res.status && res.status.indexOf('2') == 0) {
     // return res.rows ? res.rows : res
     return res.rows
   } else {
