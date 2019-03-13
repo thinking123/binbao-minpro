@@ -31,6 +31,7 @@
       handleOutHide(e) {
         if (e && e.target && e.target.id === 'mask') {
           this.visible = false
+          this.$emit('not-enough-dialog-close')
         }
       },
       handlemove(e) {
@@ -38,6 +39,7 @@
       },
       handleClose(){
         this.visible = false
+        this.$emit('not-enough-dialog-close')
       }
     }
 

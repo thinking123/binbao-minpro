@@ -310,8 +310,16 @@
           this.time = null
         }
       },
+      'not-enough-dialog-close':()=>{
+        this.showMl = 1
+        if(this.time){
+          clearInterval(this.time)
+          this.time = null
+        }
+      },
       'goto':()=>{
         console.log('goto dialog')
+        this.showMl = 1
         if(this.time){
           clearInterval(this.time)
           this.time = null
@@ -320,6 +328,7 @@
         this.$navigate(url)
       },
       'navigate-bar':(index)=>{
+        this.showMl = 1
         if(this.time){
           clearInterval(this.time)
           this.time = null

@@ -511,7 +511,12 @@
         this.methods.STEP({
           medalNum, wheatIntegral, wheatIntegralSum, wheatRank
         })
-        this.selected = wheatRank - 1
+        if(wheatRank == 0){
+          this.selected = 0
+        }else{
+          this.selected = wheatRank - 1
+        }
+
         this.initCarouselSwiperImages(wheatRank)
         this.isShowMedalDialog(medalNum)
         this.isShowWheatNumDialog(wheatRank)
