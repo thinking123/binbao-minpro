@@ -12,6 +12,9 @@
       <view
         class="image-wrap  {{index == 4 ? 'image-next-hidden' : ''}} {{index == 0 ? 'image-pre-hidden' : ''}} {{index == 3 ? 'image-next' : ''}} {{index == 1 ? 'image-pre' : ''}} {{index == 2 ? 'image-current' : ''}} ">
         <view class="image-content-wrap">
+          <view class="image-content-wrap-bg" wx:if="{{2 !==index && !(image.wheatRank > wheatRank)}}">
+
+          </view>
           <image src="{{image.url}}"
 
                  class="bg"/>
@@ -274,7 +277,8 @@
         /*opacity: 0.5;*/
       /*}*/
       .step-content{
-
+        position: relative;
+        z-index: 2;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -320,7 +324,7 @@
           width: 100%;
           height: 100%;
           background-color: #4C4B41;
-          opacity: 0.8;
+          opacity: 0.7;
           z-index: 1;
         }
 
@@ -357,11 +361,23 @@
         width: 100%;
         border-radius: 20rpx;
         overflow: hidden;
+
+
+        .image-content-wrap-bg{
+          position: absolute;
+          left:0;
+          top:0;
+          width: 100%;
+          height: 100%;
+          background-color: #4C4B41;
+          opacity: 0.3;
+          z-index: 1;
+        }
       }
       .bg{
 
-
-
+        position: relative;
+        z-index: 0;
         flex:1;
 
         height: 100%;
@@ -372,6 +388,7 @@
       }
       .icon{
         position: absolute;
+        z-index: 2;
         height: 142rpx;
         width: 122rpx;
         top:22rpx;
