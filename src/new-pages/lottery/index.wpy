@@ -2,8 +2,8 @@
   <view class="page">
 
     <banner-swiper class="banner"  :bannerImages.sync="bannerImages"/>
-    <!--<image class="banner" src="{{url}}lottery-banner.png"/>-->
-    <!--<image class="lottery-logo" src="{{url}}lottery-logo.png"/>-->
+    <!--<image class="banner" src="https://cdnmakattan.ysmine.com/lottery-banner.png"/>-->
+    <!--<image class="lottery-logo" src="https://cdnmakattan.ysmine.com/lottery-logo.png"/>-->
     <image class="lottery-logo" src="https://cdnmakattan.ysmine.com/lottery-logo.png"/>
 
 
@@ -13,20 +13,20 @@
 
     <image class="lottery-ml ml-left"
            wx:if="{{showMl == 0}}"
-           src="{{url}}lottery-ml-left.png"/>
+           src="https://cdnmakattan.ysmine.com/lottery-ml-left.png"/>
     <image class="lottery-ml ml-center"
            wx:if="{{showMl == 1}}"
-           src="{{url}}lottery-ml-center.png"/>
+           src="https://cdnmakattan.ysmine.com/lottery-ml-center.png"/>
     <image class="lottery-ml ml-right"
            wx:if="{{showMl == 2}}"
-           src="{{url}}lottery-ml-right.png"/>
+           src="https://cdnmakattan.ysmine.com/lottery-ml-right.png"/>
 
 
 
     <view class="lottery-btn-wrap"
           @tap="handleLottery">
       <image class="lottery-btn"
-             src="{{url}}lottery-btn.png"/>
+             src="https://cdnmakattan.ysmine.com/lottery-btn.png"/>
 
       <view class="lottery-btn-text">
         <view class="need-ml-value">
@@ -70,7 +70,7 @@
       当前麦力值：{{wheatIntegral}}
     </view>
     <!--<view class="footer">-->
-      <!--<image class="footer-bg" src="{{url}}navigate-bar.png"/>-->
+      <!--<image class="footer-bg" src="https://cdnmakattan.ysmine.com/navigate-bar.png"/>-->
       <!--<repeat key="index"-->
               <!--index="index"-->
               <!--item="btn"-->
@@ -82,9 +82,9 @@
     <view class="get-prize-wrap" wx:if="{{isLotterying}}">
 
       <image class="get-prize-bg"
-             src="{{url}}lottery-prize-bg1.png"/>
+             src="https://cdnmakattan.ysmine.com/lottery-prize-bg1.png"/>
       <image class="ml {{isLotterying ? 'active' : ''}}"
-             src="{{url}}lottery-prize-ml.png"/>
+             src="https://cdnmakattan.ysmine.com/lottery-prize-ml.png"/>
     </view>
     <navigate-bar navType="lottery"/>
 

@@ -1,6 +1,6 @@
 <template>
   <view class="page">
-    <!--<image class="banner" src="{{url}}step-rank-banner.png"/>-->
+    <!--<image class="banner" src="https://cdnmakattan.ysmine.com/step-rank-banner.png"/>-->
 
 
     <banner-swiper class="banner" :bannerImages.sync="bannerImages"/>
@@ -18,18 +18,18 @@
       <block wx:if="{{selected == 0}}">
         <image class="rank-btn"
                @tap="handleRank(0)"
-               src="{{url}}rank-list-week-active.jpg"/>
+               src="https://cdnmakattan.ysmine.com/rank-list-week-active.jpg"/>
         <image class="rank-btn"
                @tap="handleRank(1)"
-               src="{{url}}rank-list-total.png"/>
+               src="https://cdnmakattan.ysmine.com/rank-list-total.png"/>
       </block>
       <block wx:else>
         <image class="rank-btn"
                @tap="handleRank(0)"
-               src="{{url}}rank-list-week.jpg"/>
+               src="https://cdnmakattan.ysmine.com/rank-list-week.jpg"/>
         <image class="rank-btn"
                @tap="handleRank(1)"
-               src="{{url}}rank-list-total-active.png"/>
+               src="https://cdnmakattan.ysmine.com/rank-list-total-active.png"/>
       </block>
 
     </view>
@@ -50,7 +50,7 @@
         </view>
         <view class="rank-wrap">
           <view class="rank-row">
-            <image class="rank-row-icon" src="{{url}}step-rank-my-rank-icon.png"/>
+            <image class="rank-row-icon" src="https://cdnmakattan.ysmine.com/step-rank-my-rank-icon.png"/>
             <view class="rank-text-wrap">
               我的总排名：
               <view class="rank-text">
@@ -59,7 +59,7 @@
             </view>
           </view>
           <view class="rank-row">
-            <image class="rank-row-icon" src="{{url}}step-rank-his-ml-icon1.png"/>
+            <image class="rank-row-icon" src="https://cdnmakattan.ysmine.com/step-rank-his-ml-icon1.png"/>
             <view class="rank-text-wrap">
               历史累积麦力值：
               <view class="rank-text">
@@ -93,7 +93,7 @@
               </view>
               <view class="rank-column" wx:else>
                 <image class="champion-rank-icon"
-                  src="{{url}}step-rank-champion-rank-icon.png"/>
+                  src="https://cdnmakattan.ysmine.com/step-rank-champion-rank-icon.png"/>
               </view>
               <view class="name-column hidden_ellipsis">
                 {{rank.userName}}
@@ -101,7 +101,7 @@
               <view class="mlvalue-column">
                 <image wx:if="{{index === 0}}"
                       class="champion-cup-icon"
-                       src="{{url}}step-rank-champion-cup-icon.png"/>
+                       src="https://cdnmakattan.ysmine.com/step-rank-champion-cup-icon.png"/>
                 {{rank.wheatIntegralSum}}
               </view>
             </view>
@@ -116,7 +116,7 @@
       领取奖品
     </button>
     <!--<view class="footer">-->
-      <!--<image class="footer-bg" src="{{url}}navigate-bar.png"/>-->
+      <!--<image class="footer-bg" src="https://cdnmakattan.ysmine.com/navigate-bar.png"/>-->
       <!--<repeat key="index"-->
               <!--index="index"-->
               <!--item="btn"-->
