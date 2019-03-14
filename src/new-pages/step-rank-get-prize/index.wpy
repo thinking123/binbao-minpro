@@ -191,7 +191,19 @@
     config = {
       "disableSwipeBack": true
     };
+
+    onShareAppMessage(obj) {
+      const data = {
+        path:'/home/home'
+      }
+      console.log('onShareAppMessage', data)
+
+      return data
+    }
     onLoad(options) {
+      wx.showShareMenu({
+        withShareTicket: false
+      })
       console.log('options' , options)
       this.type = options.type
       this.from = options.from

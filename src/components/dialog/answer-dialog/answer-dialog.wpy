@@ -299,7 +299,7 @@
         justify-content: center;
         align-items: center;
         font-size: 24rpx;
-        background-color: #C2C2C2;
+        background-color: #818181;
         margin-top: 24rpx;
         position: relative;
         /*background-color: #84D158;*/

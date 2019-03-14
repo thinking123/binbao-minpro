@@ -422,7 +422,19 @@
         this.$apply()
       }
     }
+    onShareAppMessage(obj) {
+      const data = {
+        path:'/home/home'
+      }
+      console.log('onShareAppMessage', data)
+
+      return data
+    }
+
     onLoad() {
+      wx.showShareMenu({
+        withShareTicket: false
+      })
       // this.url = this.$parent.globalData.url
       const res = wx.getSystemInfoSync()
 

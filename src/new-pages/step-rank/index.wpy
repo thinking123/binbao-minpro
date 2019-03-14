@@ -286,8 +286,19 @@
       this.selected = 0
       this.init()
     }
-    onLoad() {
 
+    onShareAppMessage(obj) {
+      const data = {
+        path:'/home/home'
+      }
+      console.log('onShareAppMessage', data)
+
+      return data
+    }
+    onLoad() {
+      wx.showShareMenu({
+        withShareTicket: false
+      })
       // this.url = this.$parent.globalData.url
 
       // const ml = 338325
