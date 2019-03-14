@@ -149,7 +149,8 @@
 
     async draw(ctx) {
       return new Promise((resolve, rej) => {
-        ctx.draw(false, resolve)
+        //此处必须设置timeout，否则android上会有渲染混乱的情况
+        ctx.draw(false, setTimeout(()=>{resolve()} , 200))
       })
     }
 
@@ -554,20 +555,21 @@
 
       } catch (e) {
         console.error('getScreenShot', e)
-        wx.showToast({
-          title:e.message,
-          icon: 'success'
-        })
+        // wx.showToast({
+        //   title:e.message,
+        //   icon: 'success'
+        // })
+        showMsg(e)
       }finally {
         // wx.showToast({
         //   title:'compelted',
         //   icon:'none'
         // })
 
-        wx.showLoading({
-          title: 'compelted',
-          mask: true
-        })
+        // wx.showLoading({
+        //   title: 'compelted',
+        //   mask: true
+        // })
         wx.hideLoading()
       }
     }
