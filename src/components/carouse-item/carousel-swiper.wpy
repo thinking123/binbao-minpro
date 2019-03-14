@@ -22,7 +22,10 @@
           <view
             class="step-content {{2 !==index ? 'not-current' : ''}} {{image.wheatRank > wheatRank ? 'locked':''}}"
             style="visibility: {{image.wheatRank > wheatRank? 'visible' : 'hidden'}}">
-            <view class="step-wrap">
+            <view class="step-content-bg  {{2 !==index ? 'not-current-bg' : ''}}">
+
+            </view>
+            <view class="step-wrap" wx:if="{{index !== 2}}">
               <view class="step">
                 {{image.step}}
               </view>
@@ -31,6 +34,10 @@
               </view>
 
             </view>
+            <image src="{{image.icon}}"
+                   class="step-content-icon"
+                   wx:else/>
+
             <image wx:if="{{image.locked}}" src="{{url}}home-locked.png" class="lock"/>
           </view>
 
@@ -262,10 +269,10 @@
       border-radius: 20rpx;
       overflow: hidden;
 
-      .not-current{
-        background-color: #4C4B41;
-        opacity: 0.5;
-      }
+      /*.not-current{*/
+        /*background-color: #4C4B41;*/
+        /*opacity: 0.5;*/
+      /*}*/
       .step-content{
 
         display: flex;
@@ -278,6 +285,8 @@
         top:0;
         bottom:0;
         .step-wrap{
+          position: relative;
+          z-index: 2;
           white-space: nowrap;
           color:white;
           font-size: 24rpx;
@@ -292,15 +301,52 @@
           }
         }
 
+
+
+        .step-content-bg{
+          position: absolute;
+          left:0;
+          top:0;
+          width: 100%;
+          height: 100%;
+          background-color: #4C4B41;
+          opacity: 0.4;
+          z-index: 1;
+        }
+        .not-current-bg.step-content-bg{
+          position: absolute;
+          left:0;
+          top:0;
+          width: 100%;
+          height: 100%;
+          background-color: #4C4B41;
+          opacity: 0.8;
+          z-index: 1;
+        }
+
+        .step-content-icon{
+          position: relative;
+          z-index: 2;
+          height: 142rpx;
+          width: 122rpx;
+          margin-bottom: 10rpx;
+        }
+
         .lock{
+          position: relative;
+          z-index: 2;
           width: 40rpx;
           height: 40rpx;
         }
         &.locked{
-          background-color: #4C4B41;
-          opacity: 0.8;
+          /*background-color: #4C4B41;*/
+          /*opacity: 0.8;*/
         }
+
+
+
       }
+
 
       .image-content-wrap{
         position: absolute;
